@@ -1,0 +1,11 @@
+# Normalize line endings for all text files
+* text auto eol=lf
+
+# Java files should be treated as text and normalized
+*.java text
+
+# XML files should be treated as text and normalized
+*.xml text
+
+# Properties files should be treated as text and normalized
+*.properties text
