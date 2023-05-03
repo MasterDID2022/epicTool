@@ -1,0 +1,35 @@
+name: "User Story (US)"
+description: Structure pour une US simple.
+title: "US : En tant que (acteur), je veux (exigence), afin de (but final)"
+labels: ["user story"]
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description:  Expliquez votre US et modifiez le titre. Le but final est facultatif. Ajoutez **obligatoirement** un diagramme UML.
+      placeholder: |
+       Cette issue est intéressante car (expliquez en quelques phrases courtes).
+       <Diagramme UML>
+    validations:
+      required: true
+
+  - type: textarea
+    id: criteria
+    attributes:
+      label: Exigence(s)
+      description: Ajoutez au moins une exigence pour l'US avec une case, [ ] par ligne. [X] permet de cocher une case.
+      value: |
+        Exemple :
+        - [X] Le formulaire d'inscription est fonctionnel.
+        - [ ] Les données sont validées côté serveur.
+        - [ ] Un email de confirmation est envoyé.
+      placeholder: |
+        Exemple :
+        - [X] Le formulaire d'inscription est fonctionnel.
+        - [ ] Les données sont validées côté serveur.
+        - [ ] Un email de confirmation est envoyé.
+
+    validations:
+      required: true
