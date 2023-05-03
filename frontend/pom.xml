@@ -8,8 +8,8 @@
     <artifactId>projets2</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>edtLHD</name>
-    <url>https://github.com/wedidtln/sopra-project-LHD/</url>
+    <name>ProjetEpigraphieS2</name>
+    <url>https://github.com/MasterDID2022/projet-s2/</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
@@ -22,11 +22,10 @@
         <jacoco.version>0.8.8</jacoco.version>
         <javafx.version>19.0.2.1</javafx.version>
         <lombok.version>1.18.26</lombok.version>
-        <hibernate.version>6.2.2.Final</hibernate.version>
         <slf4j.version>2.0.5</slf4j.version>
         <junit.version>5.9.2</junit.version>
         <argline>${project.build.directory}/jacoco.exec</argline>
-        <!--sonar.coverage.exclusions>src/main/java/fr/univtln/lhd/view/**,src/main/java/fr/univtln/lhd/controllers/**</sonar.coverage.exclusions-->
+        <sonar.coverage.exclusions>src/main/java/fr/univtln/m1infodid/projets2/javafx/**</sonar.coverage.exclusions>
 
     </properties>
     <dependencies>
@@ -69,22 +68,6 @@
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>5.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>${hibernate.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-hikaricp</artifactId>
-            <version>${hibernate.version}</version>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -117,6 +100,22 @@
                 <version>2.22.2</version>
             </plugin>
 
+            <plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>fr.univtln.m1infodid.projets2.App</mainClass>
+				</configuration>
+			</plugin>
+
 
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -126,7 +125,7 @@
                     <execution>
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.lhd.edtLhd/fr.univtln.lhd.view.AppLauncher</mainClass>
+                            <mainClass>fr.univtln.m1infodid.projets2.App</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

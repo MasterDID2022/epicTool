@@ -1,5 +1,5 @@
 # Normalize line endings for all text files
-* text auto eol=lf
+* text=auto eol=lf
 
 # Java files should be treated as text and normalized
 *.java text
@@ -9,3 +9,10 @@
 
 # Properties files should be treated as text and normalized
 *.properties text
+
+# Config for images
+*.png binary
+*.jpg binary
+
+# Config for fonts
+*.ttf binary
