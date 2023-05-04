@@ -13,15 +13,27 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
+/**
+ * Cette classe SI ...
+ */
 public class SI {
-
     private static String imgPath = "http://ccj-epicherchel.huma-num.fr/interface/phototheque/";
 
+    /**
+     * Calcule la somme de deux entiers.
+     * @param id l'id de la fiche
+     * @param imgNumber
+     * @return l url de l image qui sera egale au chemin imgPath + id + imgNumber
+     */
     private static String getImgUrl(String id, String imgNumber) {
         return  imgPath + id + '/' + imgNumber + ".jpg";
     }
-
+    /**
+     * Calcule la somme de deux entiers.
+     * @param id l'id de la fiche
+     * @param xmlUrl l'url de la fiche
+     * @return le contenu des balises image et texte
+     */
     public static ArrayList<String> extractTextAndImageFromXml(String id, String xmlUrl) {
         ArrayList<String> contentList = new ArrayList<String>();
         try {
@@ -35,7 +47,7 @@ public class SI {
             Document doc = dBuilder.parse(inputStream);
             doc.getDocumentElement().normalize();
 
-            // Extraction des contenus des balises image et texte
+            // Extraction du contenus des balises image et texte
             NodeList nodeList = doc.getElementsByTagName("*");
             for (int a = 0; a < nodeList.getLength(); a++) {
                 Node node = nodeList.item(a);
@@ -46,16 +58,18 @@ public class SI {
                         // l'emplacement de texte sur le fichier xml
                         contentList.add(txtElement.getTextContent());
                     }
-
+                    //recupere le contenu de traduction
                     if (element.hasAttribute("type") && element.getAttribute("type").equals("translation")) {
                         contentList.add(element.getTextContent());
                     }
-
+                    //recupere l image
                     if (element.getTagName().equals("facsimile")) {
                         Node child = nodeList.item(a+1);
                         Element firstElement = (Element) child;
+                        //si une seule image existe
                         if (firstElement.getTagName().equals("graphic"))
                             contentList.add( firstElement.getAttribute("url") );
+                        //sinon on fait appel a notre fonction
                         else if (firstElement.getTagName().equals("desc")) {
                             String imgNum = firstElement.getTextContent();
                             contentList.add( getImgUrl(id, imgNum) );
@@ -63,13 +77,11 @@ public class SI {
                     }
                 }
             }
-
             inputStream.close();
 
         } catch (IOException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();
         }
-
         return contentList;
     }
 }
