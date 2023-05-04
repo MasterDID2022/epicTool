@@ -3,6 +3,9 @@ package fr.univtln.m1infodid.projet_s2.backend.server;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.univtln.m1infodid.projet_s2.backend.DAO.EpigrapheDAO;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -17,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Path("epigraphe")
 public class Api {
+    public static final EntityManagerFactory entityManagerFactory =
+            Persistence.createEntityManagerFactory("epigraphs");
 
     /**
      * Methode qui gere les requete REST post pour les epigraphie
@@ -30,8 +35,8 @@ public class Api {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getIt ( String epigraheJson ) {
         log.info(epigraheJson);
-        EpigrapheDAO dao = new EpigrapheDAO();
-        try {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        try( EpigrapheDAO dao = EpigrapheDAO.create(em);) {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(epigraheJson);
             JsonNode id = jsonNode.get("ID");
