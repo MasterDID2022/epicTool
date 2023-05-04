@@ -37,6 +37,9 @@ buildNumber.properties
 # Built Visual Studio Code Extensions
 *.vsix
 
+#MacOS
+.DS_Store
+
 
 #Eclise or text editor that use his LSP
 .classpath
