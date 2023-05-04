@@ -25,7 +25,7 @@ public class SI {
      * @param imgNumber
      * @return l url de l image qui sera egale au chemin imgPath + id + imgNumber
      */
-    private static String getImgUrl(String id, String imgNumber) {
+    public static String getImgUrl(String id, String imgNumber) {
         return  imgPath + id + '/' + imgNumber + ".jpg";
     }
     /**
@@ -71,6 +71,7 @@ public class SI {
                             contentList.add( firstElement.getAttribute("url") );
                         //sinon on fait appel a notre fonction
                         else if (firstElement.getTagName().equals("desc")) {
+                            System.out.println("iciiiiiiiii");
                             String imgNum = firstElement.getTextContent();
                             contentList.add( getImgUrl(id, imgNum) );
                         }
