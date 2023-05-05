@@ -43,4 +43,12 @@ class SITest {
         //assertEquals("Tel il était!", contentdImageEtText.get(2));
     }
 
+    @Test
+    public void testExtractTextAndImageFromXmlInvalidUrl() {
+        String id = "340";
+        String invalidUrl = "http://ccj-epicherchel.huma-num.fr/invalid-url";
+        ArrayList<String> contentdImageEtText = SI.extractTextAndImageFromXml(id, invalidUrl);
+        assertTrue(contentdImageEtText.isEmpty());
+    }
+
 }

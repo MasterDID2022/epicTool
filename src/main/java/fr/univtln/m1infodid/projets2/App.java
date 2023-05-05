@@ -10,7 +10,7 @@ import java.util.ArrayList;
 @Slf4j
 public class App {
     public static void main(String[] args) {
-        String id = "340";
+        String id = "42";
         String xmlUrl = "http://ccj-epicherchel.huma-num.fr/interface/fiche_xml2.php?id=" + id;
         ArrayList<String> contentdImageEtText = SI.extractTextAndImageFromXml(id, xmlUrl);
         System.out.println(contentdImageEtText);
