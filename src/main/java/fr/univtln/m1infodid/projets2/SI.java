@@ -1,17 +1,15 @@
 package fr.univtln.m1infodid.projets2;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -38,7 +36,7 @@ public class SI {
      * @param xmlUrl l'url de la fiche
      * @return le contenu des balises image et texte
      */
-    public static Epigraphe extractTextAndImageFromXml(String id, String xmlUrl) {
+    public static ArrayList<String> extractTextAndImageFromXml(String id, String xmlUrl){
         ArrayList<String> contentList = new ArrayList<String>();
         try {
             // la récupération du fichier XML à partir de l'URL
@@ -46,10 +44,10 @@ public class SI {
             InputStream inputStream = url.openStream();
 
             // la création du Document XML
+
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputStream);
-
             doc.getDocumentElement().normalize();
 
             // Extraction du contenus des balises image et texte
@@ -60,7 +58,7 @@ public class SI {
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
                     if (element.getTagName().equals("text")) {
-                        Element txtElement = (Element) nodeList.item(a+3);
+                        Element txtElement = (Element) nodeList.item(a + 3);
                         // l'emplacement de texte sur le fichier xml
                         contentList.add(txtElement.getTextContent());
                     }
@@ -79,22 +77,21 @@ public class SI {
                     if (element.hasAttribute("type") && element.getAttribute("type").equals("translation")) {
                         contentList.add(element.getTextContent());
                     }
-
                     //recupere le contenu de traduction
                     if (element.hasAttribute("when") && element.getAttribute("when").equals("date")) {
                         contentList.add(element.getTextContent());
                     }
                     //recupere l image
                     if (element.getTagName().equals("facsimile")) {
-                        Node child = nodeList.item(a+1);
+                        Node child = nodeList.item(a + 1);
                         Element firstElement = (Element) child;
                         //si une seule image existe
                         if (firstElement.getTagName().equals("graphic"))
-                            contentList.add( firstElement.getAttribute("url") );
-                        //sinon on fait appel a notre fonction
+                            contentList.add(firstElement.getAttribute("url"));
+                            //sinon on fait appel a notre fonction
                         else if (firstElement.getTagName().equals("desc")) {
                             String imgNum = firstElement.getTextContent();
-                            contentList.add( getImgUrl(id, imgNum) );
+                            contentList.add(getImgUrl(id, imgNum));
                         }
                     }
                 }
@@ -103,7 +100,15 @@ public class SI {
         } catch (IOException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();
         }
-
+        return contentList;
+    }
+    /**
+     * Calcule la somme de deux entiers.
+     * @param contentList une arrayList contenant les valeurs des attributs de l instance d epigraphie qu'on va creer
+     * @return une instance de la classe epigraphie apres extractions des valeurs de contentList
+     */
+    public static Epigraphe CreateEpigraphie(ArrayList<String> contentList)
+    {
         Epigraphe epigraphe = Epigraphe.of();
         epigraphe.setId(Integer.parseInt(contentList.get(0)));
         epigraphe.setNom(contentList.get(1));
