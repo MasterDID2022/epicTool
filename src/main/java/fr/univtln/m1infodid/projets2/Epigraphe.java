@@ -5,12 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Epigraphe {
-    //private static Map<Integer, Epigraphe> epigraphesMap = new HashMap<>();
-
 
     //private static int count = 0;
     private int id;
-
     private String imgUrl ;
     private Date date;
     private String texte;
@@ -19,7 +16,6 @@ public class Epigraphe {
     public static Epigraphe off(int id, Date date, String texte, String traduction, String nom, String imgUrl) {
         return new Epigraphe(id, date, texte, traduction, nom, imgUrl);
     }
-
     private Epigraphe(int id, Date date, String texte, String traduction, String nom, String imgUrl) {
         this.id = id;
         this.date = date;

@@ -22,7 +22,6 @@ public class SI {
     private static String imgPath = "http://ccj-epicherchel.huma-num.fr/interface/phototheque/";
 
     /**
-     * Calcule la somme de deux entiers.
      * @param id l'id de la fiche
      * @param imgNumber
      * @return l url de l image qui sera egale au chemin imgPath + id + imgNumber
@@ -31,7 +30,6 @@ public class SI {
         return  imgPath + id + '/' + imgNumber + ".jpg";
     }
     /**
-     * Calcule la somme de deux entiers.
      * @param id l'id de la fiche
      * @param xmlUrl l'url de la fiche
      * @return le contenu des balises image et texte
@@ -103,7 +101,6 @@ public class SI {
         return contentList;
     }
     /**
-     * Calcule la somme de deux entiers.
      * @param contentList une arrayList contenant les valeurs des attributs de l instance d epigraphie qu'on va creer
      * @return une instance de la classe epigraphie apres extractions des valeurs de contentList
      */
