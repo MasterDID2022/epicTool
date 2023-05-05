@@ -35,7 +35,7 @@ public class SI {
      * @param xmlUrl l'url de la fiche
      * @return le contenu des balises image et texte
      */
-    public static ArrayList<String> extractTextAndImageFromXml(String id, String xmlUrl) {
+    public static Epigraphe extractTextAndImageFromXml(String id, String xmlUrl) {
         ArrayList<String> contentList = new ArrayList<String>();
         try {
             // la récupération du fichier XML à partir de l'URL
@@ -101,6 +101,16 @@ public class SI {
         } catch (IOException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();
         }
-        return contentList;
+
+        Epigraphe epigraphe = new Epigraphe();
+        epigraphe.setId(Integer.parseInt(contentList.get(0)));
+        //System.out.println(epigraphe.getId());
+        epigraphe.setNom(contentList.get(1));
+        //System.out.println(epigraphe.getNom());
+        epigraphe.setTexte(contentList.get(4));
+        //System.out.println(epigraphe.getTexte());
+
+        return epigraphe;
     }
+
 }
