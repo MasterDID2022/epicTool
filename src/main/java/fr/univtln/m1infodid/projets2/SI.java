@@ -104,7 +104,7 @@ public class SI {
             e.printStackTrace();
         }
 
-        Epigraphe epigraphe = new Epigraphe();
+        Epigraphe epigraphe = Epigraphe.of();
         epigraphe.setId(Integer.parseInt(contentList.get(0)));
         epigraphe.setNom(contentList.get(1));
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
