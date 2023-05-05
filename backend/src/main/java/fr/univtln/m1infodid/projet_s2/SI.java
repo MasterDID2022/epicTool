@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -41,7 +44,6 @@ public class SI {
             // la récupération du fichier XML à partir de l'URL
             URL url = new URL(xmlUrl);
             InputStream inputStream = url.openStream();
-
 
             // la création du Document XML
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -104,13 +106,16 @@ public class SI {
 
         Epigraphe epigraphe = new Epigraphe();
         epigraphe.setId(Integer.parseInt(contentList.get(0)));
-        //System.out.println(epigraphe.getId());
         epigraphe.setNom(contentList.get(1));
-        //System.out.println(epigraphe.getNom());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            epigraphe.setDate(format.parse(contentList.get(2)));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        epigraphe.setImgUrl(contentList.get(3));
         epigraphe.setTexte(contentList.get(4));
-        //System.out.println(epigraphe.getTexte());
-
+        epigraphe.setTraduction(contentList.get(5));
         return epigraphe;
     }
-
 }

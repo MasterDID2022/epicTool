@@ -10,27 +10,34 @@ public class Epigraphe {
 
     //private static int count = 0;
     private int id;
+
+    private String imgUrl ;
     private Date date;
     private String texte;
     private String traduction;
     private String nom;
 
-    public Epigraphe(int id, Date date, String texte, String traduction, String nom) {
+    public Epigraphe(int id, Date date, String texte, String traduction, String nom, String imgUrl) {
         this.id = id;
         this.date = date;
         this.texte = texte;
         this.traduction = traduction;
         this.nom = nom;
+        this.imgUrl = imgUrl;
     }
-
     public Epigraphe() {
-
     }
 
     // Getters and setters
 
     public int getId() {
         return id;
+    }
+    public String getImgUrl() {
+        return imgUrl;
+    }
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
     public void setId(int id) {
@@ -71,7 +78,7 @@ public class Epigraphe {
 
     @Override
     public String toString() {
-        return "Epigraphie : n°" + getId() + ", " + getNom() + ", " + getTexte();
+        return "Epigraphie : n°" + getId() + ", " + getNom() + ", " + getTexte()+ ", " + getDate()+ ", " + getImgUrl()+ ", " + getTraduction();
     }
 }
 

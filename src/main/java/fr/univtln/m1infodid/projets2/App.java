@@ -14,9 +14,7 @@ public class App {
         String id = "42";
         String xmlUrl = "http://ccj-epicherchel.huma-num.fr/interface/fiche_xml2.php?id=" + id;
         Epigraphe epi = SI.extractTextAndImageFromXml(id, xmlUrl);
-
         System.out.println(epi);
 
-        //System.out.println(contentdImageEtText);
     }
 }
