@@ -1,21 +1,30 @@
 package fr.univtln.m1infodid.projets2;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Epigraphe {
-    private static int count = 0;
+    //private static Map<Integer, Epigraphe> epigraphesMap = new HashMap<>();
+
+
+    //private static int count = 0;
     private int id;
     private Date date;
     private String texte;
     private String traduction;
     private String nom;
 
-    public Epigraphe(Date date, String texte, String traduction, String nom) {
-        this.id = ++count;
+    public Epigraphe(int id, Date date, String texte, String traduction, String nom) {
+        this.id = id;
         this.date = date;
         this.texte = texte;
         this.traduction = traduction;
         this.nom = nom;
+    }
+
+    public Epigraphe() {
+
     }
 
     // Getters and setters
@@ -58,6 +67,11 @@ public class Epigraphe {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    @Override
+    public String toString() {
+        return "Epigraphie : n°" + getId() + ", " + getNom() + ", " + getTexte();
     }
 }
 
