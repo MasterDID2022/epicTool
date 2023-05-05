@@ -1,4 +1,4 @@
-package fr.univtln.projets2.backend.DAO;
+package fr.univtln.m1infodid.projet_s2.backend.DAO;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
-package fr.univtln.m1infodid.projets2.javafx.app;
+package fr.univtln.m1infodid.projet_s2.frontend.javafx.app;
 
-import fr.univtln.m1infodid.projets2.javafx.controller.SceneController;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.SceneController;
 import javafx.application.Application;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
