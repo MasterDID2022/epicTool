@@ -1,6 +1,6 @@
-package fr.univtln.m1infodid.projets2;
+package fr.univtln.m1infodid.projet_s2.frontend;
 
-import fr.univtln.m1infodid.projets2.javafx.app.MainApp;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.app.MainApp;
 import javafx.application.Application;
 import lombok.extern.slf4j.Slf4j;
 

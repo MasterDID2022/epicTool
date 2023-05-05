@@ -1,4 +1,4 @@
-package fr.univtln.m1infodid.projets2;
+package fr.univtln.m1infodid.projet_s2.frontend;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

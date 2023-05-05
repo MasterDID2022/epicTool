@@ -1,4 +1,4 @@
-package fr.univtln.m1infodid.projets2.javafx.controller;
+package fr.univtln.m1infodid.projet_s2.frontend.javafx.controller;
 
 import java.io.IOException;
 import java.net.URL;

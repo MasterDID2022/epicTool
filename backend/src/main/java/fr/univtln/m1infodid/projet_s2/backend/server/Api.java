@@ -1,6 +1,6 @@
-package fr.univtln.projets2.backend.server;
+package fr.univtln.m1infodid.projet_s2.backend.server;
 
-import fr.univtln.projets2.backend.DAO.EpigrapheDAO;
+import fr.univtln.m1infodid.projet_s2.backend.DAO.EpigrapheDAO;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -40,7 +40,7 @@ public class Api {
 
             return Response.ok().build();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.debug(e.toString());
             return Response.serverError().entity("ERR:").build();
         }
 

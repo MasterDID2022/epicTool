@@ -1,4 +1,4 @@
-package fr.univtln.projets2.backend.server;
+package fr.univtln.m1infodid.projet_s2.backend.server;
 
 import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class Main {
 	 * @return serveur HTTP
 	 */
 	public static HttpServer startServer() {
-		final ResourceConfig rc = new ResourceConfig().packages("fr.univtln.projets2.backend.server");
+		final ResourceConfig rc = new ResourceConfig().packages("fr.univtln.m1infodid.projet_s2.backend.server");
 		return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
 	}
 
