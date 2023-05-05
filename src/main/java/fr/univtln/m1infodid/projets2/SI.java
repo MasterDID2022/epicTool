@@ -1,8 +1,9 @@
 package fr.univtln.m1infodid.projets2;
 
-
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
@@ -41,14 +42,17 @@ public class SI {
             URL url = new URL(xmlUrl);
             InputStream inputStream = url.openStream();
 
+
             // la création du Document XML
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputStream);
+
             doc.getDocumentElement().normalize();
 
             // Extraction du contenus des balises image et texte
             NodeList nodeList = doc.getElementsByTagName("*");
+            contentList.add(id);
             for (int a = 0; a < nodeList.getLength(); a++) {
                 Node node = nodeList.item(a);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -58,8 +62,24 @@ public class SI {
                         // l'emplacement de texte sur le fichier xml
                         contentList.add(txtElement.getTextContent());
                     }
+                    //recherche nom auteur 
+                    if (element.getTagName().equals("persName")) {
+                        Element txtElement = (Element) nodeList.item(a);
+                        contentList.add(txtElement.getTextContent());
+                    }
+                    //recherche date
+                    if (element.getTagName().equals("date")) {
+                        Element txtElement = (Element) nodeList.item(a);
+                        String whenValue = txtElement.getAttribute("when");
+                        contentList.add(whenValue);
+                    }
                     //recupere le contenu de traduction
                     if (element.hasAttribute("type") && element.getAttribute("type").equals("translation")) {
+                        contentList.add(element.getTextContent());
+                    }
+
+                    //recupere le contenu de traduction
+                    if (element.hasAttribute("when") && element.getAttribute("when").equals("date")) {
                         contentList.add(element.getTextContent());
                     }
                     //recupere l image
@@ -71,7 +91,6 @@ public class SI {
                             contentList.add( firstElement.getAttribute("url") );
                         //sinon on fait appel a notre fonction
                         else if (firstElement.getTagName().equals("desc")) {
-                            System.out.println("iciiiiiiiii");
                             String imgNum = firstElement.getTextContent();
                             contentList.add( getImgUrl(id, imgNum) );
                         }
@@ -79,7 +98,6 @@ public class SI {
                 }
             }
             inputStream.close();
-
         } catch (IOException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();
         }
