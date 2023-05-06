@@ -24,33 +24,33 @@ public final class SceneController {
      * @param url    le chemin du fichier FXML à charger
      * @param width  la largeur de la nouvelle fenêtre
      * @param height la hauteur de la nouvelle fenêtre
-     * @return la Scène principale modifié
+     * @return le Controller de la nouvelle scène
      * @throws IOException renvoi une erreur si le fichier FXML n'a pas pu être chargé
      */
-    private static Scene sceneSwitch ( Stage stage, String url, int width, int height ) throws IOException {
+    private static <T> T sceneSwitch ( Stage stage, String url, String stylePath, int width, int height ) throws IOException {
         URL urlRef = SceneController.class.getResource(url);
         FXMLLoader fxmlLoader = new FXMLLoader(urlRef);
         Parent root = fxmlLoader.load();
 
         Scene scene = new Scene(root, width, height);
+        scene.getStylesheets().add(stylePath);
 
         stage.setScene(scene);
         stage.show();
 
-        return scene;
+        return fxmlLoader.getController();
     }
 
     /**
      * Cette méthode permet de changer de scène vers le menu de l'application
      *
      * @param stage la Scène principale de l'application à modifié
-     * @return la Scène modifié
+     * @return le Controller de la nouvelle scène
      * @throws IOException renvoi une erreur si le fichier FXML du menu n'a pas pu être chargé
      */
-    public static Scene switchToMenu ( Stage stage ) throws IOException {
-        Scene scene = sceneSwitch(stage, "/fr.univtln.m1infodid.projets2.frontend.javafx.view/menu.fxml", 780, 504);
-        scene.getStylesheets().add("/styles/menu.css");
-        return scene;
+    public static <T> T switchToMenu ( Stage stage ) throws IOException {
+        T controller = sceneSwitch(stage, "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/menu.fxml", "/styles/menu.css", 780, 504);
+        return controller;
     }
 
     /**
@@ -60,9 +60,8 @@ public final class SceneController {
      * @return la Scène modifié
      * @throws IOException renvoi une erreur si le fichier FXML du menu n'a pas pu être chargé
      */
-    public static Scene switchToPageVisualisation ( Stage stage ) throws IOException {
-        Scene scene = sceneSwitch(stage, "/fr.univtln.m1infodid.projets2.frontend.javafx.view/page-visualisation.fxml", 780, 504);
-        scene.getStylesheets().add("/styles/page-visualisation.css");
-        return scene;
+    public static <T> T switchToPageVisualisation ( Stage stage ) throws IOException {
+        T controller = sceneSwitch(stage, "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/page-visualisation.fxml", "/styles/page-visualisation.css", 780, 504);
+        return controller;
     }
 }
