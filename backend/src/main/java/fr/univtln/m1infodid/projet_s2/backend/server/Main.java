@@ -15,7 +15,7 @@ import java.net.URI;
 @Slf4j
 
 public class Main {
-	public static final String BASE_URI = "http://0.0.0.0:8080/api/";
+	public static final String BASE_URI = "http://127.0.0.1:8080/api/";
 
 	/**
 	 * Lance le serveur HTTP pour communiquer avec l'API
@@ -24,7 +24,8 @@ public class Main {
 	 */
 	public static HttpServer startServer() {
 		final ResourceConfig rc = new ResourceConfig().packages("fr.univtln.m1infodid.projet_s2.backend.server");
-		return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+		 log.info("Found ressources: " + rc.getClasses().toString());
+		 return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
 	}
 
 	/**
