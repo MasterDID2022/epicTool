@@ -27,7 +27,7 @@
         <hibernate.version>6.2.2.Final</hibernate.version>
         <junit.version>5.9.2</junit.version>
         <argline>${project.build.directory}/jacoco.exec</argline>
-        <!--sonar.coverage.exclusions>src/main/java/fr/univtln/lhd/view/**,src/main/java/fr/univtln/lhd/controllers/**</sonar.coverage.exclusions-->
+        <!--sonar.coverage.exclusions>src/main/java/fr/univtln/lhd/fr.univtln.m1infodid.projet_s2.javafx.fr.univtln.m1infodid.projet_s2.frontend.javafx.fr.univtln.m1infodid.projets2.frontend.javafx.fr.univtln.m1infodid.projet_s2.frontend.javafx.view/**,src/main/java/fr/univtln/lhd/controllers/**</sonar.coverage.exclusions-->
 
     </properties>
 

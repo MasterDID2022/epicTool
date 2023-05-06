@@ -13,16 +13,16 @@ import java.util.List;
 
 @Slf4j
 
-public class EpigrapheDAO implements AutoCloseable{
+public class EpigrapheDAO implements AutoCloseable {
 
     private EntityManager entityManager;
 
-    public static EpigrapheDAO create(EntityManager entityManager) {
+    public static EpigrapheDAO create ( EntityManager entityManager ) {
         return new EpigrapheDAO(entityManager);
     }
 
-    private EpigrapheDAO(EntityManager entityManager) {
-       this.entityManager = entityManager;
+    private EpigrapheDAO ( EntityManager entityManager ) {
+        this.entityManager = entityManager;
     }
 
 
@@ -31,7 +31,7 @@ public class EpigrapheDAO implements AutoCloseable{
      *
      * @return list of the epigraphs
      */
-    public List<Epigraphe> findAll() {
+    public List<Epigraphe> findAll () {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Epigraphe> cq = cb.createQuery(Epigraphe.class);
         Root<Epigraphe> rootEntry = cq.from(Epigraphe.class);
@@ -46,7 +46,7 @@ public class EpigrapheDAO implements AutoCloseable{
      *
      * @return the epigraph
      */
-    public Epigraphe findById(int id) {
+    public Epigraphe findById ( int id ) {
         return entityManager.find(Epigraphe.class, id);
     }
 
@@ -56,30 +56,30 @@ public class EpigrapheDAO implements AutoCloseable{
      *
      * @return the epigraph persisted
      */
-    public Epigraphe persistID(int id) {
-        Epigraphe epi = Epigraphe.of(id);
+    public Epigraphe persistID ( int id ) {
+        Epigraphe epi = new Epigraphe();
+        epi.setId(id);
         entityManager.getTransaction().begin();
         entityManager.persist(epi);
         entityManager.getTransaction().commit();
-        log.info("Epigraph " +id + " was persisted.");
+        log.info("Epigraph " + id + " was persisted.");
         return epi;
     }
 
 
     /**
      * Remove an epigraph using its id.
-     *
      */
-    public void remove(int id) throws SQLException {
+    public void remove ( int id ) throws SQLException {
         entityManager.getTransaction().begin();
         entityManager.remove(findById(id));
         entityManager.getTransaction().commit();
-        log.info("Epigraph " +id + " was removed.");
+        log.info("Epigraph " + id + " was removed.");
     }
 
 
     @Override
-    public void close() throws Exception {
+    public void close () throws Exception {
         entityManager.close();
     }
 }
