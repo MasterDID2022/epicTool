@@ -33,6 +33,7 @@
     -fx-background-color: -fx-green;
     -fx-text-fill: -fx-white;
 }
+
 #acceptBtn:hover {
     -fx-cursor: hand;
     -fx-background-color: -fx-green-hover;

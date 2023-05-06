@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 public class MainApp extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start ( Stage primaryStage ) throws Exception {
 
         //chargement des polices d'écriture pour l'application
         Font.loadFont(MainApp.class.getResourceAsStream("/fonts/Product-Sans-Regular.ttf"), 10);
@@ -19,10 +19,10 @@ public class MainApp extends Application {
 
         //changement de scène vers la vue du menu 
         SceneController.switchToMenu(primaryStage);
-        
+
         //définition du titre de la fenêtre de l'application puis la montre à l'écran
         primaryStage.setTitle("Projet Épigraphie S2");
         primaryStage.show();
     }
-    
+
 }
