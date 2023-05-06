@@ -1,16 +1,14 @@
 package fr.univtln.m1infodid.projet_s2.backend.server;
 
-import fr.univtln.m1infodid.projet_s2.backend.Epigraphe;
 import fr.univtln.m1infodid.projet_s2.backend.SI;
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.ListeVide;
+import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class SITest {
     String id = "340";
@@ -21,7 +19,7 @@ class SITest {
     }
 
     @Test
-    public void testGetImgUrlWithValidParameters() {
+    void testGetImgUrlWithValidParameters() {
         String id = "42";
         String imgNumber = "3";
         String expectedUrl = "http://ccj-epicherchel.huma-num.fr/interface/phototheque/42/3.jpg";
@@ -29,41 +27,40 @@ class SITest {
         assertEquals(expectedUrl, actualUrl);
     }
     @Test
-    public void testExtractTextAndImageFromXmlSize() {
+
+    void testExtractTextAndImageFromXmlSize() {
 
         // Vérification que la taille de la liste est correcte
         assertEquals(6, contentdImageEtText.size());
     }
     /*@Test
-    public void testExtractTextAndImageFromXmlUrl() {
+    void testExtractTextAndImageFromXmlUrl() {
         // Vérification que le troisieme element est de type url
         String regex = "^https?://.+";
         assertEquals(true,contentdImageEtText.get(3).matches(regex) );
     }*/
     @Test
-    public void testExtractTextAndImageFromXmlOthers() {
+    void testExtractTextAndImageFromXmlOthers() {
         // Vérification des autres elements
-        assertTrue( contentdImageEtText.get(0) instanceof String);
-        assertTrue( contentdImageEtText.get(1) instanceof String);
-        assertTrue( contentdImageEtText.get(2) instanceof String);
-        assertTrue( contentdImageEtText.get(4) instanceof String);
-        assertTrue( contentdImageEtText.get(5) instanceof String);
+        for(int i =0; i<5; i++) {
+            assertNotNull(contentdImageEtText.get(i));
+        }
     }
     @Test
-    public void testExtractTextAndImageFromXmlValidOutput() {
+    void testExtractTextAndImageFromXmlValidOutput() {
         assertEquals("http://ccj-epicherchel.huma-num.fr/interface/phototheque/340/113594.jpg", contentdImageEtText.get(3));
         //assertEquals("TALIS ▴ ER ▴ AT", contentdImageEtText.get(1));
         //assertEquals("Tel il était!", contentdImageEtText.get(2));
     }
     /*@Test
-    public void testExtractTextAndImageFromXmlInvalidUrl() throws Exception {
+    void testExtractTextAndImageFromXmlInvalidUrl() throws Exception {
         String id = "340";
         String invalidUrl = "http://ccj-epicherchel.huma-num.fr/invalid-url";
         ArrayList<String> contentdImageEtText = SI.extractTextAndImageFromXml(id, invalidUrl);
         assertTrue(contentdImageEtText.isEmpty());
     }*/
     @Test
-    public void testCreateEpigraphie() throws ParseException, ListeVide {
+    void testCreateEpigraphie() throws ParseException, ListeVide {
         ArrayList<String> contentList = new ArrayList<>();
         contentList.add("42");
         contentList.add("philippe");
@@ -72,22 +69,25 @@ class SITest {
         contentList.add("Texte");
         contentList.add("Traduction");
 
-        Epigraphe expectedEpigraphe = Epigraphe.of();
+        Epigraphe expectedEpigraphe = new Epigraphe();
         expectedEpigraphe.setId(42);
-        expectedEpigraphe.setNom("philippe");
+        expectedEpigraphe.setName("philippe");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         expectedEpigraphe.setDate(format.parse("2022-05-05"));
         expectedEpigraphe.setImgUrl("http://ccj-epicherchel.huma-num.fr/interface/phototheque/42/88617.jpg");
-        expectedEpigraphe.setTexte("Texte");
-        expectedEpigraphe.setTraduction("Traduction");
+        expectedEpigraphe.setText("Texte");
+        expectedEpigraphe.setTranslation("Traduction");
 
         Epigraphe resultEpigraphe = SI.CreateEpigraphie(contentList);
 
         assertEquals(Integer.parseInt(contentList.get(0)), expectedEpigraphe.getId());
         assertEquals(resultEpigraphe.getDate(), expectedEpigraphe.getDate());
-        assertEquals(resultEpigraphe.getNom(), expectedEpigraphe.getNom());
-        assertEquals(resultEpigraphe.getTraduction(), expectedEpigraphe.getTraduction());
-        assertEquals(resultEpigraphe.getTexte(), expectedEpigraphe.getTexte());
+        assertEquals(resultEpigraphe.getName(), expectedEpigraphe.getName());
+        assertEquals(resultEpigraphe.getTranslation(), expectedEpigraphe.getTranslation());
+        assertEquals(resultEpigraphe.getText(), expectedEpigraphe.getText());
+        assertEquals(resultEpigraphe.getName(), expectedEpigraphe.getName());
+        assertEquals(resultEpigraphe.getTranslation(), expectedEpigraphe.getTranslation());
+        assertEquals(resultEpigraphe.getText(), expectedEpigraphe.getText());
     }
 
 }

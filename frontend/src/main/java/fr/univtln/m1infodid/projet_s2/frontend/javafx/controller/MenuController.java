@@ -1,9 +1,11 @@
 package fr.univtln.m1infodid.projet_s2.frontend.javafx.controller;
 
+import fr.univtln.m1infodid.projet_s2.frontend.server.Api;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -19,60 +21,65 @@ import java.util.ResourceBundle;
 @Slf4j
 public class MenuController implements Initializable {
 
-    private static final String NUMBER_ONLY_REGEX = "\\d+"; //[0-9]+
+	private static final String NUMBER_ONLY_REGEX = "\\d+"; // [0-9]+
 
-    @FXML
-    private AnchorPane anchorPane;
-    @FXML
-    private TextField inputBar;
+	@FXML
+	private AnchorPane anchorPane;
+	@FXML
+	private TextField inputBar;
 
-    @FXML
-    private Parent alert;
-    @FXML
-    private AlertController alertController;
+	@FXML
+	private Parent alert;
+	@FXML
+	private AlertController alertController;
 
-    @Override
-    public void initialize ( URL location, ResourceBundle resources ) {
-        alert.setDisable(true);
-        alertController.hideAlertPane();
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		alert.setDisable(true);
+		alertController.hideAlertPane();
 
-        Platform.runLater(() -> anchorPane.requestFocus());
-        inputBar.setText("");
-        anchorPane.widthProperty().addListener(( obs, oldValue, newValue ) -> alertController.setScreenWidth(newValue.doubleValue()));
-    }
+		Platform.runLater(() -> anchorPane.requestFocus());
+		inputBar.setText("");
+		anchorPane.widthProperty().addListener(
+				(obs, oldValue, newValue) -> alertController.setScreenWidth(newValue.doubleValue()));
+	}
 
-    /**
-     * Méthode appelé lorsque le bouton de numéro de fiche est cliqué.
-     * Affiche une erreur si l'entrée de l'utilisateur n'est pas valide
-     * Sinon le numéro de fiche est récupérer
-     *
-     * @throws IOException renvoi une erreur si il y a un soucis pour le chargement de la nouvelle scène
-     */
-    @FXML
-    private void numFicheBtnOnClick () throws IOException {
+	/**
+	 * Méthode appelé lorsque le bouton de numéro de fiche est cliqué.
+	 * Affiche une erreur si l'entrée de l'utilisateur n'est pas valide
+	 * Sinon le numéro de fiche est récupérer
+	 *
+	 * @throws IOException renvoi une erreur si il y a un soucis pour le chargement
+	 *                     de la nouvelle scène
+	 */
+	@FXML
+	private void numFicheBtnOnClick() throws IOException {
 
-        if (!isInputOnlyInteger(inputBar.getText())) {
-            alert.setDisable(false);
-            alertController.showNotValidId();
-            return;
-        }
+		if (!isInputOnlyInteger(inputBar.getText())) {
+			alert.setDisable(false);
+			alertController.showNotValidId();
+			return;
+		}
 
-        int validId = Integer.parseInt(inputBar.getText());
-        log.info("VALID ID : " + validId);
-        //appeler la méthode pour récupérer le fichier XML à partir de cet id
+		int validId = Integer.parseInt(inputBar.getText());
+		log.info("VALID ID : " + validId);
+		// appeler la méthode pour récupérer le fichier XML à partir de cet id
+		// pour le test uniquement, changement de scène auto, à supprimer plus tard
+		Stage primaryStage = (Stage) anchorPane.getScene().getWindow();
+		PageVisualisationController visualisation = SceneController.switchToPageVisualisation(primaryStage);
+		String url =Api.sendRequestOf(validId);
+		visualisation.setupVisualEpigraphe("", url, "", "");
+		//((PageVisualisationController) visualisation).setupVisualEpigraphe(0,url,"osef","osef");
+	}
 
-        //pour le test uniquement, changement de scène auto, à supprimer plus tard
-        Stage primaryStage = (Stage) anchorPane.getScene().getWindow();
-        SceneController.switchToPageVisualisation(primaryStage);
-    }
-
-    /**
-     * Vérifie si l'entrée est valide selon le regex, celle ci vérifie que l'entrée est bien un nombre
-     *
-     * @param input la chaîne de caractère à tester
-     * @return le résultat du regex, boolean
-     */
-    private boolean isInputOnlyInteger ( String input ) {
-        return input.matches(NUMBER_ONLY_REGEX);
-    }
+	/**
+	 * Vérifie si l'entrée est valide selon le regex, celle ci vérifie que l'entrée
+	 * est bien un nombre
+	 *
+	 * @param input la chaîne de caractère à tester
+	 * @return le résultat du regex, boolean
+	 */
+	private boolean isInputOnlyInteger(String input) {
+		return input.matches(NUMBER_ONLY_REGEX);
+	}
 }
