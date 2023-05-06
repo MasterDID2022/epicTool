@@ -2,7 +2,7 @@ package fr.univtln.m1infodid.projets2;
 
 import java.util.ArrayList;
 
-public class SIFacade {
+public class Facade {
     /**
      * @param id l'id de la fiche
      * @param xmlUrl l'url de la fiche
@@ -12,5 +12,7 @@ public class SIFacade {
         ArrayList<String> contentList = SI.extractTextAndImageFromXml(id, xmlUrl);
         return SI.CreateEpigraphie(contentList);
     }
+
+
 
 }
