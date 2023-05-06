@@ -1,11 +1,14 @@
 package fr.univtln.m1infodid.projet_s2.backend.server;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.univtln.m1infodid.projet_s2.backend.DAO.EpigrapheDAO;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -19,12 +22,13 @@ public class Api {
      * Methode qui gere les requete REST post pour les epigraphie
      * WIP Methode jouer pour infra
      * Prend l'ID et l'envoie a la DAO pour la persister
+     *
      * @return String de message de retour
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getIt(String epigraheJson) {
+    public Response getIt ( String epigraheJson ) {
         log.info(epigraheJson);
         EpigrapheDAO dao = new EpigrapheDAO();
         try {
@@ -43,7 +47,6 @@ public class Api {
             log.debug(e.toString());
             return Response.serverError().entity("ERR:").build();
         }
-
 
 
     }

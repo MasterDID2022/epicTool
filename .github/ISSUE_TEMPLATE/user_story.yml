@@ -1,17 +1,17 @@
 name: "User Story (US)"
 description: Structure pour une US simple.
 title: "US : En tant que (acteur), je veux (exigence), afin de (but final)"
-labels: ["user story"]
+labels: [ "user story" ]
 
 body:
   - type: textarea
     id: description
     attributes:
       label: Description
-      description:  Expliquez votre US et modifiez le titre. Le but final est facultatif. Ajoutez **obligatoirement** un diagramme UML.
+      description: Expliquez votre US et modifiez le titre. Le but final est facultatif. Ajoutez **obligatoirement** un diagramme UML.
       placeholder: |
-       Cette issue est intéressante car (expliquez en quelques phrases courtes).
-       <Diagramme UML>
+        Cette issue est intéressante car (expliquez en quelques phrases courtes).
+        <Diagramme UML>
     validations:
       required: true
 
