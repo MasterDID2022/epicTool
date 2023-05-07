@@ -1,6 +1,5 @@
 package fr.univtln.m1infodid.projets2;
 
-import fr.univtln.m1infodid.projets2.Exceptions.DomParser;
 import fr.univtln.m1infodid.projets2.Exceptions.ListeVide;
 import fr.univtln.m1infodid.projets2.Exceptions.SaxErreur;
 import fr.univtln.m1infodid.projets2.Exceptions.UrlInvalide;
