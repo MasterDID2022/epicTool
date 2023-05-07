@@ -3,8 +3,6 @@ package fr.univtln.m1infodid.projets2;
 import java.util.Date;
 
 public class Epigraphe {
-
-    //private static int count = 0;
     private int id;
     private String imgUrl ;
     private Date date;
