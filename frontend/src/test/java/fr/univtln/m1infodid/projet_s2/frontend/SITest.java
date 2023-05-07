@@ -1,10 +1,15 @@
 package fr.univtln.m1infodid.projets2;
 
+import fr.univtln.m1infodid.projets2.Exceptions.DomParser;
+import fr.univtln.m1infodid.projets2.Exceptions.SaxErreur;
+import fr.univtln.m1infodid.projets2.Exceptions.UrlInvalide;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -50,6 +55,23 @@ class SITest {
         assertEquals("http://ccj-epicherchel.huma-num.fr/interface/phototheque/340/113594.jpg", contentdImageEtText.get(3));
         //assertEquals("TALIS ▴ ER ▴ AT", contentdImageEtText.get(1));
         //assertEquals("Tel il était!", contentdImageEtText.get(2));
+    }
+
+    @Test
+    public void testExtractTextAndImageFromXmlWithInvalidXmlSaxError() {
+        String id = "123";
+        String invalidXmlUrl = "http://ccj-epicherchel.huma-num.fr/interface/fiche_xml2.php?id=" + id + "1";
+        assertThrows(SaxErreur.class, () -> {
+            SI.extractTextAndImageFromXml(id, invalidXmlUrl);
+        });
+    }
+    @Test
+    public void testExtractTextAndImageFromXmlWithInvalidUrl() {
+        String id = "123";
+        String invalidUrl = "path/to/invalid/xml/file.xml" + id + "1";
+        assertThrows(UrlInvalide.class, () -> {
+            SI.extractTextAndImageFromXml(id, invalidUrl);
+        });
     }
 
     @Test
