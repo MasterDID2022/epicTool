@@ -11,10 +11,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import fr.univtln.m1infodid.projets2.Exceptions.DomParser;
-import fr.univtln.m1infodid.projets2.Exceptions.ExtractionXml;
-import fr.univtln.m1infodid.projets2.Exceptions.SaxErreur;
-import fr.univtln.m1infodid.projets2.Exceptions.UrlInvalide;
+import fr.univtln.m1infodid.projets2.Exceptions.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -105,7 +102,7 @@ public class SI {
         } catch (MalformedURLException e) {
             throw new UrlInvalide();
         } catch (IOException e) {
-            throw new RuntimeException();
+            throw new RecuperationXml();
         } catch (ParserConfigurationException e) {
             throw new DomParser();
         } catch (SAXException e) {
