@@ -1,12 +1,12 @@
 package fr.univtln.m1infodid.projets2;
 
-import fr.univtln.m1infodid.projets2.Exceptions.*;
+import fr.univtln.m1infodid.projets2.exceptions.*;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class Facade {
-    private static Logger log = Logger.getLogger(App.class.getName());
+    private static Logger log = Logger.getLogger(Facade.class.getName());
     /**
      * @param id l'id de la fiche
      * @param xmlUrl l'url de la fiche

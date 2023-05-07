@@ -1,4 +1,4 @@
-package fr.univtln.m1infodid.projets2.Exceptions;
+package fr.univtln.m1infodid.projets2.exceptions;
 
 public class SaxErreur extends  Exception{
     /*
