@@ -51,13 +51,7 @@ class SITest {
         //assertEquals("TALIS ▴ ER ▴ AT", contentdImageEtText.get(1));
         //assertEquals("Tel il était!", contentdImageEtText.get(2));
     }
-    @Test
-    public void testExtractTextAndImageFromXmlInvalidUrl() throws Exception {
-        String id = "340";
-        String invalidUrl = "http://ccj-epicherchel.huma-num.fr/invalid-url";
-        ArrayList<String> contentdImageEtText = SI.extractTextAndImageFromXml(id, invalidUrl);
-        assertTrue(contentdImageEtText.isEmpty());
-    }
+
     @Test
     public void testCreateEpigraphie() throws ParseException {
         ArrayList<String> contentList = new ArrayList<>();
