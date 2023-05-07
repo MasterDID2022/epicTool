@@ -106,6 +106,7 @@ public class SI {
         } catch (ParserConfigurationException e) {
             throw new DomParser();
         } catch (SAXException e) {
+
             throw new SaxErreur();
         } catch (Exception e) {
             throw new ExtractionXml();
