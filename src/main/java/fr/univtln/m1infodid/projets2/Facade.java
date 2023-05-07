@@ -32,9 +32,6 @@ public class Facade {
         }
         Epigraphe ep = Epigraphe.of();
         try {
-            if (contentList == null || contentList.isEmpty()) {
-                throw new ListeVide();
-            }
             ep = SI.CreateEpigraphie(contentList);
 
         } catch (ListeVide l) {
@@ -42,4 +39,7 @@ public class Facade {
         }
         return ep ;
     }
+
+
+
 }
