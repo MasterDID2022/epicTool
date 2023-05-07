@@ -1,4 +1,4 @@
-package fr.univtln.m1infodid.projets2.exceptions;
+package fr.univtln.m1infodid.projet_s2.backend.exceptions;
 
 public class DomParser extends Exception{
     /*

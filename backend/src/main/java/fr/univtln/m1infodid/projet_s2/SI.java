@@ -1,4 +1,4 @@
-package fr.univtln.m1infodid.projets2;
+package fr.univtln.m1infodid.projet_s2;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +11,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import fr.univtln.m1infodid.projets2.exceptions.*;
+import fr.univtln.m1infodid.projet_s2.backend.exceptions.*;
+import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -114,30 +115,30 @@ public class SI {
         return contentList;
     }
 
-    /**
-     * @param contentList une arrayList contenant les valeurs des attributs de l instance d epigraphie qu'on va creer
-     * @return une instance de la classe epigraphie apres extractions des valeurs de contentList
-     */
-    public static Epigraphe CreateEpigraphie(ArrayList<String> contentList)throws ListeVide {
-        Epigraphe epigraphe = Epigraphe.of();
-        try {
-            if(contentList == null || contentList.isEmpty()) {
-                throw new ListeVide();
-            }
-            epigraphe.setId(Integer.parseInt(contentList.get(0)));
-            epigraphe.setNom(contentList.get(1));
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                epigraphe.setDate(format.parse(contentList.get(2)));
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-            epigraphe.setImgUrl(contentList.get(3));
-            epigraphe.setTexte(contentList.get(4));
-            epigraphe.setTraduction(contentList.get(5));
-        } catch (IndexOutOfBoundsException r){
-        throw new ListeVide();
-    }
-        return epigraphe;
-    }
+    ///**
+    // * @param contentList une arrayList contenant les valeurs des attributs de l instance d epigraphie qu'on va creer
+    // * @return une instance de la classe epigraphie apres extractions des valeurs de contentList
+    // */
+    //public static Epigraphe CreateEpigraphie(ArrayList<String> contentList)throws ListeVide {
+    //    Epigraphe epigraphe = Epigraphe.of();
+    //    try {
+    //        if(contentList == null || contentList.isEmpty()) {
+    //            throw new ListeVide();
+    //        }
+    //        epigraphe.setId(Integer.parseInt(contentList.get(0)));
+    //        epigraphe.setNom(contentList.get(1));
+    //        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    //        try {
+    //            epigraphe.setDate(format.parse(contentList.get(2)));
+    //        } catch (ParseException e) {
+    //            throw new RuntimeException(e);
+    //        }
+    //        epigraphe.setImgUrl(contentList.get(3));
+    //        epigraphe.setTexte(contentList.get(4));
+    //        epigraphe.setTraduction(contentList.get(5));
+    //    } catch (IndexOutOfBoundsException r){
+    //    throw new fr.univtln.m1infodid.projets2.exceptions.ListeVide();
+    //}
+    //    return epigraphe;
+    //}
 }
