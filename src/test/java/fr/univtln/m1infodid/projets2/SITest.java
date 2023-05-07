@@ -1,6 +1,7 @@
 package fr.univtln.m1infodid.projets2;
 
 import fr.univtln.m1infodid.projets2.Exceptions.DomParser;
+import fr.univtln.m1infodid.projets2.Exceptions.ListeVide;
 import fr.univtln.m1infodid.projets2.Exceptions.SaxErreur;
 import fr.univtln.m1infodid.projets2.Exceptions.UrlInvalide;
 import org.junit.jupiter.api.Test;
@@ -73,9 +74,17 @@ class SITest {
             SI.extractTextAndImageFromXml(id, invalidUrl);
         });
     }
+    @Test
+    public void testCreateEpigraphieFromEmptyListe(){
+        ArrayList<String> contentList = new ArrayList<>();
+        assertThrows(ListeVide.class, () -> {
+            SI.CreateEpigraphie(contentList);
+        });
+
+    }
 
     @Test
-    public void testCreateEpigraphie() throws ParseException {
+    public void testCreateEpigraphie() throws ParseException, ListeVide {
         ArrayList<String> contentList = new ArrayList<>();
         contentList.add("42");
         contentList.add("philippe");
