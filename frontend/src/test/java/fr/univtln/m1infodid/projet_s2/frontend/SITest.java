@@ -12,6 +12,10 @@ class SITest {
     String id = "340";
     String xmlUrl = "http://ccj-epicherchel.huma-num.fr/interface/fiche_xml2.php?id=" + id;
     ArrayList<String> contentdImageEtText = SI.extractTextAndImageFromXml(id, xmlUrl);
+
+    SITest() throws Exception {
+    }
+
     @Test
     public void testGetImgUrlWithValidParameters() {
         String id = "42";
@@ -48,7 +52,7 @@ class SITest {
         //assertEquals("Tel il était!", contentdImageEtText.get(2));
     }
     @Test
-    public void testExtractTextAndImageFromXmlInvalidUrl() {
+    public void testExtractTextAndImageFromXmlInvalidUrl() throws Exception {
         String id = "340";
         String invalidUrl = "http://ccj-epicherchel.huma-num.fr/invalid-url";
         ArrayList<String> contentdImageEtText = SI.extractTextAndImageFromXml(id, invalidUrl);
