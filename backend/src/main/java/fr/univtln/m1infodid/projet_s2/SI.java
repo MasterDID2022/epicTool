@@ -2,6 +2,7 @@ package fr.univtln.m1infodid.projets2;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,6 +11,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import fr.univtln.m1infodid.projets2.Exceptions.DomParser;
+import fr.univtln.m1infodid.projets2.Exceptions.ExtractionXml;
+import fr.univtln.m1infodid.projets2.Exceptions.SaxErreur;
+import fr.univtln.m1infodid.projets2.Exceptions.UrlInvalide;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -34,7 +39,7 @@ public class SI {
      * @param xmlUrl l'url de la fiche
      * @return le contenu des balises image et texte
      */
-    public static ArrayList<String> extractTextAndImageFromXml(String id, String xmlUrl){
+    public static ArrayList<String> extractTextAndImageFromXml(String id, String xmlUrl) throws Exception {
         ArrayList<String> contentList = new ArrayList<String>();
         try {
             // la récupération du fichier XML à partir de l'URL
@@ -62,7 +67,7 @@ public class SI {
                         // l'emplacement de texte sur le fichier xml
                         contentList.add(txtElement.getTextContent());
                     }
-                    //recherche nom auteur 
+                    //recherche nom auteur
                     if (element.getTagName().equals("persName")) {
                         Element txtElement = (Element) nodeList.item(a);
                         contentList.add(txtElement.getTextContent());
@@ -97,11 +102,20 @@ public class SI {
                 }
             }
             inputStream.close();
-        } catch (IOException | ParserConfigurationException | SAXException e) {
-            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            throw new UrlInvalide();
+        } catch (IOException e) {
+            throw new RuntimeException();
+        } catch (ParserConfigurationException e) {
+            throw new DomParser();
+        } catch (SAXException e) {
+            throw new SaxErreur();
+        } catch (Exception e) {
+            throw new ExtractionXml();
         }
         return contentList;
     }
+
     /**
      * @param contentList une arrayList contenant les valeurs des attributs de l instance d epigraphie qu'on va creer
      * @return une instance de la classe epigraphie apres extractions des valeurs de contentList
