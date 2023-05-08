@@ -1,6 +1,6 @@
-package fr.univtln.m1infodid.projets2;
+package fr.univtln.m1infodid.projet_s2.backend;
 
-import fr.univtln.m1infodid.projets2.exceptions.*;
+import fr.univtln.m1infodid.projet_s2.backend.exceptions.*;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;

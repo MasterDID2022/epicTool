@@ -1,7 +1,8 @@
-package fr.univtln.m1infodid.projets2;
+package fr.univtln.m1infodid.projet_s2.backend;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
@@ -11,11 +12,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import fr.univtln.m1infodid.projets2.exceptions.*;
+import  fr.univtln.m1infodid.projet_s2.backend.exceptions.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 /**
  * Cette classe SI ...
@@ -31,6 +33,51 @@ public class SI {
     public static String getImgUrl(String id, String imgNumber) {
         return  imgPath + id + '/' + imgNumber + ".jpg";
     }
+
+    public static String getFirstImgUrl(String XMLepigraphe){
+        String urlImg  = "";
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        try {
+            builder = factory.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+        Document doc = null;
+        try {
+            doc = builder.parse(new InputSource(new StringReader(XMLepigraphe)));
+        } catch (SAXException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        doc.getDocumentElement().normalize();
+        NodeList nodeList = doc.getElementsByTagName("*");
+        for (int a = 0; a < nodeList.getLength(); a++) {
+            Node node = nodeList.item(a);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element element = (Element) node;
+                //recupere l image
+                if (element.getTagName().equals("facsimile")) {
+                    Node child = nodeList.item(a + 1);
+                    Element firstElement = (Element) child;
+                    //si une seule image existe
+                    if (firstElement.getTagName().equals("graphic"))
+                        urlImg = firstElement.getAttribute("url");
+                        //sinon on fait appel a notre fonction
+
+                    else if (firstElement.getTagName().equals("desc")) {
+                        String imgNum = firstElement.getTextContent();
+                        Element idNum = (Element) doc.getElementsByTagName("idno").item(0);
+                        String id = idNum.getTextContent();
+                        urlImg = getImgUrl(id, imgNum);
+                    }
+                }
+            }
+        }
+        return urlImg;
+        }
+
     /**
      * @param id l'id de la fiche
      * @param xmlUrl l'url de la fiche
@@ -113,6 +160,7 @@ public class SI {
         }
         return contentList;
     }
+
 
     /**
      * @param contentList une arrayList contenant les valeurs des attributs de l instance d epigraphie qu'on va creer

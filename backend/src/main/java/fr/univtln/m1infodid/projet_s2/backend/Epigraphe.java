@@ -1,4 +1,4 @@
-package fr.univtln.m1infodid.projets2;
+package fr.univtln.m1infodid.projet_s2.backend;
 
 import java.util.Date;
 
