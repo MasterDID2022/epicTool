@@ -4,6 +4,7 @@
 
 backend/.idea/*
 .idea/*
+.factorypath
 *.iml
 !.idea/codeStyles
 !.idea/runConfigurations

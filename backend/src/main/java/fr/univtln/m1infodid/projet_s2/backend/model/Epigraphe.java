@@ -11,12 +11,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
 public class Epigraphe {
-
     @Id
     @Setter
     @Getter
     @Column(name = "ID")
     private int id;
-
-
 }
