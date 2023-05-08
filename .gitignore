@@ -2,6 +2,7 @@
 # Ignore everything but code style settings and run configurations
 # that are supposed to be shared within teams.
 
+backend/.idea/*
 .idea/*
 *.iml
 !.idea/codeStyles
@@ -36,9 +37,12 @@ buildNumber.properties
 # Built Visual Studio Code Extensions
 *.vsix
 
+#MacOS
+.DS_Store
+
 
 #Eclise or text editor that use his LSP
 .classpath
 .project
-/.settings/
+*/.settings/*
 

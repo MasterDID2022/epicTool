@@ -1,0 +1,10 @@
+# docker-compose.yml
+
+version: '1.0'
+services:
+  backend:
+    build:
+      context: ./
+      dockerfile: ./docker/backend/Dockerfile
+    ports:
+      - "127.0.0.1:8080:8080"

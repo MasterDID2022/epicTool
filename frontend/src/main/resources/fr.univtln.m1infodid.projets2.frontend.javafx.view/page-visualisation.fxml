@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19"
+            fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.PageVisualisationController">
+    <children>
+        <BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                    minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <left>
+                <Label fx:id="TEST" prefHeight="100" prefWidth="100" text="TEST" wrapText="true"/>
+            </left>
+            <right>
+                <ImageView fx:id="plaqueImg" fitHeight="300.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true"
+                           BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                    </BorderPane.margin>
+                </ImageView>
+            </right>
+        </BorderPane>
+    </children>
+    <!-- <fx:include fx:id="alert" source="alert.fxml" /> -->
+</AnchorPane>

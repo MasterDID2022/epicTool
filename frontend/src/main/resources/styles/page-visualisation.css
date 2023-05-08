@@ -1,0 +1,29 @@
+* {
+    -fx-dark-blue: #24293D;
+    -fx-blue: #2F3855;
+    -fx-light-blue: #8EBBFF;
+    -fx-white: #F4F4FC;
+    -fx-green: #4A803C;
+    -fx-green-hover: #67b354;
+    -fx-red: #803C3C;
+    -fx-red-hover: #aa4343;
+}
+
+#mainPane {
+    -fx-font-family: "Product Sans";
+
+    -fx-background-color: -fx-dark-blue;
+}
+
+#plaqueImg {
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+
+    -fx-background-color: -fx-blue;
+}
+
+#TEST {
+    -fx-font-family: "Product Sans Bold";
+    -fx-font-size: 30px;
+    -fx-text-fill: -fx-white;
+}
