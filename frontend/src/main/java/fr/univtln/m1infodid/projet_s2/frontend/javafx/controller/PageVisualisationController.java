@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 /**
@@ -22,13 +23,13 @@ public class PageVisualisationController implements Initializable {
     public void initialize ( URL arg0, ResourceBundle arg1 ) {
 
         //test pour l'affichage de l'image, à supprimer
-        setupVisualEpigraphe("13",
-                "http://ccj-epicherchel.huma-num.fr/interface/phototheque/13/40341.jpg",
+        //setupVisualEpigraphe("13",
+               /* "http://ccj-epicherchel.huma-num.fr/interface/phototheque/13/40341.jpg",
                 "IACENTVS•CORPOR\nRE•QVSTOS•H•S•E•\nNATOS•FECERVNT",
-                "Iacentus, garde du corps. Il repose ici. Ses enfants ont fait faire (sa tombe).");
+                "Iacentus, garde du corps. Il repose ici. Ses enfants ont fait faire (sa tombe).");*/
     }
 
-    public void setupVisualEpigraphe ( String id, String imgUrl, String plaqueTxt, String tradTxt ) {
+    public void setupVisualEpigraphe (String nom, String imgUrl, Date date, String texte, String traduction ) {
         //afficher l'id et d'autres infos de l'épigraphie sur la page
         //obtenir l'image et l'afficher
         //construire le clavier à partir du texte de la plaque

@@ -1,5 +1,17 @@
 package fr.univtln.m1infodid.projet_s2.backend;
 
+import fr.univtln.m1infodid.projet_s2.backend.exceptions.*;
+import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -8,39 +20,29 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import java.util.List;
 
-import  fr.univtln.m1infodid.projet_s2.backend.exceptions.*;
-import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 /**
  * Cette classe SI ...
  */
 public class SI {
     private static String imgPath = "http://ccj-epicherchel.huma-num.fr/interface/phototheque/";
 
-    private SI() {
+    private SI () {
     }
 
     /**
-     * @param id l'id de la fiche
+     * @param id        l'id de la fiche
      * @param imgNumber
      * @return l url de l image qui sera egale au chemin imgPath + id + imgNumber
      */
 
-    public static String getImgUrl(String id, String imgNumber) {
-        return  imgPath + id + '/' + imgNumber + ".jpg";
+    public static String getImgUrl ( String id, String imgNumber ) {
+        return imgPath + id + '/' + imgNumber + ".jpg";
     }
 
-    public static String getFirstImgUrl(String XMLepigraphe){
-        String urlImg  = "";
+    public static String getFirstImgUrl ( String XMLepigraphe ) {
+        String urlImg = "";
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
             factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
@@ -86,14 +88,14 @@ public class SI {
             }
         }
         return urlImg;
-        }
+    }
 
     /**
-     * @param id l'id de la fiche
+     * @param id     l'id de la fiche
      * @param xmlUrl l'url de la fiche
      * @return le contenu des balises image et texte
      */
-    public static ArrayList<String> extractTextAndImageFromXml(String id, String xmlUrl) throws Exception {
+    public static List<String> extractTextAndImageFromXml ( String id, String xmlUrl ) throws Exception {
         ArrayList<String> contentList = new ArrayList<String>();
         try {
             // la récupération du fichier XML à partir de l'URL
@@ -177,11 +179,11 @@ public class SI {
      * @return une instance de la classe epigraphie apres extractions des valeurs de contentList
      */
 
-    public static Epigraphe CreateEpigraphie(ArrayList<String> contentList)throws ListeVide {
+    public static Epigraphe CreateEpigraphie ( List<String> contentList ) throws ListeVide {
         Epigraphe epigraphe = new Epigraphe();
 
         try {
-            if(contentList == null || contentList.isEmpty()) {
+            if (contentList == null || contentList.isEmpty()) {
                 throw new ListeVide();
             }
             epigraphe.setId(Integer.parseInt(contentList.get(0)));
@@ -195,9 +197,9 @@ public class SI {
             epigraphe.setImgUrl(contentList.get(3));
             epigraphe.setText(contentList.get(4));
             epigraphe.setTranslation(contentList.get(5));
-        } catch (IndexOutOfBoundsException r){
-        throw new ListeVide();
-    }
+        } catch (IndexOutOfBoundsException r) {
+            throw new ListeVide();
+        }
         return epigraphe;
     }
 }

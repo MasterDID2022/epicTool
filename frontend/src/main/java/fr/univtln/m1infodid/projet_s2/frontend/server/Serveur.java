@@ -13,14 +13,14 @@ import java.net.URI;
 @Slf4j
 
 public class Serveur {
-    public static final String BASE_URI = "http://0.0.0.0:8042/api/";
+    public static final String BASE_URI = "http://127.0.0.1:8042/api/";
 
     /**
      * Lance le serveur de l'API rest
      * du front end
      */
     public static void lanceur () {
-        final ResourceConfig rc = new ResourceConfig().packages("fr.univtln.m1infodid.projet_s2.api");
+        final ResourceConfig rc = new ResourceConfig().packages("fr.univtln.m1infodid.projet_s2.frontend.server");
         final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
         log.info("l'API rest est active <C-c> pour la fermer");
     }
