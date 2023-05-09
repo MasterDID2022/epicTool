@@ -103,9 +103,10 @@ public class EpigrapheDAO implements AutoCloseable {
 
             if (date.isBefore(LocalDate.now().plusDays(2)))
                 return epigraphe;
+            remove(epigraphe);
         }
         epigraphe = SI.CreateEpigraphie(id);
-        entityManager.persist(epigraphe);
+        persist(epigraphe);
         return epigraphe;
     }
 
