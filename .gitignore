@@ -3,23 +3,21 @@
 # that are supposed to be shared within teams.
 
 
-backend/.idea/*
-.idea/*
-.factorypath
-*.iml
+**/.idea/*
+**.iml
 !.idea/codeStyles
 !.idea/runConfigurations
 
 
 # Maven
 **/target/
-**/pom.xml.tag
-**/pom.xml.releaseBackup
-**/pom.xml.versionsBackup
-**/pom.xml.next
-**/release.properties
-**/dependency-reduced-pom.xml
-**/buildNumber.properties
+**pom.xml.tag
+**pom.xml.releaseBackup
+**pom.xml.versionsBackup
+**pom.xml.next
+**release.properties
+**dependency-reduced-pom.xml
+**buildNumber.properties
 **/.mvn/timing.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 **/.mvn/wrapper/maven-wrapper.jar
@@ -28,17 +26,18 @@ backend/.idea/*
 **/.vscode/*
 
 # Local History for Visual Studio Code
-**/.history
-**/.ionide
+**.history
+**.ionide
 
 # Built Visual Studio Code Extensions
-**/*.vsix
+***.vsix
 
 #MacOS
-**/.DS_Store
+**.DS_Store
 
 
 #Eclise or text editor that use his LSP
 **/.project
 **/.settings/*
 **/.factorypath
+**/.classpath

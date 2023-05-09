@@ -1,9 +1,13 @@
 package fr.univtln.m1infodid.projet_s2.backend.model;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import java.util.Date;
@@ -18,7 +22,7 @@ public class Epigraphe {
     @Id
     @Column(name = "ID")
     private int id;
-    private String imgUrl ;
+    private String imgUrl;
     private Date date;
     private String translation;
     private String name;
@@ -36,7 +40,8 @@ public class Epigraphe {
     public int hashCode () {
         return getClass().hashCode();
     }
-    public String toString() {
-        return "Epigraphie : n°" + getId() + ", " + getName() + ", " + getText()+ ", " + getDate()+ ", " + getImgUrl()+ ", " + getTranslation();
+
+    public String toString () {
+        return "Epigraphie : n°" + getId() + ", " + getName() + ", " + getText() + ", " + getDate() + ", " + getImgUrl() + ", " + getTranslation();
     }
 }

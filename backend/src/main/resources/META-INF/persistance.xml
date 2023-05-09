@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="https://jakarta.ee/xml/ns/persistence"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+
+    <persistence-unit name="epigraphs" transaction-type="RESOURCE_LOCAL">
+
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+
+        <class>fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe</class>
+
+        <properties>
+            <!-- Les paramètres de connexions pour postgress -->
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5433/epigraphsBDD"/>
+            <property name="jakarta.persistence.jdbc.user" value="postgres"/>
+            <property name="jakarta.persistence.jdbc.password" value="1234"/>
+
+
+            <!-- Les options de générations des tables -->
+            <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
+            <property name="jakarta.persistence.schema-generation.scripts.action" value="create"/>
+            <property name="jakarta.persistence.schema-generation.scripts.create-target" value="epigraphs-create.ddl"/>
+            <property name="jakarta.persistence.schema-generation.scripts.drop-target" value="epigraphs-drop.ddl"/>
+
+            <!-- Specific to eclipselink -->
+            <!--property
+            name="eclipselink.target-database"
+            value="org.eclipse.persistence.platform.database.H2Platform"/-->
+            <!--property
+            name="eclipselink.logging.level.sql" value="FINEST"/-->
+            <property name="eclipselink.logging.parameters" value="true"/>
+
+            <!--property
+            name="jakarta.persistence.sql-load-script-source" value="insert.sql"/-->
+        </properties>
+    </persistence-unit>
+</persistence>
