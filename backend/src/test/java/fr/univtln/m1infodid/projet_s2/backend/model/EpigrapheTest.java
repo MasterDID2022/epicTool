@@ -3,6 +3,7 @@ package fr.univtln.m1infodid.projet_s2.backend.model;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -55,7 +56,7 @@ class EpigrapheTest {
     @Test
     //
     void toStringTest () {
-        Epigraphe epigraphe = Epigraphe.of(1, "https://example.com/image.jpg", new Date(), "La traduction du texte de l'épigraphe", "Nom de l'épigraphe", "Le texte de l'épigraphe");
+        Epigraphe epigraphe = Epigraphe.of(1, "https://example.com/image.jpg", new Date(), LocalDate.now(),"La traduction du texte de l'épigraphe", "Nom de l'épigraphe", "Le texte de l'épigraphe");
         String expectedString = "Epigraphie : n°1, Nom de l'épigraphe, Le texte de l'épigraphe, " + epigraphe.getDate() + ", https://example.com/image.jpg, La traduction du texte de l'épigraphe";
         assertEquals(expectedString, epigraphe.toString());
     }

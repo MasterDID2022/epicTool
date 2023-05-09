@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -24,6 +25,7 @@ public class Epigraphe {
     private int id;
     private String imgUrl;
     private Date date;
+    private LocalDate fetchDate;
     private String translation;
     private String name;
     private String text;
@@ -31,8 +33,7 @@ public class Epigraphe {
     @Override
     public boolean equals ( Object o ) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Epigraphe epigraphe = (Epigraphe) o;
+        if(!(o instanceof Epigraphe epigraphe)) return false;
         return this.id == epigraphe.id;
     }
 
