@@ -1,4 +1,4 @@
-package fr.univtln.m1infodid.projet_s2.backend.server;
+package fr.univtln.m1infodid.projet_s2.backend.model;
 
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import org.junit.jupiter.api.Test;
