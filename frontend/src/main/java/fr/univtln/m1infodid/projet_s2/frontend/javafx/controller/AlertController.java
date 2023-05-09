@@ -85,9 +85,6 @@ public class AlertController implements Initializable {
      * @param msg le Message de l'alerte
      */
     public void showAlert ( String msg ) {
-        if (!alertPane.getScene().getStylesheets().contains("/styles/alert.css"))
-            alertPane.getScene().getStylesheets().add("/styles/alert.css");
-
         placeAlert();
 
         alertMsg.setText(msg);

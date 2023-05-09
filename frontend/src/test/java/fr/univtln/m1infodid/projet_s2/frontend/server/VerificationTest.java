@@ -5,26 +5,26 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class VerifcationTest {
+class VerificationTest {
 
     @Test
     void testValidID(){
-        Assertions.assertTrue(Verifcation.isInputOnlyInteger("1"));
+        Assertions.assertTrue(Verification.isInputOnlyInteger("1"));
     }
 
     @Test
     void testValidEmail(){
-        Assertions.assertTrue(Verifcation.isInputAvalideEmail("theo@gmail.com"));
+        Assertions.assertTrue(Verification.isInputAvalideEmail("theo@gmail.com"));
     }
 
     @Test
     void testNotValidEmail(){
-        Assertions.assertFalse(Verifcation.isInputAvalideEmail("theo!gmail.com"));
+        Assertions.assertFalse(Verification.isInputAvalideEmail("theo!gmail.com"));
     }
 
     @Test
     void testNotValidID(){
-        Assertions.assertFalse(Verifcation.isInputOnlyInteger("!"));
+        Assertions.assertFalse(Verification.isInputOnlyInteger("!"));
     }
 
 }

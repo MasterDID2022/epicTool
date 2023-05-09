@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
+
 public class ApiTest {
 
     /*
@@ -15,7 +17,7 @@ public class ApiTest {
     @Test
     public void testSendRequestOf() {
         Integer id = 1;
-        String result = Api.sendRequestOf(id);
+        List<String> result = Api.sendRequestOf(id);
         Assertions.assertNotNull(result);
     }
 
@@ -26,8 +28,8 @@ public class ApiTest {
     @Test
     public void testSendRequestOfWithInvalidId() {
         Integer id = -1;
-        String result = Api.sendRequestOf(id);
-        assertEquals("", result);
+        List<String> result = Api.sendRequestOf(id);
+        assertEquals(0, result.size());
     }
 
     /*
@@ -69,8 +71,17 @@ public class ApiTest {
     @Test
     public void testSendRequestOfSuccess() {
         Integer id = 42;
-        String expectedResult = "http://ccj-epicherchel.huma-num.fr/interface/phototheque/42/88617.jpg";
-        String actualResult = Api.sendRequestOf(id);
+        List<String> expectedResult = List.of("étude Philippe Leveau", 
+                                                "Thu Jul 12 00:00:00 GMT 2018", 
+                                                "\nAux dieux Mânes, à Caius Iulius Neptunalis a vécu 25 ans. Caius Iulius Atticus à son frère très vertueux.            ", 
+                                                "http://ccj-epicherchel.huma-num.fr/interface/phototheque/42/88617.jpg",
+                                                "D M",
+                                                "C • IVL • NEPTVNALI",
+                                                "VIX • ANNIS • XXV",
+                                                "C • IVLIVS • ATTICVS",
+                                                "FRATRI • PIISSIMO",
+                                                "S • T • T • L                ");
+        List<String> actualResult = Api.sendRequestOf(id);
         assertEquals(expectedResult, actualResult);
     }
 
@@ -80,13 +91,7 @@ public class ApiTest {
     @Test
     public void testSendRequestOfRequestFailure() {
         Integer id = 100000;
-        String expectedResult = "";
-        String actualResult = Api.sendRequestOf(id);
-        assertEquals(expectedResult, actualResult);
+        List<String> actualResult = Api.sendRequestOf(id);
+        assertEquals(0, actualResult.size());
     }
-
-
-
-
-
 }

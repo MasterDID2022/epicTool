@@ -27,13 +27,27 @@
     -fx-font-size: 30px;
     -fx-text-fill: -fx-white;
 }
-#tradLabel {
-    -fx-font-family: "Product Sans Bold";
-    -fx-font-size: 10px;
+
+#inputBar {
+    -fx-font-size: 13px;
+    -fx-border-radius: 10 0 0 10;
+    -fx-background-radius: 10 0 0 10;
+
+    -fx-background-color: -fx-blue;
     -fx-text-fill: -fx-white;
 }
-#tradu {
+
+#acceptBtn {
     -fx-font-family: "Product Sans Bold";
-    -fx-font-size: 13px;
-    -fx-text-fill: -fx-black;
+
+    -fx-border-radius: 10 10 0 0;
+    -fx-background-radius: 10 10 0 0;
+
+    -fx-background-color: -fx-green;
+    -fx-text-fill: -fx-white;
+}
+
+#acceptBtn:hover {
+    -fx-cursor: hand;
+    -fx-background-color: -fx-green-hover;
 }

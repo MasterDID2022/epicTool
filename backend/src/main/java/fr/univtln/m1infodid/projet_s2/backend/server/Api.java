@@ -4,17 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.univtln.m1infodid.projet_s2.backend.DAO.FormulaireDAO;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.univtln.m1infodid.projet_s2.backend.DAO.EpigrapheDAO;
 import fr.univtln.m1infodid.projet_s2.backend.SI;
 import fr.univtln.m1infodid.projet_s2.backend.model.Annotation;
 import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.client.Client;
-import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -83,10 +81,14 @@ public class Api {
 		Epigraphe epigraphe = SI.CreateEpigraphie(Integer.parseInt(id));
 		responseJson.put("id", epigraphe.getId());
 		responseJson.put("date", String.valueOf(epigraphe.getDate()));
-		responseJson.put("texte", epigraphe.getText());
 		responseJson.put("traduction", epigraphe.getTranslation());
 		responseJson.put("nom", epigraphe.getName());
 		responseJson.put("ImgURL", epigraphe.getImgUrl());
+
+		ArrayNode texteArray = responseJson.putArray("texte");
+		for (String line : epigraphe.getText())
+			texteArray.add(line);
+
 		String jsonStr = objectMapper.writeValueAsString(responseJson);
 		return Response.ok(jsonStr, MediaType.APPLICATION_JSON).build();
 	}

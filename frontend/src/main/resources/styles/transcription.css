@@ -1,0 +1,33 @@
+#transcriptionPane {
+    -fx-font-family: "Product Sans";
+    -fx-font-size: 13px;
+
+    -fx-background-color: transparent;
+}
+
+Label {
+    -fx-text-fill: -fx-white;
+}
+
+#idLabel {
+    -fx-font-size: 17px;
+}
+
+#transcriptionVBox {
+    -fx-font-family: "Product Sans Bold";
+    -fx-font-size: 15;
+}
+
+#symbolBtn {
+    -fx-background-color: transparent;
+    -fx-font-family: "Product Sans Bold";
+    -fx-text-fill: -fx-white;
+}
+#symbolBtn:hover {
+    -fx-background-color: -fx-blue;
+}
+
+#selectedSymbolBtn {
+    -fx-border-width: 3;
+    -fx-border-color: -fx-white;
+}

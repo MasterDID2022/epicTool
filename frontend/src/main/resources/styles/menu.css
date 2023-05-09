@@ -15,7 +15,9 @@
 }
 
 #inputMail{
-    -fx-control-inner-background: #2F3855; -fx-text-inner-color: #f4c4c4; -fx-prompt-text-fill: grey; -fx-text-box-border: #2F3855; -fx-background-radius: 10 10 0 0;
+    -fx-background-radius: 10 10 0 0;
+    -fx-background-color: -fx-blue;
+    -fx-text-fill: -fx-white;
 }
 
 #buttonConection{
@@ -28,20 +30,15 @@
 #buttonRejoindre{
     -fx-font-family: "Product Sans Bold";
     -fx-background-radius: 30;
-    -fx-border-radius: 300;
-    -fx-alignment: center;
-    -fx-font-size: 70%;
+    -fx-font-size: 10px;
     -fx-background-color: -fx-green;
     -fx-text-fill: -fx-white;
 }
 
 
 #inputPassword{
-    -fx-control-inner-background: #2F3855;
-    -fx-text-inner-color: #f4c4c4;
-    -fx-prompt-text-fill: grey;
-    -fx-text-box-border: #2F3855;
-
+    -fx-background-color: -fx-blue;
+    -fx-text-fill: -fx-white;
 }
 
 #inputBar {
@@ -78,15 +75,29 @@
 }
 
 #connecter,
-#joinTitle,
 #visiteurTitle{
-    -fx-font-family: "Product Sans Bold";
+    -fx-font-family: "Product Sans";
+    -fx-font-size: 17px;
+}
+
+#joinTitle {
+    -fx-font-family: "Product Sans";
+    -fx-font-size: 20px;
 }
 
 #connecterText,
 #joinText,
 #visiteurText
 {
-    -fx-font-family: "Product Sans Light";
-    -fx-font-style: italic;
+    -fx-font-family: "Product Sans Italic";
+    -fx-font-size: 12px;
+    -fx-opacity: 0.7;
+}
+
+.wrongMail {
+    -fx-border-width: 2px;
+    -fx-border-color: -fx-red;
+    -fx-text-fill: -fx-red;
+    -fx-background-radius: 10 10 0 0;
+    -fx-border-radius: 10 10 0 0;
 }
