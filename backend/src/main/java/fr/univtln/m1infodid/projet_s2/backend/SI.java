@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,9 +28,11 @@ import java.util.List;
  */
 public class SI {
     private static String imgPath = "http://ccj-epicherchel.huma-num.fr/interface/phototheque/";
+    public static final String URL_EPICHERCHELL = "http://ccj-epicherchel.huma-num.fr/interface/fiche_xml2.php?id=";
 
     private SI () {
     }
+
 
     /**
      * @param id        l'id de la fiche
@@ -200,6 +203,12 @@ public class SI {
         } catch (IndexOutOfBoundsException r) {
             throw new ListeVide();
         }
+        epigraphe.setFetchDate(LocalDate.now());
         return epigraphe;
+    }
+
+    public static Epigraphe CreateEpigraphie ( int id ) throws Exception {
+       return SI.CreateEpigraphie(
+                SI.extractTextAndImageFromXml(String.valueOf(id), URL_EPICHERCHELL + id));
     }
 }

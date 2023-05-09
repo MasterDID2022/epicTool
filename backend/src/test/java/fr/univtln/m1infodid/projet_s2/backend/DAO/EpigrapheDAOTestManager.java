@@ -24,7 +24,6 @@ public abstract class EpigrapheDAOTestManager {
         em.createNativeQuery("DELETE FROM Epigraphe WHERE id < 0").executeUpdate();
         em.getTransaction().commit();
         em.close();
-
         emf.close();
     }
 }

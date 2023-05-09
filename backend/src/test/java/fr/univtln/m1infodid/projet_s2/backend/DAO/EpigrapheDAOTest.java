@@ -4,6 +4,8 @@ import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 
@@ -40,6 +42,25 @@ final class EpigrapheDAOTest extends EpigrapheDAOTestManager {
         assertDoesNotThrow(() -> epigrapheDAO.remove(-3));
         assertEquals(size_before-1,epigrapheDAO.findAll().size());
     }
+
+    @Test
+    void removeTestEpigraphe()
+    {
+        Epigraphe epigraphe = Epigraphe.of(-3,"Exemple",new Date(), LocalDate.now(),"Exemple",
+                "Exemple","Exemple");
+        epigrapheDAO.persist(epigraphe);
+        final int size_before = epigrapheDAO.findAll().size();
+        assertDoesNotThrow(() -> epigrapheDAO.remove(epigraphe));
+        assertEquals(size_before-1,epigrapheDAO.findAll().size());
+    }
+
+    @Test
+    void getEpigrapheTest() throws Exception {
+        EpigrapheDAO epigrapheDAO = EpigrapheDAO.create(em);
+        Epigraphe epigraphe = epigrapheDAO.getEpigraphe(-4);
+        assertEquals(epigraphe,epigrapheDAO.getEpigraphe(-4));
+    }
+
 
 
 }

@@ -19,30 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
+
 /**
  * Api REST pour les epigraphe
  */
 @Slf4j
 @Path("epigraphe")
 public class Api {
-	static final String URL_EPICHERCHELL = "http://ccj-epicherchel.huma-num.fr/interface/fiche_xml2.php?id=";
-
-	/**
-	 * Methode static pour recupere le fichier XML de l'épigraphe d'ID id
-	 * Retourne la chaine vide en cas d'échec
-	 *
-	 * @param id
-	 * @return
-	 */
-	public static String getEpigrapheOf(Integer id) {
-		Client client = ClientBuilder.newClient();
-		String epigraph = client.target(URL_EPICHERCHELL + id.toString())
-				.request(MediaType.APPLICATION_XML)
-				.get(String.class);
-		client.close();
-		return SI.getFirstImgUrl(epigraph);
-	}
-
 	private Optional<Annotation> createAnnotation(String annotationJson) {
 		Optional<Annotation> annotation = Optional.empty();
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -95,8 +78,7 @@ public class Api {
 	public Response sendEpigraphe(@PathParam("id") String id) throws Exception {
 		ObjectMapper objectMapper = new ObjectMapper();
 		ObjectNode responseJson = objectMapper.createObjectNode();
-		Epigraphe epigraphe = SI.CreateEpigraphie(
-				SI.extractTextAndImageFromXml(id, URL_EPICHERCHELL + Integer.valueOf(id).toString()));
+		Epigraphe epigraphe = SI.CreateEpigraphie(Integer.parseInt(id));
 		responseJson.put("id", epigraphe.getId());
 		responseJson.put("date", String.valueOf(epigraphe.getDate()));
 		responseJson.put("texte", epigraphe.getText());
