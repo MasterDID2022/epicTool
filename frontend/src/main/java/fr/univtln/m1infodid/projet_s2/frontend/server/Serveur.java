@@ -13,7 +13,7 @@ import java.net.URI;
 @Slf4j
 
 public class Serveur {
-    public static final String BASE_URI = "http://0.0.0.0:8042/api/";
+    public static final String BASE_URI = "http://127.0.0.1:8042/api/";
 
     /**
      * Lance le serveur de l'API rest
