@@ -92,17 +92,18 @@ public class SI {
 		return urlImg;
 	}
 
-	/**
-	 * @param id     l'id de la fiche
-	 * @param xmlUrl l'url de la fiche
-	 * @return le contenu des balises image et texte
-	 */
-	public static List<String> extractTextAndImageFromXml(String id, String xmlUrl) throws Exception {
-		ArrayList<String> contentList = new ArrayList<String>();
-		try {
-			// la récupération du fichier XML à partir de l'URL
-			URL url = new URL(xmlUrl);
-			InputStream inputStream = url.openStream();
+    /**
+     * @param id     l'id de la fiche
+     * @param xmlUrl l'url de la fiche
+     * @return le contenu des balises image et texte
+     */
+    public static List<List<String>> extractTextAndImageFromXml ( String id, String xmlUrl ) throws Exception {
+        List<List<String>> contentList = new ArrayList<>();
+        List<String> transcriptionList = new ArrayList<>();
+        try {
+            // la récupération du fichier XML à partir de l'URL
+            URL url = new URL(xmlUrl);
+            InputStream inputStream = url.openStream();
 
 			// la création du Document XML
 
@@ -113,62 +114,62 @@ public class SI {
 			Document doc = dBuilder.parse(inputStream);
 			doc.getDocumentElement().normalize();
 
-			// Extraction du contenus des balises image et texte
-			NodeList nodeList = doc.getElementsByTagName("*");
-			contentList.add(id);
-			for (int a = 0; a < nodeList.getLength(); a++) {
-				Node node = nodeList.item(a);
-				if (node.getNodeType() == Node.ELEMENT_NODE) {
-					Element element = (Element) node;
-					if (element.getTagName().equals("text")) {
-						Element txtElement = (Element) nodeList.item(a + 3);
-						// l'emplacement de texte sur le fichier xml
-						contentList.add(txtElement.getTextContent());
-					}
-					// recherche nom auteur
-					if (element.getTagName().equals("persName")) {
-						Element txtElement = (Element) nodeList.item(a);
-						contentList.add(txtElement.getTextContent());
-					}
-					// recherche date
-					if (element.getTagName().equals("date")) {
-						Element txtElement = (Element) nodeList.item(a);
-						String whenValue = txtElement.getAttribute("when");
-						contentList.add(whenValue);
-					}
-					// recupere le contenu de traduction
-					if (element.hasAttribute("type")
-							&& element.getAttribute("type").equals("translation")) {
-						contentList.add(element.getTextContent());
-					}
-					// recupere le contenu de traduction
-					if (element.hasAttribute("when")
-							&& element.getAttribute("when").equals("date")) {
-						contentList.add(element.getTextContent());
-					}
-					// recupere l image
-					if (element.getTagName().equals("facsimile")) {
-						Node child = nodeList.item(a + 1);
-						Element firstElement = (Element) child;
-						// si une seule image existe
-						if (firstElement.getTagName().equals("graphic"))
-							contentList.add(firstElement.getAttribute("url"));
-						// sinon on fait appel a notre fonction
-						else if (firstElement.getTagName().equals("desc")) {
-							String imgNum = firstElement.getTextContent();
-							contentList.add(getImgUrl(id, imgNum));
-						}
-					}
-				}
-			}
-			inputStream.close();
-		} catch (MalformedURLException e) {
-			throw new UrlInvalide();
-		} catch (IOException e) {
-			throw new RecuperationXml();
-		} catch (ParserConfigurationException e) {
-			throw new DomParser();
-		} catch (SAXException e) {
+            // Extraction du contenus des balises image et texte
+            NodeList nodeList = doc.getElementsByTagName("*");
+            contentList.add(List.of(id));
+            for (int a = 0; a < nodeList.getLength(); a++) {
+                Node node = nodeList.item(a);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+
+                    //recherche transcription ligne par ligne
+                    if (element.getTagName().equals("lb")) {
+                        Element lineTranscription = (Element) nodeList.item(a);
+                        transcriptionList.add( lineTranscription.getNextSibling().getTextContent() );
+                    }
+                    //recherche nom auteur
+                    if (element.getTagName().equals("persName")) {
+                        Element txtElement = (Element) nodeList.item(a);
+                        contentList.add(List.of(txtElement.getTextContent()));
+                    }
+                    //recherche date
+                    if (element.getTagName().equals("date")) {
+                        Element txtElement = (Element) nodeList.item(a);
+                        String whenValue = txtElement.getAttribute("when");
+                        contentList.add(List.of(whenValue));
+                    }
+                    //recupere le contenu de traduction
+                    if (element.hasAttribute("type") && element.getAttribute("type").equals("translation")) {
+                        contentList.add(List.of(element.getTextContent()));
+                    }
+                    //recupere le contenu de traduction
+                    if (element.hasAttribute("when") && element.getAttribute("when").equals("date")) {
+                        contentList.add(List.of(element.getTextContent()));
+                    }
+                    //recupere l image
+                    if (element.getTagName().equals("facsimile")) {
+                        Node child = nodeList.item(a + 1);
+                        Element firstElement = (Element) child;
+                        //si une seule image existe
+                        if (firstElement.getTagName().equals("graphic"))
+                            contentList.add(List.of(firstElement.getAttribute("url")));
+                            //sinon on fait appel a notre fonction
+                        else if (firstElement.getTagName().equals("desc")) {
+                            String imgNum = firstElement.getTextContent();
+                            contentList.add(List.of(getImgUrl(id, imgNum)));
+                        }
+                    }
+                }
+            }
+            contentList.add(transcriptionList);
+            inputStream.close();
+        } catch (MalformedURLException e) {
+            throw new UrlInvalide();
+        } catch (IOException e) {
+            throw new RecuperationXml();
+        } catch (ParserConfigurationException e) {
+            throw new DomParser();
+        } catch (SAXException e) {
 
 			throw new SaxErreur();
 		} catch (Exception e) {
@@ -184,30 +185,33 @@ public class SI {
 	 *         contentList
 	 */
 
-	public static Epigraphe CreateEpigraphie(List<String> contentList) throws ListeVide {
-		Epigraphe epigraphe = new Epigraphe();
+    public static Epigraphe CreateEpigraphie ( List<List<String>> contentList ) throws ListeVide {
+        Epigraphe epigraphe = new Epigraphe();
 
-		try {
-			if (contentList == null || contentList.isEmpty()) {
-				throw new ListeVide();
-			}
-			epigraphe.setId(Integer.parseInt(contentList.get(0)));
-			epigraphe.setName(contentList.get(1));
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			try {
-				epigraphe.setDate(format.parse(contentList.get(2)));
-			} catch (ParseException e) {
-				throw new RuntimeException(e);
-			}
-			epigraphe.setImgUrl(contentList.get(3));
-			epigraphe.setText(contentList.get(4));
-			epigraphe.setTranslation(contentList.get(5));
-		} catch (IndexOutOfBoundsException r) {
-			throw new ListeVide();
-		}
-		epigraphe.setFetchDate(LocalDate.now());
-		return epigraphe;
-	}
+        try {
+            if (contentList == null || contentList.isEmpty()) {
+                throw new ListeVide();
+            }
+            epigraphe.setId(Integer.parseInt(contentList.get(0).get(0)));
+            epigraphe.setName(contentList.get(1).get(0));
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                if (contentList.get(2).get(0).isEmpty() || contentList.get(2).get(0).isBlank())
+                    epigraphe.setDate(null);
+                else
+                    epigraphe.setDate(format.parse(contentList.get(2).get(0)));
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+            epigraphe.setImgUrl(contentList.get(3).get(0));
+            epigraphe.setTranslation(contentList.get(4).get(0));
+            epigraphe.setText(contentList.get(5));
+        } catch (IndexOutOfBoundsException r) {
+            throw new ListeVide();
+        }
+        epigraphe.setFetchDate(LocalDate.now());
+        return epigraphe;
+    }
 
 	public static Epigraphe CreateEpigraphie(int id) throws Exception {
 		return SI.CreateEpigraphie(

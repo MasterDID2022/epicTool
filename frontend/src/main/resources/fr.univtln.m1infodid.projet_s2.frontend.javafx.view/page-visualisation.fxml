@@ -1,28 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.layout.VBox?>
 <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.PageVisualisationController">
     <children>
         <BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <left>
-                <Label fx:id="TEST" prefHeight="100" prefWidth="100" text="TEST" wrapText="true" />
-            </left>
             <right>
-                <VBox alignment="TOP_CENTER">
+                <VBox alignment="TOP_RIGHT" spacing="10.0" BorderPane.alignment="TOP_RIGHT">
                     <fx:include fx:id="traduction" source="epigraphie/traduction.fxml" />
+               <AnchorPane fx:id="plaqueAnchor" VBox.vgrow="ALWAYS">
+                  <children>
+                          <ImageView fx:id="plaqueImg" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  </children>
+               </AnchorPane>
                     <BorderPane.margin>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                     </BorderPane.margin>
-                    <ImageView fx:id="plaqueImg" fitHeight="300.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                    </ImageView>
                 </VBox>
             </right>
+            <center>
+                <AnchorPane BorderPane.alignment="CENTER">
+                    <children>
+                        <HBox spacing="5.0" alignment="TOP_LEFT" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0">
+                            <children>
+                                <Label fx:id="TEST" prefHeight="100" prefWidth="100" text="TEST" wrapText="true" />
+                                <HBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+                                    <children>
+                                        <TextField fx:id="inputBar" prefHeight="40.0" prefWidth="180.0"
+                                                promptText="n° de fiche ÉpiCherchell">
+                                            <padding>
+                                                <Insets left="13.0"/>
+                                            </padding>
+                                        </TextField>
+                                        <Button fx:id="acceptBtn" mnemonicParsing="false" onAction="#numFicheBtnOnClick"
+                                                prefHeight="40.0" prefWidth="40.0" rotate="90.0" text="▲"/>
+                                    </children>
+                                </HBox>
+                            </children>
+                            <BorderPane.margin>
+                                <Insets left="20.0" top="20.0" />
+                            </BorderPane.margin>
+                        </HBox>
+                        <VBox alignment="BOTTOM_RIGHT" AnchorPane.bottomAnchor="35.0" AnchorPane.rightAnchor="10.0">
+                            <fx:include fx:id="transcription" source="./epigraphie/transcriptionPane.fxml" />
+                        </VBox>
+                    </children>
+                </AnchorPane>
+            </center>
         </BorderPane>
+        <fx:include fx:id="alert" source="alert.fxml" />
     </children>
-    <!-- <fx:include fx:id="alert" source="alert.fxml" /> -->
 </AnchorPane>

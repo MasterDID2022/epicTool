@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+
 @Slf4j
 public class Facade {
     /**
@@ -18,7 +18,7 @@ public class Facade {
 
     public Epigraphe createEpigraphieInstanceFromXml ( String id, String xmlUrl ) {
 
-        List<String> contentList = new ArrayList<>();
+        List<List<String>> contentList = new ArrayList<>();
         try {
             contentList = SI.extractTextAndImageFromXml(id, xmlUrl);
         } catch (UrlInvalide u) {

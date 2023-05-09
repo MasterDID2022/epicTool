@@ -15,13 +15,13 @@
 }
 
 #text{
-    -fx-font-family: "Product Sans Light";
-    -fx-font-style: italic;
+    -fx-font-family: "Product Sans Italic";
+    -fx-font-size: 12px;
 }
 
 #Title{
     -fx-font-family: "Product Sans Bold";
-    -fx-text-fill: #F4F4FC;
+    -fx-text-fill: -fx-white;
 }
 
 #buttonBack{
@@ -29,44 +29,49 @@
     -fx-border-color: -fx-blue;
     -fx-border-radius: 10;
     -fx-background-color: transparent;
-    -fx-text-fill: #F4F4FC;
+    -fx-text-fill: -fx-white;
 }
 
 #buttonBack:hover{
     -fx-background-color: -fx-blue;
     -fx-background-radius: 10;
-    -fx-text-fill: -fx-green;
+    -fx-text-fill: -fx-dark-blue;
 }
-
-
-
 
 #nomid,#prenomid,#emailid,#commentaireid,#afiliationid {
     -fx-font-size: 13px;
-    -fx-border-radius: 10 10 10 10;
-    -fx-background-radius: 10 10 10 10;
+    /* -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10; */
 
     -fx-background-color: -fx-blue;
     -fx-text-fill: -fx-white;
 }
 
+#commentaireid {
+    /* commentaireid.setStyle(
+        //         "    -fx-font-size: 13px;" +
+        //                 "    -fx-border-radius: 0 0 0 0;" +
+        //                 "    -fx-background-radius: 10 0 0 10;" +
+        //                 "  -fx-prompt-text-fill: #C0C0C0;" +
+        //                 "-fx-border-color: -fx-blue; ;" +
+        //                 "    -fx-control-inner-background: -fx-blue;" +
+        //                 "    -fx-text-fill: -fx-white;"); */
 
-#txt1,#txt2,#txt3,#txt4,#txt5,#txt6{
-    -fx-text-fill: -fx-white;
+    -fx-control-inner-background: -fx-blue;
+    -fx-prompt-text-fill: #C0C0C0;
 }
 
-#txt{
-    -fx-font-size: 22px;
-    -fx-text-fill: -fx-white;
+#nomid {
+    -fx-border-radius: 10 10 0 0;
+    -fx-background-radius: 10 10 0 0;
 }
-
 
 
 #envoyer {
     -fx-font-family: "Product Sans Bold";
 
-    -fx-border-radius: 10 10 10 10;
-    -fx-background-radius: 10 10 10 10;
+    -fx-border-radius: 0 0 10 10;
+    -fx-background-radius: 0 0 10 10;
 
     -fx-background-color: -fx-green;
     -fx-text-fill: -fx-white;

@@ -1,0 +1,15 @@
+#tradAnchor {
+    -fx-background-color: -fx-blue;
+    -fx-background-radius: 10 10 0 0;
+}
+
+#tradLabel {
+    -fx-font-family: "Product Sans";
+    -fx-font-size: 11px;
+    -fx-text-fill: -fx-white;
+}
+#tradu {
+    -fx-font-family: "Product Sans Bold";
+    -fx-font-size: 13px;
+    -fx-text-fill: -fx-dark-blue;
+}

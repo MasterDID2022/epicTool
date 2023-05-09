@@ -6,13 +6,13 @@ import java.util.regex.Pattern;
  * Classe de verification de la validite des entree du
  * logicielle
  */
-public class Verifcation {
+public class Verification {
     private static final String NUMBER_ONLY_REGEX = "\\d+"; // [0-9]+
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
 
-    private Verifcation() {
+    private Verification() {
         throw new IllegalStateException("Cette classe ne devrait pas etre instancier");
     }
 
