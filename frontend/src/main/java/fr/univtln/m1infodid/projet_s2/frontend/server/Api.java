@@ -1,5 +1,9 @@
 package fr.univtln.m1infodid.projet_s2.frontend.server;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.Path;
@@ -25,7 +29,7 @@ public class Api {
      * @param id
      * @return
      */
-    public static String sendRequestOf ( Integer id ) {
+    public static List<String> sendRequestOf ( Integer id ) {
         String epigraphJson = "";
         try (Client client = ClientBuilder.newClient()) {
             Response response = client.target(URI_API_BACKEND + "epigraphe/" + id.toString())
@@ -44,14 +48,23 @@ public class Api {
             JsonNode traduction = jsonNode.get("traduction");
             JsonNode nom = jsonNode.get("nom");
 
-            return url.asText();
+            List<String> contentList = new ArrayList<>();
+            contentList.add(nom.asText());
+            contentList.add(date.asText());
+            contentList.add(traduction.asText());
+            contentList.add(url.asText());
+
+            String[] transcriptionArray = objectMapper.readValue(texte.toString(), String[].class);
+            List<String> transcriptionList = Arrays.asList(transcriptionArray);
+            contentList.addAll( transcriptionList );
+
+            return contentList;
         } catch (Exception e) {
             log.error("ERR: probleme avec la conection au backend:");
-            log.debug(e.toString());
+            log.error(e.toString());
         }
 
-        log.info("-->" + epigraphJson);
-        return epigraphJson;
+        return List.of();
     }
 
     /**
@@ -61,7 +74,6 @@ public class Api {
      * @return String de message de retour
      */
     public static String postAnnotations(String annotationsJson) {
-        ObjectMapper objectMapper = new ObjectMapper();
         String annotationJson = "";
         try {
             try (Client client = ClientBuilder.newClient()) {

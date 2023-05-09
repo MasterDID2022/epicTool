@@ -11,6 +11,8 @@ import java.net.URL;
 /* Sert à changer de scène, cette classe doit être utilisé uniquement pour ce but */
 public final class SceneController {
 
+    public record SceneData<T>(Scene scene, T controller) {}
+
     private SceneController () {
         throw new IllegalStateException("Ne dois pas être instancié");
     }
@@ -27,18 +29,34 @@ public final class SceneController {
      * @return le Controller de la nouvelle scène
      * @throws IOException renvoi une erreur si le fichier FXML n'a pas pu être chargé
      */
-    private static <T> T sceneSwitch ( Stage stage, String url, String stylePath, int width, int height ) throws IOException {
+    private static <T> SceneData<T> sceneSwitchAndLoad( Stage stage, String url, int width, int height, String... stylePath ) throws IOException {
         URL urlRef = SceneController.class.getResource(url);
         FXMLLoader fxmlLoader = new FXMLLoader(urlRef);
         Parent root = fxmlLoader.load();
 
         Scene scene = new Scene(root, width, height);
-        scene.getStylesheets().add(stylePath);
+        scene.getStylesheets().addAll(stylePath);
 
         stage.setScene(scene);
         stage.show();
 
-        return fxmlLoader.getController();
+        return new SceneData<>(scene, fxmlLoader.getController() );
+    }
+
+    private static <T> void sceneSwitch(Stage stage, SceneData<T> sceneData) {
+        stage.setScene(sceneData.scene);
+        stage.show();
+    }
+
+    /**
+     * Cette méthode permet de changer vers une Scène en utilisant son SceneData
+     * 
+     * @param <T> le Type de controller utilisé par SceneData
+     * @param stage la Scène principale de l'application à modifié
+     * @param sceneData l'objet SceneData contenant la scène et le controller d'une scène à afficher
+     */
+    public static <T> void switchToScene(Stage stage, SceneData<T> sceneData) {
+        sceneSwitch(stage, sceneData);
     }
 
     /**
@@ -48,9 +66,13 @@ public final class SceneController {
      * @return le Controller de la nouvelle scène
      * @throws IOException renvoi une erreur si le fichier FXML du menu n'a pas pu être chargé
      */
-    public static <T> T switchToMenu ( Stage stage ) throws IOException {
-        T controller = sceneSwitch(stage, "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/menu.fxml", "/styles/menu.css", 780, 504);
-        return controller;
+    public static <T> SceneData<T> switchToMenu ( Stage stage ) throws IOException {
+        return sceneSwitchAndLoad(stage, 
+                                    "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/menu.fxml", 
+                                    780, 
+                                    504, 
+                                    "/styles/menu.css", 
+                                    "/styles/alert.css");
     }
 
     /**
@@ -60,9 +82,15 @@ public final class SceneController {
      * @return la Scène modifié
      * @throws IOException renvoi une erreur si le fichier FXML du menu n'a pas pu être chargé
      */
-    public static <T> T switchToPageVisualisation ( Stage stage ) throws IOException {
-        T controller = sceneSwitch(stage, "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/page-visualisation.fxml", "/styles/page-visualisation.css", 780, 504);
-        return controller;
+    public static <T> SceneData<T> switchToPageVisualisation ( Stage stage ) throws IOException {
+        return sceneSwitchAndLoad(stage, 
+                                    "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/page-visualisation.fxml", 
+                                    780, 
+                                    504, 
+                                    "/styles/page-visualisation.css", 
+                                    "/styles/transcription.css",
+                                    "/styles/traduction.css",
+                                    "/styles/alert.css");
     }
 
     /**
@@ -72,10 +100,12 @@ public final class SceneController {
      * @return la Scène modifié
      * @throws IOException renvoi une erreur si le fichier FXML du menu n'a pas pu être chargé
      */
-    public static <T> T switchToPageFormulaire ( Stage stage ) throws IOException {
-        T controller = sceneSwitch(stage, "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/formulaire.fxml", "/styles/formulaire.css", 780, 504);
-        return controller;
+    public static <T> SceneData<T> switchToPageFormulaire ( Stage stage ) throws IOException {
+        return sceneSwitchAndLoad(stage, 
+                                    "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/formulaire.fxml", 
+                                    780, 
+                                    504, 
+                                    "/styles/formulaire.css",
+                                    "/styles/alert.css");
     }
-
-
 }

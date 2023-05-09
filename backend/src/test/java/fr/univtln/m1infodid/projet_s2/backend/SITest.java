@@ -1,6 +1,5 @@
 package fr.univtln.m1infodid.projet_s2.backend;
 
-import fr.univtln.m1infodid.projet_s2.backend.SI;
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.ListeVide;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class SITest {
     String id = "340";
     String xmlUrl = "http://ccj-epicherchel.huma-num.fr/interface/fiche_xml2.php?id=" + id;
-    List<String> contentdImageEtText = SI.extractTextAndImageFromXml(id, xmlUrl);
+    List<List<String>> contentdImageEtText = SI.extractTextAndImageFromXml(id, xmlUrl);
 
     SITest () throws Exception {
     }
@@ -47,13 +46,13 @@ class SITest {
     void testExtractTextAndImageFromXmlOthers () {
         // Vérification des autres elements
         for (int i = 0; i < 5; i++) {
-            assertNotNull(contentdImageEtText.get(i));
+            assertNotNull(contentdImageEtText.get(i).get(0));
         }
     }
 
     @Test
     void testExtractTextAndImageFromXmlValidOutput () {
-        assertEquals("http://ccj-epicherchel.huma-num.fr/interface/phototheque/340/113594.jpg", contentdImageEtText.get(3));
+        assertEquals("http://ccj-epicherchel.huma-num.fr/interface/phototheque/340/113594.jpg", contentdImageEtText.get(3).get(0));
         //assertEquals("TALIS ▴ ER ▴ AT", contentdImageEtText.get(1));
         //assertEquals("Tel il était!", contentdImageEtText.get(2));
     }
@@ -67,13 +66,13 @@ class SITest {
     }*/
     @Test
     void testCreateEpigraphie () throws ParseException, ListeVide {
-        ArrayList<String> contentList = new ArrayList<>();
-        contentList.add("42");
-        contentList.add("philippe");
-        contentList.add("2022-05-05");
-        contentList.add("http://ccj-epicherchel.huma-num.fr/interface/phototheque/42/88617.jpg");
-        contentList.add("Texte");
-        contentList.add("Traduction");
+        List<List<String>> contentList = new ArrayList<>();
+        contentList.add(List.of("42"));
+        contentList.add(List.of("philippe"));
+        contentList.add(List.of("2022-05-05"));
+        contentList.add(List.of("http://ccj-epicherchel.huma-num.fr/interface/phototheque/42/88617.jpg"));
+        contentList.add(List.of("Traduction"));
+        contentList.add(List.of("Texte"));
 
         Epigraphe expectedEpigraphe = new Epigraphe();
         expectedEpigraphe.setId(42);
@@ -81,17 +80,16 @@ class SITest {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         expectedEpigraphe.setDate(format.parse("2022-05-05"));
         expectedEpigraphe.setImgUrl("http://ccj-epicherchel.huma-num.fr/interface/phototheque/42/88617.jpg");
-        expectedEpigraphe.setText("Texte");
+        expectedEpigraphe.setText(List.of("Texte"));
         expectedEpigraphe.setTranslation("Traduction");
 
         Epigraphe resultEpigraphe = SI.CreateEpigraphie(contentList);
 
-        assertEquals(Integer.parseInt(contentList.get(0)), expectedEpigraphe.getId());
+        assertEquals(Integer.parseInt(contentList.get(0).get(0)), expectedEpigraphe.getId());
+        assertEquals(resultEpigraphe.getId(), expectedEpigraphe.getId());
         assertEquals(resultEpigraphe.getDate(), expectedEpigraphe.getDate());
         assertEquals(resultEpigraphe.getName(), expectedEpigraphe.getName());
-        assertEquals(resultEpigraphe.getTranslation(), expectedEpigraphe.getTranslation());
-        assertEquals(resultEpigraphe.getText(), expectedEpigraphe.getText());
-        assertEquals(resultEpigraphe.getName(), expectedEpigraphe.getName());
+        assertEquals(resultEpigraphe.getImgUrl(), expectedEpigraphe.getImgUrl());
         assertEquals(resultEpigraphe.getTranslation(), expectedEpigraphe.getTranslation());
         assertEquals(resultEpigraphe.getText(), expectedEpigraphe.getText());
     }

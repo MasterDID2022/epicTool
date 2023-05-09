@@ -22,11 +22,11 @@ public class Epigraphe {
     private LocalDate fetchDate;
     private String translation;
     private String name;
-    private String text;
+    private List<String> text;
     @OneToMany(mappedBy = "epigraphe", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Annotation> annotations;
 
-    private Epigraphe ( int id, String imgUrl, Date date, LocalDate fetchDate, String translation, String name, String text, List<Annotation> annotations ) {
+    private Epigraphe ( int id, String imgUrl, Date date, LocalDate fetchDate, String translation, String name, List<String> text, List<Annotation> annotations ) {
         this.id = id;
         this.imgUrl = imgUrl;
         this.date = date;
@@ -36,7 +36,7 @@ public class Epigraphe {
         this.text = text;
         this.annotations = annotations;
     }
-    private Epigraphe ( int id, String imgUrl, Date date, LocalDate fetchDate, String translation, String name, String text) {
+    private Epigraphe ( int id, String imgUrl, Date date, LocalDate fetchDate, String translation, String name, List<String> text) {
         this.id = id;
         this.imgUrl = imgUrl;
         this.date = date;
@@ -49,10 +49,10 @@ public class Epigraphe {
     public Epigraphe () {
     }
 
-    public static Epigraphe of ( int id, String imgUrl, Date date, LocalDate fetchDate, String translation, String name, String text, List<Annotation> annotations ) {
+    public static Epigraphe of ( int id, String imgUrl, Date date, LocalDate fetchDate, String translation, String name, List<String> text, List<Annotation> annotations ) {
         return new Epigraphe(id, imgUrl, date, fetchDate, translation, name, text, annotations);
     }
-    public static Epigraphe of ( int id, String imgUrl, Date date, LocalDate fetchDate, String translation, String name, String text ) {
+    public static Epigraphe of ( int id, String imgUrl, Date date, LocalDate fetchDate, String translation, String name, List<String> text ) {
         return new Epigraphe(id, imgUrl, date, fetchDate, translation, name, text);
     }
 
