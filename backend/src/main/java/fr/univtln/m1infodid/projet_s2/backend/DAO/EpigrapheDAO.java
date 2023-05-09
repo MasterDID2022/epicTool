@@ -8,7 +8,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import lombok.extern.slf4j.Slf4j;
 
-import java.sql.*;
+import java.sql.SQLException;
 import java.util.List;
 
 @Slf4j
@@ -17,14 +17,13 @@ public class EpigrapheDAO implements AutoCloseable {
 
     private EntityManager entityManager;
 
-    public static EpigrapheDAO create ( EntityManager entityManager ) {
-        return new EpigrapheDAO(entityManager);
-    }
-
     private EpigrapheDAO ( EntityManager entityManager ) {
         this.entityManager = entityManager;
     }
 
+    public static EpigrapheDAO create ( EntityManager entityManager ) {
+        return new EpigrapheDAO(entityManager);
+    }
 
     /**
      * List of all the epigraphs.
