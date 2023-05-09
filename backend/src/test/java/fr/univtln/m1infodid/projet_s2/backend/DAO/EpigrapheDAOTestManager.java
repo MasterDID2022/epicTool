@@ -7,9 +7,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 public abstract class EpigrapheDAOTestManager {
-     EntityManagerFactory emf;
-     EntityManager em;
-     EpigrapheDAO epigrapheDAO;
+     protected EntityManagerFactory emf;
+     protected EntityManager em;
+     protected EpigrapheDAO epigrapheDAO;
 
     @BeforeEach
     public void setUp () {
