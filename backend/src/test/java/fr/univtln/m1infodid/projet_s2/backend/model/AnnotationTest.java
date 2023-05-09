@@ -6,22 +6,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AnnotationTest {
     @Test
-    void shouldReturnAnnotation(){
+    void retourneAnnotation(){
         assertEquals(Annotation.of(1,1).getClass(),Annotation.class);
     }
 
     @Test
-    void shouldAddPoint(){
+    void ajoutPointTest(){
         Annotation annotation = Annotation.of(1,1);
-        int lenAvantChangement = annotation.getListCoordonesPoints().size();
+        int avantChangement = annotation.getListCoordonesPoints().size();
         annotation.addPoints(1,1);
-        assertEquals(lenAvantChangement+1,annotation.getListCoordonesPoints().size());
+        assertEquals(avantChangement+1,annotation.getListCoordonesPoints().size());
     }
 
     @Test
-    void shouldPrintAnnotation(){
-        Annotation annotation = Annotation.of(1,1);
-        assertEquals("Annotation{idAnnotation=1, idEpigraphe=1, listCoordonesPoints=[]}",annotation.toString());
+    void afficheAnnotation(){
+        Annotation annotation = Annotation.of(1);
+        assertEquals("Annotation{idAnnotation=0, idEpigraphe=1, listCoordonesPoints=[]}",annotation.toString());
     }
 
 

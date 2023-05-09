@@ -40,8 +40,8 @@ public class Api {
 			JsonNode annotations = rootNode.get("annotations");
 			for (JsonNode jsonPoints : annotations) {
 				for (JsonNode coordonner : jsonPoints) {
-					Integer y = (Integer.parseInt(String.valueOf(coordonner.toString().charAt(1))));
-					Integer x = (Integer.parseInt(String.valueOf(coordonner.toString().charAt(3))));
+					double y = (Double.parseDouble(String.valueOf(coordonner.toString().charAt(1))));
+					double x = (Double.parseDouble(String.valueOf(coordonner.toString().charAt(3))));
 					annotation.get().addPoints(x, y);
 				}
 			}

@@ -32,11 +32,10 @@ final class EpigrapheDAOTest extends EpigrapheDAOTestManager {
     void PersistIdTest () {
         Epigraphe epigraphe = epigrapheDAO.persistID(-1);
         assertEquals(epigraphe, epigrapheDAO.findById(-1));
-
     }
 
     @Test
-    void removeTest () {
+    void removeTestId () {
         epigrapheDAO.persistID(-3);
         final int size_before = epigrapheDAO.findAll().size();
         assertDoesNotThrow(() -> epigrapheDAO.remove(-3));
@@ -56,9 +55,9 @@ final class EpigrapheDAOTest extends EpigrapheDAOTestManager {
 
     @Test
     void getEpigrapheTest() throws Exception {
-        EpigrapheDAO epigrapheDAO = EpigrapheDAO.create(em);
         Epigraphe epigraphe = epigrapheDAO.getEpigraphe(4);
-        assertEquals(epigraphe,epigrapheDAO.getEpigraphe(4));
+        epigraphe.setFetchDate(LocalDate.now().plusDays(3));
+        assertNotEquals(epigraphe,epigrapheDAO.getEpigraphe(4));
         epigrapheDAO.remove(4);
     }
 
