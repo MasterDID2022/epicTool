@@ -27,3 +27,13 @@
     -fx-font-size: 30px;
     -fx-text-fill: -fx-white;
 }
+#tradLabel {
+    -fx-font-family: "Product Sans Bold";
+    -fx-font-size: 10px;
+    -fx-text-fill: -fx-white;
+}
+#tradu {
+    -fx-font-family: "Product Sans Bold";
+    -fx-font-size: 13px;
+    -fx-text-fill: -fx-black;
+}
