@@ -8,31 +8,35 @@ import org.junit.jupiter.api.Test;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class SITest {
     String id = "340";
     String xmlUrl = "http://ccj-epicherchel.huma-num.fr/interface/fiche_xml2.php?id=" + id;
-    ArrayList<String> contentdImageEtText = SI.extractTextAndImageFromXml(id, xmlUrl);
+    List<String> contentdImageEtText = SI.extractTextAndImageFromXml(id, xmlUrl);
 
-    SITest() throws Exception {
+    SITest () throws Exception {
     }
 
     @Test
-    void testGetImgUrlWithValidParameters() {
+    void testGetImgUrlWithValidParameters () {
         String id = "42";
         String imgNumber = "3";
         String expectedUrl = "http://ccj-epicherchel.huma-num.fr/interface/phototheque/42/3.jpg";
         String actualUrl = SI.getImgUrl(id, imgNumber);
         assertEquals(expectedUrl, actualUrl);
     }
-    @Test
 
-    void testExtractTextAndImageFromXmlSize() {
+    @Test
+    void testExtractTextAndImageFromXmlSize () {
 
         // Vérification que la taille de la liste est correcte
         assertEquals(6, contentdImageEtText.size());
     }
+
     /*@Test
     void testExtractTextAndImageFromXmlUrl() {
         // Vérification que le troisieme element est de type url
@@ -40,18 +44,20 @@ class SITest {
         assertEquals(true,contentdImageEtText.get(3).matches(regex) );
     }*/
     @Test
-    void testExtractTextAndImageFromXmlOthers() {
+    void testExtractTextAndImageFromXmlOthers () {
         // Vérification des autres elements
-        for(int i =0; i<5; i++) {
+        for (int i = 0; i < 5; i++) {
             assertNotNull(contentdImageEtText.get(i));
         }
     }
+
     @Test
-    void testExtractTextAndImageFromXmlValidOutput() {
+    void testExtractTextAndImageFromXmlValidOutput () {
         assertEquals("http://ccj-epicherchel.huma-num.fr/interface/phototheque/340/113594.jpg", contentdImageEtText.get(3));
         //assertEquals("TALIS ▴ ER ▴ AT", contentdImageEtText.get(1));
         //assertEquals("Tel il était!", contentdImageEtText.get(2));
     }
+
     /*@Test
     void testExtractTextAndImageFromXmlInvalidUrl() throws Exception {
         String id = "340";
@@ -60,7 +66,7 @@ class SITest {
         assertTrue(contentdImageEtText.isEmpty());
     }*/
     @Test
-    void testCreateEpigraphie() throws ParseException, ListeVide {
+    void testCreateEpigraphie () throws ParseException, ListeVide {
         ArrayList<String> contentList = new ArrayList<>();
         contentList.add("42");
         contentList.add("philippe");
