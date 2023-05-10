@@ -90,7 +90,7 @@ public class Api {
      *
      * @return String de message de retour
      */
-    public String postAnnotations(String annotationsJson) {
+    public static String postAnnotations(String annotationsJson) {
         ObjectMapper objectMapper = new ObjectMapper();
         String annotationJson = "";
         try {

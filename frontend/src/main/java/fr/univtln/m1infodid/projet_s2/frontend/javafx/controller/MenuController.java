@@ -69,6 +69,29 @@ public class MenuController implements Initializable {
         Stage primaryStage = (Stage) anchorPane.getScene().getWindow();
         PageVisualisationController visualisation = SceneController.switchToPageVisualisation(primaryStage);
         String url = Api.sendRequestOf(validId);
+
+        String fich = Api.postAnnotations("\"idEpigraphe\":\"1\",\n" +
+                "  \"idAnnotation\":\"42\",\n" +
+                "  \"annotations\":{\n" +
+                "    \"1\":{\n" +
+                "      \"x\":[1,2],\n" +
+                "      \"y\":[4,2]\n" +
+                "    },\n" +
+                "    \"2\":{\n" +
+                "      \"x\":[1,2],\n" +
+                "      \"y\":[4,2]\n" +
+                "    },\n" +
+                "    \"3\":{\n" +
+                "      \"x\":[1,2],\n" +
+                "      \"y\":[4,2]\n" +
+                "    },\n" +
+                "    \"4\":{\n" +
+                "      \"x\":[1,2],\n" +
+                "      \"y\":[4,2]\n" +
+                "    }\n" +
+                "  }\n" +
+                "}");
+
         visualisation.setupVisualEpigraphe("", url, Date.from(Instant.now()), "", "");
         //((PageVisualisationController) visualisation).setupVisualEpigraphe(0,url,"osef","osef");
     }

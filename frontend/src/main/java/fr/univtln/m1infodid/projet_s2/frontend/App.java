@@ -13,6 +13,6 @@ public class App {
     public static void main ( String[] args ) {
         log.info("Hello World!");
         Serveur.lanceur();
-        Application.launch(MainApp.class); // lance l'application javaFX
+        //Application.launch(MainApp.class); // lance l'application javaFX
     }
 }
