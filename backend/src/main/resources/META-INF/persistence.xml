@@ -9,7 +9,7 @@
         <class>fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://db:5432/epigraphsBDD"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://127.0.0.1:5432/epigraphsBDD"/>
             <property name="jakarta.persistence.jdbc.user" value="postgres"/>
             <property name="jakarta.persistence.jdbc.password" value="test"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>

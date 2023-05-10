@@ -20,7 +20,7 @@ public class Serveur {
      * du front end
      */
     public static void lanceur () {
-        final ResourceConfig rc = new ResourceConfig().packages("fr.univtln.m1infodid.projet_s2.api");
+        final ResourceConfig rc = new ResourceConfig().packages("fr.univtln.m1infodid.projet_s2.frontend.server");
         final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
         log.info("l'API rest est active <C-c> pour la fermer");
     }
