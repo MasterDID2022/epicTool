@@ -64,4 +64,18 @@ public final class SceneController {
         T controller = sceneSwitch(stage, "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/page-visualisation.fxml", "/styles/page-visualisation.css", 780, 504);
         return controller;
     }
+
+    /**
+     * Cette méthode permet de changer de scène vers la page du formulaire
+     *
+     * @param stage la Scène principale de l'application à modifié
+     * @return la Scène modifié
+     * @throws IOException renvoi une erreur si le fichier FXML du menu n'a pas pu être chargé
+     */
+    public static <T> T switchToPageFormulaire ( Stage stage ) throws IOException {
+        T controller = sceneSwitch(stage, "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/formulaire.fxml", "/styles/formulaire.css", 780, 504);
+        return controller;
+    }
+
+
 }
