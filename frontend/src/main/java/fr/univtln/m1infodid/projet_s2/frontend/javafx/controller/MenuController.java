@@ -70,6 +70,11 @@ public class MenuController implements Initializable {
         String anno = Api.postAnnotations("{\"idEpigraphe\":\"43\",\"idAnnotation\":\"43\",\"annotations\":{\"1\":{\"x\":[1,2],\"y\":[4,2]},\"2\":{\"x\":[1,2],\"y\":[4,2]},\"3\":{\"x\":[1,2],\"y\":[4,2]},\"4\":{\"x\":[1,2],\"y\":[4,2]}}}");
         visualisation.setupVisualEpigraphe("", url, "", "Untermann (J.), Elementos de un atlas antroponimico de la Hispania antigua, Madrid, 1965, p. 159 ");
         //((PageVisualisationController) visualisation).setupVisualEpigraphe(0,url,"osef","osef");
+
+        //how to use it normalement
+        Api.postFormulaire("{\"idFormulaire\":\"1\",\"nomFormulaire\":\"AA\",\"prenomFormulaire\":\"\"CC\",\"emailFormulaire\":\"test_email@gmail.com\",\"affiliationFormulaire\":\"prof\",\"commentaireFormulaire\":\"no!\"}");
+
+
     }
 
     /**
