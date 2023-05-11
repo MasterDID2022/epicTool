@@ -31,10 +31,12 @@ class ApiTest {
                 "    }\n" +
                 "  }\n" +
                 "}";
+
         Api api = new Api();
         Response r = api.receiveAnnotation(inputJson);
         assertEquals(r.toString(), Response.ok().build().toString());
     }
+
 
     @Test
     void shouldNotReturnAcorretAnnotation(){
@@ -60,6 +62,39 @@ class ApiTest {
                 "}";
         Api api = new Api();
         Response r = api.receiveAnnotation(inputJson);
+        assertNotEquals(r.toString(), Response.ok().build().toString());
+    }
+
+
+    @Test
+    void shouldReturnAcorretFormulaire(){
+        String inputJson = "{\n" +
+                "  \"idFormulaire\":\"1\",\n" +
+                "  \"nomFormulaire\":\"A\",\n" +
+                "  \"prenomFormulaire\":\"B\",\n" +
+                "  \"emailFormulaire\":\"test@gmail.com\",\n" +
+                "  \"affiliationFormulaire\":\"prof\",\n" +
+                "  \"commentaireAffiliation\":\"none\"" +
+                "}";
+
+        Api api = new Api();
+        Response r = api.receiveFormulaire(inputJson);
+        assertEquals(r.toString(), Response.ok().build().toString());
+    }
+
+
+    @Test
+    void shouldNotReturnAcorretFormulaire(){
+        String inputJson = "{\n" +
+                "  \"idFormulaire\":\"1\",\n" +
+                "  \"nomFormulaire\":\"A\",\n" +
+                "  \"prenomFormulaire\":\"B\",\n" +
+                "  \"emailFormulaire\":\"test@gmail.com\",\n" +
+                "  \"affiliationFormulaire\":\"prof\"\n" +
+                "  \"commentaireAffiliation\":\"none\"" +
+                "}";
+        Api api = new Api();
+        Response r = api.receiveFormulaire(inputJson);
         assertNotEquals(r.toString(), Response.ok().build().toString());
     }
 

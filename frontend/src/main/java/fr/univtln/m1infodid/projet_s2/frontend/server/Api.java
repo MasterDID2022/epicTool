@@ -14,9 +14,8 @@ import lombok.extern.slf4j.Slf4j;
  * Api REST pour les epigraphe
  */
 @Slf4j
-@Path("epigraphe")
 public class Api {
-	static final String URI_API_BACKEND = "http://127.0.0.1:8080/api/epigraphe/";
+	static final String URI_API_BACKEND = "http://127.0.0.1:8080/api/epicTools/";
 
     /**
      * Methode static pour recupere le fichier XML de l'épigraphe d'ID id
@@ -29,7 +28,7 @@ public class Api {
     public static String sendRequestOf ( Integer id ) {
         String epigraphJson = "";
         try (Client client = ClientBuilder.newClient()) {
-            Response response = client.target(URI_API_BACKEND + id.toString())
+            Response response = client.target(URI_API_BACKEND + "epigraphe/" + id.toString())
                     .request(MediaType.APPLICATION_JSON)
                     .get();
             if (response.getStatus() != 200) {
@@ -67,7 +66,7 @@ public class Api {
         try {
             try (Client client = ClientBuilder.newClient()) {
                 Entity<String> entity = Entity.entity(annotationsJson, MediaType.APPLICATION_JSON);
-                Response response = client.target(URI_API_BACKEND + "annotation")
+                Response response = client.target(URI_API_BACKEND +"epigraphe/" + "annotation")
                         .request(MediaType.APPLICATION_JSON)
                         .post(entity);
                 if (response.getStatus() != 200) {
@@ -82,4 +81,36 @@ public class Api {
         }
         return annotationJson;
     }
+
+    /**
+     * Methode qui gere les requetes REST post pour les formulaires
+     * Prend les formulaires et les renvoie vers le back
+     *
+     * @return String de message de retour
+     */
+    public static String postFormulaire(String formulaireJson) {
+        String formJson = "";
+        try {
+            try (Client client = ClientBuilder.newClient()) {
+                Entity<String> entity = Entity.entity(formulaireJson, MediaType.APPLICATION_JSON);
+                Response response = client.target(URI_API_BACKEND + "formulaire" )
+                        .request(MediaType.APPLICATION_JSON)
+                        .post(entity);
+                if (response.getStatus() != 200) {
+                    throw new RuntimeException("La requête a échoué : code d'erreur HTTP " + response.getStatus());
+                }
+                formJson = response.readEntity(String.class);
+            } catch (Exception e) {
+                log.warn("Erreur lors de l'envoi des données");
+            }
+        } catch (Exception e) {
+            log.warn("Erreur lors de la lecture de la chaîne JSON");
+        }
+        return formJson;
+    }
 }
+
+
+
+
+
