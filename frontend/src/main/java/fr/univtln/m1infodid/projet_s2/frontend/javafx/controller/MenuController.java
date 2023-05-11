@@ -1,12 +1,14 @@
 package fr.univtln.m1infodid.projet_s2.frontend.javafx.controller;
 
 import fr.univtln.m1infodid.projet_s2.frontend.server.Api;
+import fr.univtln.m1infodid.projet_s2.frontend.server.Verifcation;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,27 +22,28 @@ import java.util.ResourceBundle;
 @Slf4j
 public class MenuController implements Initializable {
 
-    private static final String NUMBER_ONLY_REGEX = "\\d+"; // [0-9]+
-
+    @FXML
+    private TextField inputMail;
+    @FXML
+    private Label connecter;
+    @FXML
+    private TextField inputPassword;
     @FXML
     private AnchorPane anchorPane;
     @FXML
     private TextField inputBar;
-
     @FXML
     private Parent alert;
     @FXML
     private AlertController alertController;
 
     @Override
-    public void initialize ( URL location, ResourceBundle resources ) {
+    public void initialize(URL location, ResourceBundle resources) {
         alert.setDisable(true);
         alertController.hideAlertPane();
-
         Platform.runLater(() -> anchorPane.requestFocus());
-        inputBar.setText("");
         anchorPane.widthProperty().addListener(
-                ( obs, oldValue, newValue ) -> alertController.setScreenWidth(newValue.doubleValue()));
+                (obs, oldValue, newValue) -> alertController.setScreenWidth(newValue.doubleValue()));
     }
 
     /**
@@ -52,9 +55,8 @@ public class MenuController implements Initializable {
      *                     de la nouvelle scène
      */
     @FXML
-    private void numFicheBtnOnClick () throws IOException {
-
-        if (!isInputOnlyInteger(inputBar.getText())) {
+    private void numFicheBtnOnClick() throws IOException {
+        if (!Verifcation.isInputOnlyInteger(inputBar.getText())) {
             alert.setDisable(false);
             alertController.showNotValidId();
             return;
@@ -64,27 +66,45 @@ public class MenuController implements Initializable {
         log.info("VALID ID : " + validId);
         // appeler la méthode pour récupérer le fichier XML à partir de cet id
         // pour le test uniquement, changement de scène auto, à supprimer plus tard
-        Stage primaryStage = (Stage) anchorPane.getScene().getWindow();
-        PageVisualisationController visualisation = SceneController.switchToPageVisualisation(primaryStage);
-        String url = Api.sendRequestOf(validId);
-        String anno = Api.postAnnotations("{\"idEpigraphe\":\"43\",\"idAnnotation\":\"43\",\"annotations\":{\"1\":{\"x\":[1,2],\"y\":[4,2]},\"2\":{\"x\":[1,2],\"y\":[4,2]},\"3\":{\"x\":[1,2],\"y\":[4,2]},\"4\":{\"x\":[1,2],\"y\":[4,2]}}}");
-        visualisation.setupVisualEpigraphe("", url, "", "Untermann (J.), Elementos de un atlas antroponimico de la Hispania antigua, Madrid, 1965, p. 159 ");
-        //((PageVisualisationController) visualisation).setupVisualEpigraphe(0,url,"osef","osef");
-
-        //how to use it normalement
-        Api.postFormulaire("{\"idFormulaire\":\"1\",\"nomFormulaire\":\"AA\",\"prenomFormulaire\":\"\"CC\",\"emailFormulaire\":\"test_email@gmail.com\",\"affiliationFormulaire\":\"prof\",\"commentaireFormulaire\":\"no!\"}");
-
-
+        Stage primaryStage = (Stage) anchorPane.getScene()
+                .getWindow();
+        SceneController.switchToPageVisualisation(primaryStage);
+        Api.sendRequestOf(validId);
     }
 
+
     /**
-     * Vérifie si l'entrée est valide selon le regex, celle ci vérifie que l'entrée
-     * est bien un nombre
-     *
-     * @param input la chaîne de caractère à tester
-     * @return le résultat du regex, boolean
+     * Methode pour changer la page vers le formulaire,
+     * lors du click du bouton rejoindre
      */
-    private boolean isInputOnlyInteger ( String input ) {
-        return input.matches(NUMBER_ONLY_REGEX);
+    public void joinButtonPressed() throws IOException {
+        Stage primaryStage = (Stage) anchorPane.getScene()
+                .getWindow();
+        SceneController.switchToPageFormulaire(primaryStage);
+    }
+
+    public void connexionButtonPressed() {
+        String mail = inputMail.getText();
+        // String password = inputPassword.getText();Pour l'authentification
+        testMailCorrectness(mail);
+        inputMail.setText("");
+        inputPassword.setText("");
+    }
+
+
+    /**
+     * Test la validiter d'un mail avec la Classe verification, et indique sur l'UI l'échec
+     *
+     * @param email
+     */
+    public void testMailCorrectness(String email) {
+        if (!Verifcation.isInputAvalideEmail(email)) {
+            alert.setDisable(false);
+            alertController.showNotValidEmail();
+            inputMail.setStyle("-fx-control-inner-background: #2F3855; -fx-text-inner-color: #f4c4c4; -fx-prompt-text-fill: grey; -fx-text-box-border: #803C3C; -fx-background-radius: 10 10 0 0;");
+        } else {
+            inputMail.setStyle("-fx-control-inner-background: #2F3855; -fx-text-inner-color: #f4c4c4; -fx-prompt-text-fill: grey; -fx-text-box-border: #2F3855; -fx-background-radius: 10 10 0 0;");
+
+        }
     }
 }

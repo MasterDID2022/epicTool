@@ -2,9 +2,11 @@ package fr.univtln.m1infodid.projet_s2.backend.DAO;
 
 import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
 import jakarta.persistence.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+@Slf4j
 public class
 FormulaireDAO {
     private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("EpiPU");
@@ -28,6 +30,7 @@ FormulaireDAO {
             }
             throw e;
         } finally {
+            log.info("Persistance formulaire");
             em.close();
         }
     }

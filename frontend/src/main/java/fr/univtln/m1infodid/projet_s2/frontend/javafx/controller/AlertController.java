@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -34,7 +35,6 @@ public class AlertController implements Initializable {
     @Override
     public void initialize ( URL arg0, ResourceBundle arg1 ) {
         alertImg.setImage(new Image("/images/warning.png"));
-
         setupAnimations();
     }
 
@@ -42,16 +42,12 @@ public class AlertController implements Initializable {
      * S'occupe d'initialiser les animations de l'alerte (typiquement l'opacité qui va graduellement diminuer après une pause et la translation)
      */
     private void setupAnimations () {
-
         translate = new TranslateTransition(Duration.millis(250), alertPane);
         translate.setByX(-PIXEL_X_TRANSLATION);
-
         FadeTransition fadeOut = new FadeTransition(Duration.millis(1300), alertPane);
         fadeOut.setFromValue(1);
         fadeOut.setToValue(0);
-
         fadeOutSequence = new SequentialTransition(new PauseTransition(Duration.millis(4200)), fadeOut);
-
         fadeOutSequence.setOnFinished(e -> hideAlertPane());
     }
 
@@ -61,7 +57,6 @@ public class AlertController implements Initializable {
     private void placeAlert () {
         alertPane.setLayoutX(screenWidth - alertPane.getLayoutBounds().getMaxX() + PIXEL_X_TRANSLATION);
         alertPane.setLayoutY(25);
-
         alertPane.setTranslateX(0);
         alertPane.setTranslateY(0);
     }
@@ -113,6 +108,20 @@ public class AlertController implements Initializable {
      */
     public void showNotValidId () {
         showAlert("Le n° de Fiche ÉpiCherchell n'est pas valide.");
+    }
+
+
+    /**
+     * Montre une alerte pour un ou plusieurs chmaps non remplis
+     */
+    public void showFillField () {
+        showAlert("Remplissez tout les champs");
+    }
+    /**
+     * Montre une alerte pour un numéro de fiche non valide
+     */
+    public void showNotValidEmail () {
+        showAlert("Email invalide");
     }
 
     /**

@@ -1,6 +1,7 @@
 package fr.univtln.m1infodid.projet_s2.backend.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import fr.univtln.m1infodid.projet_s2.backend.DAO.FormulaireDAO;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -125,7 +126,7 @@ public class Api {
 	public Response receiveFormulaire(String formulaireJson) {
 		Optional<Formulaire> formulaire = createFormulaire(formulaireJson);
 		if (formulaire.isPresent()){
-			log.info(formulaire.toString());// Pour DAO persister ici
+			FormulaireDAO.createFormulaire(formulaire.get());
 			return Response.ok().build();
 		}
 		return Response.notModified().build();

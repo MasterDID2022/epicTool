@@ -34,7 +34,6 @@ public class Annotation {
      * @deprecated  Should not be used, the idAnnotation is ignored.
      * @return
      */
-    @Deprecated(forRemoval = true)
     public static Annotation of(Integer idAnnotation,Integer idEpigraphe){
         return new Annotation(idEpigraphe);
     }
