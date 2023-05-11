@@ -11,30 +11,82 @@
 
 #mainPane {
     -fx-font-family: "Product Sans";
-
     -fx-background-color: -fx-dark-blue;
 }
 
-#inputBar {
-    -fx-font-size: 13px;
-    -fx-border-radius: 10 0 0 10;
-    -fx-background-radius: 10 0 0 10;
-
-    -fx-background-color: -fx-blue;
-    -fx-text-fill: -fx-white;
+#inputMail{
+    -fx-control-inner-background: #2F3855; -fx-text-inner-color: #f4c4c4; -fx-prompt-text-fill: grey; -fx-text-box-border: #2F3855; -fx-background-radius: 10 10 0 0;
 }
 
-#acceptBtn {
+#buttonConection{
     -fx-font-family: "Product Sans Bold";
-
-    -fx-border-radius: 10 10 0 0;
-    -fx-background-radius: 10 10 0 0;
-
+    -fx-background-radius: 0 0 10 10;
     -fx-background-color: -fx-green;
     -fx-text-fill: -fx-white;
 }
 
-#acceptBtn:hover {
+#buttonRejoindre{
+    -fx-font-family: "Product Sans Bold";
+    -fx-background-radius: 30;
+    -fx-border-radius: 300;
+    -fx-alignment: center;
+    -fx-font-size: 70%;
+    -fx-background-color: -fx-green;
+    -fx-text-fill: -fx-white;
+}
+
+
+#inputPassword{
+    -fx-control-inner-background: #2F3855;
+    -fx-text-inner-color: #f4c4c4;
+    -fx-prompt-text-fill: grey;
+    -fx-text-box-border: #2F3855;
+
+}
+
+#inputBar {
+    -fx-border-radius: 10 0 0 10;
+    -fx-background-radius: 10 0 0 10;
+    -fx-background-color: -fx-blue;
+    -fx-text-fill: -fx-white;
+}
+
+
+#acceptBtn {
+    -fx-font-family: "Product Sans Bold";
+    -fx-border-radius: 10 10 0 0;
+    -fx-background-radius: 10 10 0 0;
+    -fx-background-color: -fx-green;
+    -fx-text-fill: -fx-white;
+}
+
+
+
+
+
+#acceptBtn:hover,
+#buttonConection:hover,
+#buttonRejoindre:hover{
     -fx-cursor: hand;
     -fx-background-color: -fx-green-hover;
+}
+
+
+
+#title{
+    -fx-font-family: "Product Sans Light";
+}
+
+#connecter,
+#joinTitle,
+#visiteurTitle{
+    -fx-font-family: "Product Sans Bold";
+}
+
+#connecterText,
+#joinText,
+#visiteurText
+{
+    -fx-font-family: "Product Sans Light";
+    -fx-font-style: italic;
 }
