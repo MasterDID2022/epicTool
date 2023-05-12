@@ -1,5 +1,6 @@
 package fr.univtln.m1infodid.projet_s2.backend.model;
 
+import fr.univtln.m1infodid.projet_s2.backend.SI;
 import jakarta.persistence.*;
 import lombok.Generated;
 import lombok.Getter;
@@ -15,17 +16,12 @@ import java.util.Objects;
 @Entity
 public class Annotation {
     @Id
-    @Generated
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int idAnnotation;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "idEpigraphe")
     private Epigraphe epigraphe;
-    private int idEpigraphe;
-    @PostLoad
-    void postload() {
-        if (epigraphe != null)  idEpigraphe= epigraphe.getId();
-    }
     public Annotation () {
     }
     @ElementCollection
@@ -55,8 +51,13 @@ public class Annotation {
      */
 
     private Annotation(int idEpigraphe){
-        this.idEpigraphe = idEpigraphe;
-        this.listCoordonesPoints = new ArrayList<>();
+        try {
+            this.epigraphe = SI.CreateEpigraphie(idEpigraphe);
+            this.listCoordonesPoints = new ArrayList<>();
+        }
+        catch (Exception e) {
+            throw new IllegalStateException("Could not get Epigraph");
+        }
     }
 
 
@@ -74,7 +75,7 @@ public class Annotation {
     public String toString() {
         return "Annotation{" +
                 "idAnnotation=" + idAnnotation +
-                ", idEpigraphe=" + idEpigraphe +
+                ", idEpigraphe=" +getEpigraphe().getId() +
                 ", listCoordonesPoints=" + listCoordonesPoints +
                 '}';
     }
