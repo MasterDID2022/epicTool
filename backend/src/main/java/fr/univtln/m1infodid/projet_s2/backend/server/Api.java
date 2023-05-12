@@ -25,7 +25,7 @@ import java.util.*;
  * Api REST pour les epigraphe
  */
 @Slf4j
-@Path("epiTools")
+@Path("epicTools")
 public class Api {
 	private Optional<Annotation> createAnnotation(String annotationJson) {
 		Optional<Annotation> annotation = Optional.empty();

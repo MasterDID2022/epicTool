@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class Api {
-	static final String URI_API_BACKEND = "http://127.0.0.1:8080/api/epiTools/";
+	static final String URI_API_BACKEND = "http://127.0.0.1:8080/api/epicTools/";
 
     /**
      * Methode static pour recupere le fichier XML de l'épigraphe d'ID id
