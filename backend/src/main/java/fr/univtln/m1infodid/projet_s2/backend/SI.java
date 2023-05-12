@@ -35,14 +35,14 @@ public class SI {
 
 
     /**
-     * @param id        l'id de la fiche
+     * @param id l'id de la fiche
      * @param imgNumber
      * @return l url de l image qui sera egale au chemin imgPath + id + imgNumber
      */
-
     public static String getImgUrl ( String id, String imgNumber ) {
         return imgPath + id + '/' + imgNumber + ".jpg";
     }
+
 
     public static String getFirstImgUrl ( String XMLepigraphe ) {
         String urlImg = "";
@@ -93,8 +93,9 @@ public class SI {
         return urlImg;
     }
 
+
     /**
-     * @param id     l'id de la fiche
+     * @param id l'id de la fiche
      * @param xmlUrl l'url de la fiche
      * @return le contenu des balises image et texte
      */
@@ -106,7 +107,6 @@ public class SI {
             InputStream inputStream = url.openStream();
 
             // la création du Document XML
-
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             dbFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 
@@ -121,42 +121,36 @@ public class SI {
                 Node node = nodeList.item(a);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
-                    if (element.getTagName().equals("text")) {
-                        Element txtElement = (Element) nodeList.item(a + 3);
-                        // l'emplacement de texte sur le fichier xml
-                        contentList.add(txtElement.getTextContent());
+                    switch (element.getTagName()){
+                        //l'emplacement de texte sur le fichier xml
+                        case "text":
+                            contentList.add(nodeList.item(a + 3).getTextContent());break;
+                        //recherche nom auteur
+                        case "persName":
+                            contentList.add(nodeList.item(a).getTextContent());break;
+                        //recherche date
+                        case "date":
+                            contentList.add(((Element) nodeList.item(a)).getAttribute("when"));break;
+                        //recupere l image
+                        case "facsimile":
+                            Node child = nodeList.item(a + 1);
+                            Element firstElement = (Element) child;
+                            //si une seule image existe
+                            if (firstElement.getTagName().equals("graphic"))
+                                contentList.add(firstElement.getAttribute("url"));
+                                //sinon on fait appel a notre fonction
+                            else if (firstElement.getTagName().equals("desc")) {
+                                String imgNum = firstElement.getTextContent();
+                                contentList.add(getImgUrl(id, imgNum));
+                            }break;
                     }
-                    //recherche nom auteur
-                    if (element.getTagName().equals("persName")) {
-                        Element txtElement = (Element) nodeList.item(a);
-                        contentList.add(txtElement.getTextContent());
-                    }
-                    //recherche date
-                    if (element.getTagName().equals("date")) {
-                        Element txtElement = (Element) nodeList.item(a);
-                        String whenValue = txtElement.getAttribute("when");
-                        contentList.add(whenValue);
-                    }
+
                     //recupere le contenu de traduction
                     if (element.hasAttribute("type") && element.getAttribute("type").equals("translation")) {
                         contentList.add(element.getTextContent());
                     }
-                    //recupere le contenu de traduction
                     if (element.hasAttribute("when") && element.getAttribute("when").equals("date")) {
                         contentList.add(element.getTextContent());
-                    }
-                    //recupere l image
-                    if (element.getTagName().equals("facsimile")) {
-                        Node child = nodeList.item(a + 1);
-                        Element firstElement = (Element) child;
-                        //si une seule image existe
-                        if (firstElement.getTagName().equals("graphic"))
-                            contentList.add(firstElement.getAttribute("url"));
-                            //sinon on fait appel a notre fonction
-                        else if (firstElement.getTagName().equals("desc")) {
-                            String imgNum = firstElement.getTextContent();
-                            contentList.add(getImgUrl(id, imgNum));
-                        }
                     }
                 }
             }
@@ -168,7 +162,6 @@ public class SI {
         } catch (ParserConfigurationException e) {
             throw new DomParser();
         } catch (SAXException e) {
-
             throw new SaxErreur();
         } catch (Exception e) {
             throw new ExtractionXml();

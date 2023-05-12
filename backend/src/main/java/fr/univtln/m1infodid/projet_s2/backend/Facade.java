@@ -35,7 +35,11 @@ public class Facade {
             throw new RuntimeException(e);
         }
         Epigraphe ep = new Epigraphe();
+        try {
             ep = SI.CreateEpigraphie(contentList);
+        } catch (ListeVide l) {
+            log.info(l.getMessage());
+        }
         return ep;
     }
 
