@@ -1,9 +1,7 @@
 package fr.univtln.m1infodid.projet_s2.backend;
 
-import fr.univtln.m1infodid.projet_s2.backend.SI;
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.ListeVide;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
-import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
@@ -17,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class SITest {
     String id = "340";
     String xmlUrl = "http://ccj-epicherchel.huma-num.fr/interface/fiche_xml2.php?id=" + id;
-    List<String> contentdImageEtText = SI.extractTextAndImageFromXml(id, xmlUrl);
+    List<String> contentdImageEtText = SI.extractContentFromXML(id, xmlUrl);
 
     SITest () throws Exception {
     }
