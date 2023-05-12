@@ -3,6 +3,7 @@ package fr.univtln.m1infodid.projet_s2.backend.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -22,7 +23,7 @@ public class Epigraphe {
     private String translation;
     private String name;
     private String text;
-    @OneToMany(mappedBy = "epigraphe")
+    @OneToMany(mappedBy = "epigraphe", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Annotation> annotations;
 
     private Epigraphe ( int id, String imgUrl, Date date, LocalDate fetchDate, String translation, String name, String text, List<Annotation> annotations ) {

@@ -1,5 +1,6 @@
 package fr.univtln.m1infodid.projet_s2.backend.DAO;
 import fr.univtln.m1infodid.projet_s2.backend.model.Annotation;
+import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
@@ -31,18 +32,17 @@ public class AnnotationDAO implements AutoCloseable{
         return query.getResultList();
     }
 
-    public Annotation persist(int id){
 
-        Annotation annotation = Annotation.of(id, -1);
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        entityTransaction.begin();
-        entityManager.persist(annotation);
-        entityTransaction.commit();
-        return annotation;
-    }
-
-    public Annotation persist(Annotation annotation)
-    {
+    public Annotation persist(Annotation annotation) {
+        Epigraphe epigraphe = annotation.getEpigraphe();
+        try {
+            EpigrapheDAO epigrapheDAO = EpigrapheDAO.create(entityManager); //NOSONAR (L'entity manager sera fermé par la classe)
+            //l'entity manager sera fermé par la suite.
+            annotation.setEpigraphe(epigrapheDAO.getEpigraphe(epigraphe.getId()));
+        }
+        catch (Exception e)  {
+            return null;
+        }
         EntityTransaction entityTransaction = entityManager.getTransaction();
         entityTransaction.begin();
         entityManager.persist(annotation);
@@ -68,6 +68,7 @@ public class AnnotationDAO implements AutoCloseable{
 
     @Override
     public void close() throws Exception {
+        entityManager.close();
 
     }
 }
