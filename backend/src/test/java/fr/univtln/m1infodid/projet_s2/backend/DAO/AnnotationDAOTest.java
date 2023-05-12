@@ -8,7 +8,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-@Disabled(" Pour lancer ce test veuillez remplacer la update par create-drop dans le persistence.xml")
 public class AnnotationDAOTest extends AnnotationDAOTestManager {
 
     @Test
@@ -17,7 +16,7 @@ public class AnnotationDAOTest extends AnnotationDAOTestManager {
         Annotation annotation = Annotation.of(23);
         annotationDAO.persist(annotation);
         assertEquals(annotation,annotationDAO.findById(annotation.getIdAnnotation()));
-        annotationDAO.remove(annotation);
+        assertDoesNotThrow(() ->annotationDAO.remove(annotation));
     }
 
     @Test
@@ -28,20 +27,18 @@ public class AnnotationDAOTest extends AnnotationDAOTestManager {
 
         annotationList = entityManager.createQuery("SELECT A FROM Annotation as A", Annotation.class).getResultList();
         annotationList1 = annotationDAO.findAll();
-        Annotation annotation = annotationDAO.persist( Annotation.of(55));
-
         assertEquals(annotationList,annotationList1);
     }
 
     @Test
     void persistAnnotationTest() throws SQLException {
-        Annotation annotation = annotationDAO.persist( Annotation.of(55));
+        Annotation annotation = annotationDAO.persist(Annotation.of(55));
         assertEquals(annotation,annotationDAO.findById(annotation.getIdAnnotation()));
-        annotationDAO.remove(annotation);
+        assertDoesNotThrow(() ->annotationDAO.remove(annotation));
     }
 
     @Test
-    void removeTestAnnotation() throws SQLException {
+    void removeAnnotation() throws SQLException {
         List<Annotation> size_before = annotationDAO.findAll();
         Annotation annotation = Annotation.of(33);
         annotationDAO.persist(annotation);
