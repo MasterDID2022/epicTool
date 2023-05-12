@@ -81,6 +81,7 @@
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-binding</artifactId>
         </dependency>
+
     </dependencies>
     <build>
         <plugins>
