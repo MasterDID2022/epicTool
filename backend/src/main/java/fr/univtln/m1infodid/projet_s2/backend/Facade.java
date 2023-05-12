@@ -16,7 +16,7 @@ public class Facade {
      */
 
 
-    public Epigraphe createEpigraphieInstanceFromXml ( String id, String xmlUrl ) {
+    public Epigraphe createEpigraphieInstanceFromXml (String id, String xmlUrl ) {
 
         List<String> contentList = new ArrayList<>();
         try {
@@ -35,12 +35,7 @@ public class Facade {
             throw new RuntimeException(e);
         }
         Epigraphe ep = new Epigraphe();
-        try {
             ep = SI.CreateEpigraphie(contentList);
-
-        } catch (ListeVide l) {
-            log.info(l.getMessage());
-        }
         return ep;
     }
 
