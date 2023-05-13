@@ -18,7 +18,7 @@ public class Facade {
 
     public Epigraphe createEpigraphieInstanceFromXml (String id, String xmlUrl ) {
 
-        List<String> contentList = new ArrayList<>();
+        List<List<String>> contentList = new ArrayList<>();
         try {
             contentList = SI.extractContentFromXML(id, xmlUrl);
         } catch (UrlInvalide u) {
