@@ -1,6 +1,10 @@
 package fr.univtln.m1infodid.projet_s2.backend.server;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import jakarta.ws.rs.core.Response;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -86,16 +90,20 @@ class ApiTest {
     @Test
     void shouldNotReturnAcorretFormulaire(){
         String inputJson = "{\n" +
-                "  \"idFormulaire\":\"1\",\n" +
-                "  \"nomFormulaire\":\"A\",\n" +
-                "  \"prenomFormulaire\":\"B\",\n" +
-                "  \"emailFormulaire\":\"test@gmail.com\",\n" +
-                "  \"affiliationFormulaire\":\"prof\"\n" +
-                "  \"commentaireAffiliation\":\"none\"" +
-                "}";
+                "  \"idFormulaire\":\"1\",\n" + "  \"nomFormulaire\":\"A\",\n" + "  \"prenomFormulaire\":\"B\",\n" + "  \"emailFormulaire\":\"test@gmail.com\",\n" + "  \"affiliationFormulaire\":\"prof\"\n" + "  \"commentaireAffiliation\":\"none\"" + "}";
         Api api = new Api();
         Response r = api.receiveFormulaire(inputJson);
         assertNotEquals(r.toString(), Response.ok().build().toString());
     }
 
+    @AfterEach
+    void TearDown () {
+        try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("EpiPU");
+             EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            entityManager.getTransaction().begin();
+            entityManager.createNativeQuery("DELETE from formulaire where id_formulaire = 1;").executeUpdate();
+            entityManager.getTransaction().commit();
+        }
+
+    }
 }

@@ -6,15 +6,13 @@ import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.univtln.m1infodid.projet_s2.backend.DAO.EpigrapheDAO;
 import fr.univtln.m1infodid.projet_s2.backend.SI;
 import fr.univtln.m1infodid.projet_s2.backend.model.Annotation;
 import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.client.Client;
-import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -124,12 +122,15 @@ public class Api {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response receiveFormulaire(String formulaireJson) {
-		Optional<Formulaire> formulaire = createFormulaire(formulaireJson);
-		if (formulaire.isPresent()){
-			FormulaireDAO.createFormulaire(formulaire.get());
-			return Response.ok().build();
-		}
-		return Response.notModified().build();
+		return createFormulaire(formulaireJson).map(formulaire -> {
+			try (EntityManagerFactory emf = Persistence.createEntityManagerFactory("EpiPU"); EntityManager em = emf.createEntityManager(); FormulaireDAO formulaireDAO = FormulaireDAO.create(em)) {
+				formulaireDAO.persist(formulaire);
+				return Response.ok();
+			} catch (Exception e) {
+				return Response.serverError();
+			}
+		}).orElseGet(Response::notModified).build();
 	}
+
 
 }
