@@ -19,7 +19,7 @@ public class Annotation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int idAnnotation;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "idEpigraphe")
     private Epigraphe epigraphe;
     public Annotation () {

@@ -1,7 +1,10 @@
 package fr.univtln.m1infodid.projet_s2.backend.DAO;
 
+import fr.univtln.m1infodid.projet_s2.backend.SI;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -24,41 +27,42 @@ final class EpigrapheDAOTest extends EpigrapheDAOTestManager {
 
     @Test
     void findIdTest () {
-        Epigraphe epigraphe = epigrapheDAO.persistID(-1);
+        Epigraphe epigraphe = epigrapheDAO.persist(Epigraphe.of(-1,"",new Date(),LocalDate.now(),"","",""));
         assertEquals(epigraphe, epigrapheDAO.findById(-1));
     }
 
     @Test
     void PersistIdTest () {
-        Epigraphe epigraphe = epigrapheDAO.persistID(-1);
+        Epigraphe epigraphe = epigrapheDAO.persist(Epigraphe.of(-1,"",new Date(),LocalDate.now(),"","",""));
         assertEquals(epigraphe, epigrapheDAO.findById(-1));
     }
 
     @Test
     void removeTestId () {
-        epigrapheDAO.persistID(-3);
-        final int size_before = epigrapheDAO.findAll().size();
-        assertDoesNotThrow(() -> epigrapheDAO.remove(-3));
-        assertEquals(size_before-1,epigrapheDAO.findAll().size());
+        final List<Epigraphe> size_before = epigrapheDAO.findAll();
+        epigrapheDAO.persist(Epigraphe.of(-3,"",new Date(),LocalDate.now(),"","",""));
+        assertDoesNotThrow(() -> epigrapheDAO.removeById(-3));
+        assertEquals(size_before, epigrapheDAO.findAll());
     }
 
     @Test
     void removeTestEpigraphe()
     {
+        List<Epigraphe> listBefore = epigrapheDAO.findAll();
         Epigraphe epigraphe = Epigraphe.of(-3,"Exemple",new Date(), LocalDate.now(),"Exemple",
                 "Exemple","Exemple");
         epigrapheDAO.persist(epigraphe);
-        List<Epigraphe> size_before = epigrapheDAO.findAll();
         assertDoesNotThrow(() -> epigrapheDAO.remove(epigraphe));
-        assertEquals(size_before,epigrapheDAO.findAll());
+        assertEquals(listBefore, epigrapheDAO.findAll());
     }
 
     @Test
-    void getEpigrapheTest() throws Exception {
-        Epigraphe epigraphe = epigrapheDAO.getEpigraphe(4);
-        epigraphe.setFetchDate(LocalDate.now().plusDays(3));
-        assertNotEquals(epigraphe,epigrapheDAO.getEpigraphe(4));
-        epigrapheDAO.remove(4);
+    void findByIdCacheTest() throws Exception {
+        Epigraphe epigraphe = SI.CreateEpigraphie(4);
+        epigraphe.setFetchDate(LocalDate.now().minusDays(3));
+        epigrapheDAO.persist(epigraphe);
+        assertNotEquals(epigrapheDAO.findById(4),epigraphe);
+        assertDoesNotThrow(()->epigrapheDAO.removeById(4));
     }
 
 

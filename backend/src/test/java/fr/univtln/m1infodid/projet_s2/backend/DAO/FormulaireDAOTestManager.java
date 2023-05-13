@@ -8,10 +8,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
-public abstract class AnnotationDAOTestManager {
+public abstract class FormulaireDAOTestManager {
     private static EntityManagerFactory emf;
-    protected static EntityManager em;
-    protected static AnnotationDAO annotationDAO;
+    private static EntityManager em;
+    protected static FormulaireDAO formulaireDAO;
     @BeforeAll
     static void setUpBeforeClass() {
         emf = Persistence.createEntityManagerFactory("EpiPU");
@@ -19,7 +19,7 @@ public abstract class AnnotationDAOTestManager {
     @BeforeEach
     void setup() {
         em = emf.createEntityManager();
-        annotationDAO = AnnotationDAO.create(em);
+        formulaireDAO = FormulaireDAO.create(em);
     }
     @AfterEach
     void end(){

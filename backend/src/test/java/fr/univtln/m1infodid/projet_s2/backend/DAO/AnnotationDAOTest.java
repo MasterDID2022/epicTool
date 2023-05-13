@@ -1,6 +1,5 @@
 package fr.univtln.m1infodid.projet_s2.backend.DAO;
 import fr.univtln.m1infodid.projet_s2.backend.model.Annotation;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
@@ -8,11 +7,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-public class AnnotationDAOTest extends AnnotationDAOTestManager {
+ class AnnotationDAOTest extends AnnotationDAOTestManager {
 
     @Test
-    void findByIdTest() throws SQLException {
-        AnnotationDAO annotationDAO = AnnotationDAO.create(entityManager);
+    void findByIdTest() {
         Annotation annotation = Annotation.of(23);
         annotationDAO.persist(annotation);
         assertEquals(annotation,annotationDAO.findById(annotation.getIdAnnotation()));
@@ -20,25 +18,24 @@ public class AnnotationDAOTest extends AnnotationDAOTestManager {
     }
 
     @Test
-    void findAllTest() throws SQLException {
-        AnnotationDAO annotationDAO = AnnotationDAO.create(entityManager);
+    void findAllTest() {
         List<Annotation> annotationList;
         List<Annotation> annotationList1;
 
-        annotationList = entityManager.createQuery("SELECT A FROM Annotation as A", Annotation.class).getResultList();
+        annotationList = em.createQuery("SELECT A FROM Annotation as A", Annotation.class).getResultList();
         annotationList1 = annotationDAO.findAll();
         assertEquals(annotationList,annotationList1);
     }
 
     @Test
-    void persistAnnotationTest() throws SQLException {
+    void persistAnnotationTest() {
         Annotation annotation = annotationDAO.persist(Annotation.of(55));
         assertEquals(annotation,annotationDAO.findById(annotation.getIdAnnotation()));
         assertDoesNotThrow(() ->annotationDAO.remove(annotation));
     }
 
     @Test
-    void removeAnnotation() throws SQLException {
+    void removeAnnotation() {
         List<Annotation> size_before = annotationDAO.findAll();
         Annotation annotation = Annotation.of(33);
         annotationDAO.persist(annotation);
