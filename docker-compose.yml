@@ -1,5 +1,15 @@
-version: '3.8'
 services:
+  backend:
+    build:
+      context: ./
+      dockerfile: ./docker/backend/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    links:
+      - db
   db:
     image: postgres:15.2-alpine
     restart: always
@@ -10,14 +20,9 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ~/data:/var/lib/postgresql/data
-    command: postgres -D /var/lib/postgresql/data
-
-  backend:
-    build:
-      context: ./
-      dockerfile: ./docker/backend/Dockerfile
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
+      - ./data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 3s
+      timeout: 3s
+      retries: 15
