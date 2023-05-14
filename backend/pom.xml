@@ -23,9 +23,6 @@
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.language>java</sonar.language>
-        <hikaricp.version>5.0.1</hikaricp.version>
-        <hibernate.version>6.2.2.Final</hibernate.version>
-        <junit.version>5.9.2</junit.version>
         <argline>${project.build.directory}/jacoco.exec</argline>
         <!--sonar.coverage.exclusions>src/main/java/fr/univtln/lhd/fr.univtln.m1infodid.projet_s2.javafx.fr.univtln.m1infodid.projet_s2.frontend.javafx.fr.univtln.m1infodid.projets2.frontend.javafx.fr.univtln.m1infodid.projet_s2.frontend.javafx.view/**,src/main/java/fr/univtln/lhd/controllers/**</sonar.coverage.exclusions-->
 
@@ -83,26 +80,25 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>${hikaricp.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>${hibernate.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-hikaricp</artifactId>
-            <version>${hibernate.version}</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.5.4</version>
         </dependency>
-
+        <dependency>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
