@@ -3,6 +3,7 @@ FROM eclipse-temurin:17-jdk-alpine
 RUN apk add --no-cache bash procps curl tar tree
 
 ENV MAVEN_HOME /usr/share/maven
+ENV MY_PASSWORD=did9projet
 
 COPY --from=maven:3.9.1-eclipse-temurin-17 ${MAVEN_HOME} ${MAVEN_HOME}
 COPY --from=maven:3.9.1-eclipse-temurin-17 /usr/local/bin/mvn-entrypoint.sh /usr/local/bin/mvn-entrypoint.sh
