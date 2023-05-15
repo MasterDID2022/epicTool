@@ -72,7 +72,7 @@ public class Api {
 
 	/**
 	 * Methode de reponse pour une demande du front sur un epigraphe d'ID
-	 * 
+	 *
 	 * @param id d'un epigraphe
 	 */
 	@GET

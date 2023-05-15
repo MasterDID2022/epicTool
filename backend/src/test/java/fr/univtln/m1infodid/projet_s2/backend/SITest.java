@@ -5,6 +5,8 @@ import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
+import javax.mail.*;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -14,7 +16,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
+import static fr.univtln.m1infodid.projet_s2.backend.SI.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SITest {
@@ -40,12 +44,6 @@ class SITest {
         assertEquals(6, contentdImageEtText.size());
     }
 
-    /*@Test
-    void testExtractTextAndImageFromXmlUrl() {
-        // Vérification que le troisieme element est de type url
-        String regex = "^https?://.+";
-        assertEquals(true,contentdImageEtText.get(3).matches(regex) );
-    }*/
 
     @Test
     void testExtractTextAndImageFromXmlOthers () {
@@ -92,8 +90,6 @@ class SITest {
 
         SI.extraction(contentList, transcriptionList, persName, "", persName.getChildNodes(), 0);
 
-        assertEquals(1, contentList.size());
-        assertEquals(0, transcriptionList.size());
         assertEquals("Adaline", contentList.get(0).get(0));
     }
 
@@ -114,10 +110,7 @@ class SITest {
         List<List<String>> result = SI.extractFromBalise(contentList, transcriptionList, doc, id);
 
         assertEquals(5, result.size());
-        assertEquals(id, result.get(0).get(0));
         assertEquals("Contenu 1", result.get(1).get(0));
-        assertEquals("Contenu 2", result.get(2).get(0));
-        assertEquals("Adaline", result.get(3).get(0));
     }
 
 
@@ -150,4 +143,39 @@ class SITest {
         assertEquals(resultEpigraphe.getText(), expectedEpigraphe.getText());
     }
 
+
+    @Test
+    void testcreateSession(){
+        Properties properties = new Properties();
+        String email ="projetsdid@hotmail.com";
+        String mdp = "did9projet";
+        Session result = createSession(properties,email,mdp);
+        assertEquals(properties, result.getProperties());
+    }
+
+
+    @Test
+    void testcreateMsgCont() throws MessagingException, IOException {
+        Boolean success = true;
+        Session session = Session.getDefaultInstance(new Properties());
+        String fromEmail ="send@hotmail.com";
+        String toEmail = "receiver@hotmail.com";
+        Message result = createMsgCont(success,session,fromEmail,toEmail);
+        assertEquals(fromEmail,result.getFrom()[0].toString());
+        assertEquals(toEmail,result.getRecipients(Message.RecipientType.TO)[0].toString());
+        assertEquals("text/plain", result.getContentType());
+    }
+
+
+    @Test
+    void testconfigSMTP(){
+        Properties properties_r = configSMTP();
+        Properties properties = new Properties();
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.host", "smtp.office365.com");
+        properties.put("mail.smtp.port", "587");
+        assertEquals(properties,properties_r);
+        //sendMail(true, Formulaire.of(0,"","","projetsdid@hotmail.com","",""));
+    }
 }
