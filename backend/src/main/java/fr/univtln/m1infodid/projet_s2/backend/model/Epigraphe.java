@@ -22,6 +22,7 @@ public class Epigraphe {
     private LocalDate fetchDate;
     private String translation;
     private String name;
+    @ElementCollection
     private List<String> text;
     @OneToMany(mappedBy = "epigraphe", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Annotation> annotations;
