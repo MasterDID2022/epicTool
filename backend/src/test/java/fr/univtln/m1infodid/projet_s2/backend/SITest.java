@@ -6,6 +6,8 @@ import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
+import javax.mail.*;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -15,7 +17,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
+import static fr.univtln.m1infodid.projet_s2.backend.SI.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SITest {
@@ -152,8 +156,45 @@ class SITest {
     }
 
     @Test
-    void testSendMail(){
-        SI.sendMail(true, Formulaire.of(0,"","","projets2did@hotmail.com","",""));
+    void testconfigFich() throws IOException{
+        String mdp = "key=value";
+        InputStream inputStream = new ByteArrayInputStream(mdp.getBytes());
+        Thread.currentThread().setContextClassLoader(new ClassLoader() {
+            public InputStream getResourceAsStream(String name){
+                return inputStream;
+            }
+        });
+        Properties result = configFich();
+        assertEquals("value", result.getProperty("key"));
     }
+@Test
+    void testcreateSession(){
+        Properties properties = new Properties();
+        String email ="projets2did@hotmail.com";
+        String mdp = "did9projet";
+        Session result = createSession(properties,email,mdp);
+        assertEquals(properties, result.getProperties());
+}
+@Test
+    void testcreateMsgCont() throws MessagingException {
+
+        Boolean success = true;
+        Session session = Session.getDefaultInstance(new Properties());
+        String fromEmail ="send@hotmail.com";
+        String toEmail = "receiver@hotmail.com";
+        Message result = createMsgCont(success,session,fromEmail,toEmail);
+        assertEquals(fromEmail,result.getFrom()[0].toString());
+        assertEquals(toEmail,result.getRecipients(Message.RecipientType.TO)[0].toString());
+        assertEquals("text/plain", result.getContentType());
+}
+@Test
+    void testconfigSMTP(){
+
+        Properties properties = configSMTP();
+        assertEquals("true",properties.getProperty("mail.smtp.auth"));
+        assertEquals("true",properties.getProperty("mail.smtp.starttls.enable"));
+        assertEquals("smtp.office365.com",properties.getProperty("mail.smtp.host"));
+        assertEquals("587",properties.getProperty("mail.smtp.port"));
+}
 
 }
