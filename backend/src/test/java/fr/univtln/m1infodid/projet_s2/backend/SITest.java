@@ -153,7 +153,7 @@ class SITest {
 
     @Test
     void testSendMail(){
-        SI.sendMail(true, Formulaire.of(0,"","","khebtanidorsaf@hotmail.com","",""));
+        SI.sendMail(true, Formulaire.of(0,"","","projets2did@hotmail.com","",""));
     }
 
 }
