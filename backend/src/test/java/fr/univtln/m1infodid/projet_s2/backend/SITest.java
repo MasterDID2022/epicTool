@@ -2,6 +2,7 @@ package fr.univtln.m1infodid.projet_s2.backend;
 
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.ListeVide;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
+import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -148,6 +149,11 @@ class SITest {
         assertEquals(resultEpigraphe.getImgUrl(), expectedEpigraphe.getImgUrl());
         assertEquals(resultEpigraphe.getTranslation(), expectedEpigraphe.getTranslation());
         assertEquals(resultEpigraphe.getText(), expectedEpigraphe.getText());
+    }
+
+    @Test
+    void testSendMail(){
+        SI.sendMail(true, Formulaire.of(0,"","","khebtanidorsaf@hotmail.com","",""));
     }
 
 }
