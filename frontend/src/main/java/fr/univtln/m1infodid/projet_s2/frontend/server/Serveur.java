@@ -13,7 +13,12 @@ import java.net.URI;
 @Slf4j
 
 public class Serveur {
+    private static HttpServer server;
+
     public static final String BASE_URI = "http://127.0.0.1:8042/api/";
+    private Serveur () {
+        throw new IllegalStateException("Ne doit pas être instancié");
+    }
 
     /**
      * Lance le serveur de l'API rest
@@ -21,7 +26,12 @@ public class Serveur {
      */
     public static void lanceur () {
         final ResourceConfig rc = new ResourceConfig().packages("fr.univtln.m1infodid.projet_s2.frontend.server");
-        final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
-        log.info("l'API rest est active <C-c> pour la fermer");
+        server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+        log.info("l'API rest est active.");
+    }
+
+    public static void arret () {
+        server.shutdownNow();
+
     }
 }

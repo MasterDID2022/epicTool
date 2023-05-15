@@ -22,12 +22,11 @@ Label {
     -fx-background-color: transparent;
     -fx-font-family: "Product Sans Bold";
     -fx-text-fill: -fx-white;
+    -fx-border-style: solid inside;
+    -fx-border-color: transparent;
+    -fx-border-radius: 5px;
 }
 #symbolBtn:hover {
     -fx-background-color: -fx-blue;
-}
-
-#selectedSymbolBtn {
-    -fx-border-width: 3;
-    -fx-border-color: -fx-white;
+    -fx-background-radius: 5px;
 }

@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.TranscriptionController;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.manager.AnnotationsManager;
 import fr.univtln.m1infodid.projet_s2.frontend.server.Verification;
 import fr.univtln.m1infodid.projet_s2.frontend.Facade;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.TradController;
@@ -30,6 +32,7 @@ public class PageVisualisationController implements Initializable {
     private ImageView plaqueImg;
     @FXML private AnchorPane plaqueAnchor;
     @FXML private TextField inputBar;
+    @FXML private Pane paneCanvas;
 
     @FXML
     private Parent traduction;
@@ -42,12 +45,19 @@ public class PageVisualisationController implements Initializable {
     @FXML private Parent alert;
     @FXML private AlertController alertController;
 
+    private String idEpigraphie;
+
+    private AnnotationsManager annotationsManager;
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         alertController.hideAlertPane();
 
         plaqueImg.fitWidthProperty().bind(plaqueAnchor.widthProperty());
         plaqueImg.fitHeightProperty().bind(plaqueAnchor.heightProperty());
+
+        annotationsManager = AnnotationsManager.getInstance();
+        annotationsManager.initialize(paneCanvas, plaqueImg);
 
         inputBar.setText("");
         inputBar.setOnAction( e -> numFicheBtnOnClick() );
@@ -63,12 +73,14 @@ public class PageVisualisationController implements Initializable {
         //construire le clavier à partir du texte de la plaque
         //modifier le label pour afficher la traduction
 
+        idEpigraphie = id;
         traductionController.displayTranslation(tradTxt);
         transcriptionController.setup(id, plaqueTxt);
 
         //obtiens l'image et l'affiche
         if (imgUrl.length() == 0) return; //prévoir une image par défaut ou erreur si jamais l'image est introuvable ?
-        plaqueImg.setImage(new Image(imgUrl));
+        Image img = new Image(imgUrl);
+        plaqueImg.setImage(img);
     }
 
     /**
@@ -91,6 +103,13 @@ public class PageVisualisationController implements Initializable {
         inputBar.setText("");
         anchorPane.requestFocus();
         alertController.hideAlertPane();
+    }
+
+    @FXML
+    private void saveAnnotationsBtnOnClick() {
+        //peut être une popup de êtes-vous sûr de vouloir sauvegarder blabla
+
+        Facade.postAnnotations( idEpigraphie, annotationsManager.getAnnotationsRectMap() );
     }
 
     public AlertController getAlertController() { return alertController; }

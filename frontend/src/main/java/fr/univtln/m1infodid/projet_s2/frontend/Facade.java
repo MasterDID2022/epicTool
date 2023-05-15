@@ -3,8 +3,10 @@ package fr.univtln.m1infodid.projet_s2.frontend;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.SceneType;
@@ -14,6 +16,7 @@ import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.PageVisualisati
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.SceneController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.SceneController.SceneData;
 import fr.univtln.m1infodid.projet_s2.frontend.server.Api;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
@@ -44,9 +47,32 @@ public class Facade {
        return Api.sendRequestOf(epigraphieId);
     }
 
-    public static void postAnnotations() {
-        //peut être ajouter un paramètre Annotation, classe composante d'une Annotation javaFX, à faire plus tard
-        String anno = Api.postAnnotations("{\"idEpigraphe\":\"43\",\"idAnnotation\":\"43\",\"annotations\":{\"1\":{\"x\":[1,2],\"y\":[4,2]},\"2\":{\"x\":[1,2],\"y\":[4,2]},\"3\":{\"x\":[1,2],\"y\":[4,2]},\"4\":{\"x\":[1,2],\"y\":[4,2]}}}");
+    public static void postAnnotations(String idEpigraphie, Map<String, Rectangle> rectAnnotationsMap) {
+
+        if (rectAnnotationsMap == null) return;
+        if (rectAnnotationsMap.isEmpty()) return;
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode jsonForm = mapper.createObjectNode();
+
+        jsonForm.put("idEpigrahie", idEpigraphie);
+        jsonForm.put("idAnnotation", -1);
+
+        ArrayNode annotations = jsonForm.putArray("annotations");
+        for (var entry : rectAnnotationsMap.entrySet()) {
+            String btnIndex = entry.getKey();
+            Rectangle r = entry.getValue();
+
+            ArrayNode btnArray = jsonForm.putArray(btnIndex);
+            btnArray.add(r.getX());
+            btnArray.add(r.getY());
+            btnArray.add(r.getWidth());
+            btnArray.add(r.getHeight());
+
+            annotations.add(btnArray);
+        }
+
+        Api.postAnnotations( jsonForm.toString() );
     }
 
     public static void sendFormulaire(String nom, String prenom, String email, String affiliation, String commentaire) {

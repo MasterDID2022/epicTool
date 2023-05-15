@@ -47,7 +47,27 @@
     -fx-text-fill: -fx-white;
 }
 
-#acceptBtn:hover {
+#acceptBtn:hover, #saveBtn:hover {
     -fx-cursor: hand;
     -fx-background-color: -fx-green-hover;
+}
+
+#saveBtn {
+    -fx-font-family: "Product Sans Bold";
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-background-color: -fx-green;
+    -fx-text-fill: -fx-white;
+}
+
+
+
+#annotationRect {
+    -fx-opacity: 0.45;
+    -fx-stroke-width: 4px;
+}
+
+.annotationRectSelected {
+    -fx-stroke-width: 8px;
+    -fx-stroke: red;
 }
