@@ -47,7 +47,7 @@ final class EpigrapheDAOTest extends EpigrapheDAOTestManager {
     void removeTestEpigraphe()
     {
         Epigraphe epigraphe = Epigraphe.of(-3,"Exemple",new Date(), LocalDate.now(),"Exemple",
-                "Exemple","Exemple");
+                "Exemple",List.of("Exemple"));
         epigrapheDAO.persist(epigraphe);
         List<Epigraphe> size_before = epigrapheDAO.findAll();
         assertDoesNotThrow(() -> epigrapheDAO.remove(epigraphe));

@@ -1,9 +1,6 @@
 package fr.univtln.m1infodid.projet_s2.backend.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +9,7 @@ import org.hibernate.Hibernate;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "EPIGRAPHE")
@@ -28,7 +26,8 @@ public class Epigraphe {
     private LocalDate fetchDate;
     private String translation;
     private String name;
-    private String text;
+    @ElementCollection
+    private List<String> text;
 
     @Override
     public boolean equals ( Object o ) {

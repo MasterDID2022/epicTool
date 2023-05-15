@@ -16,6 +16,7 @@ import org.w3c.dom.Document;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,7 +42,7 @@ class SITest {
     void testExtractTextAndImageFromXmlSize () {
 
         // Vérification que la taille de la liste est correcte
-        assertEquals(5, contentdImageEtText.size());
+        assertEquals(6, contentdImageEtText.size());
     }
 
     /*@Test
@@ -116,7 +117,7 @@ class SITest {
         String id = "1";
         List<List<String>> result = SI.extractFromBalise(contentList, transcriptionList, doc, id);
 
-        assertEquals(4, result.size());
+        assertEquals(5, result.size());
         assertEquals(id, result.get(0).get(0));
         assertEquals("Contenu 1", result.get(1).get(0));
         assertEquals("Contenu 2", result.get(2).get(0));
@@ -140,7 +141,7 @@ class SITest {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         expectedEpigraphe.setDate(format.parse("2022-05-05"));
         expectedEpigraphe.setImgUrl("http://ccj-epicherchel.huma-num.fr/interface/phototheque/42/88617.jpg");
-        expectedEpigraphe.setText("Texte");
+        expectedEpigraphe.setText(List.of("Texte"));
         expectedEpigraphe.setTranslation("Traduction");
 
         Epigraphe resultEpigraphe = SI.CreateEpigraphie(contentList);

@@ -143,6 +143,7 @@ public class SI {
                 }
             }
         }
+        contentList.add(transcriptionList);
         return contentList;
     }
 
@@ -222,7 +223,7 @@ public class SI {
         parseDate(contentList,epigraphe);
         epigraphe.setImgUrl(contentList.get(3).get(0));
         epigraphe.setTranslation(contentList.get(4).get(0));
-        epigraphe.setText(contentList.get(5).get(0)); //a verif si il faut changer l'attribut text en list
+        epigraphe.setText(contentList.get(5));
     }
 
     public static Epigraphe CreateEpigraphie ( int id ) throws Exception {
