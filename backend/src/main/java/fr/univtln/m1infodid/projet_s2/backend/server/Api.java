@@ -7,10 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.univtln.m1infodid.projet_s2.backend.DAO.FormulaireDAO;
 import fr.univtln.m1infodid.projet_s2.backend.SI;
-import fr.univtln.m1infodid.projet_s2.backend.model.Annotation;
-import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
-import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
-import fr.univtln.m1infodid.projet_s2.backend.model.Verification;
+import fr.univtln.m1infodid.projet_s2.backend.model.*;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
@@ -109,7 +106,6 @@ public class Api {
 			String emailFormulaire = rootNode.path("emailFormulaire").asText();
 			String affiliationFormulaire = rootNode.path("affiliationFormulaire").asText();
 			String commentaireFormulaire = rootNode.path("commentaireFormulaire").asText();
-
 			formulaire = Optional.of(
 					Formulaire.of(Integer.parseInt(idFormulaire),nomFormulaire,prenomFormulaire,emailFormulaire,affiliationFormulaire,commentaireFormulaire));
 			return formulaire;
@@ -151,6 +147,7 @@ public class Api {
 				String username = usernamePassword[0];
 				String password = usernamePassword[1];
 				log.info("Username : " + username + ", password : " + password);
+				log.info("Authentification: "+Utilisateur.checkPassword(password,username).toString());
 				return Response.ok().entity("Bienvenue " + username + " !").build();
 			}
 		} // No Authorization header or invalid format

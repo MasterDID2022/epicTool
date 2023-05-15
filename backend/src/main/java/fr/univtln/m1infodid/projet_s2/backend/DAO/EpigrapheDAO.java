@@ -45,7 +45,6 @@ public class EpigrapheDAO implements AutoCloseable {
         CriteriaQuery<Epigraphe> cq = cb.createQuery(Epigraphe.class);
         Root<Epigraphe> rootEntry = cq.from(Epigraphe.class);
         CriteriaQuery<Epigraphe> all = cq.select(rootEntry);
-
         TypedQuery<Epigraphe> allQuery = entityManager.createQuery(all);
         return allQuery.getResultList();
     }
