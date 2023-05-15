@@ -7,14 +7,14 @@
 
 <AnchorPane fx:id="tradAnchor" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.TradController">
    <children>
-      <VBox prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="100.0" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label fx:id="tradu" text="TRADUCTION" />
             <Label fx:id="tradLabel" text="kfjlfdjglkdfjghsfdjghdkfhgjkdhfgjkdshfkghdskfjghkdsfjhgjksdhfgkhsdfkgjdshfgkshdgjkhsdjkfghdbgekbrgjkbdfjkghdsvuhdfivbusfdibsjghskdjhg" wrapText="true" />
          </children>
-         <padding>
-            <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
-         </padding>
       </VBox>
    </children>
+   <padding>
+      <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+   </padding>
 </AnchorPane>
