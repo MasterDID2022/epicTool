@@ -17,7 +17,6 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.PasswordField?>
 <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #24293d;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.MenuController">
 	<children>
 		<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -59,9 +58,9 @@
 							</HBox.margin>
 						</HBox>
 					</children>
-               <BorderPane.margin>
-                  <Insets left="10.0" right="10.0" top="20.0" />
-               </BorderPane.margin>
+					<BorderPane.margin>
+						<Insets left="10.0" right="10.0" top="20.0" />
+					</BorderPane.margin>
 				</HBox>
 			</top>
 			<center>
@@ -80,11 +79,11 @@
 									<children>
 										<VBox spacing="5.0">
 											<children>
-														<Label fx:id="joinTitle" text="Un outil communautaire dédié à l’étiquetage spatial d’un épigraphe." textFill="WHITE" wrapText="true">
-															<font>
-																<Font size="18.0" />
-															</font>
-														</Label>
+												<Label fx:id="joinTitle" text="Un outil communautaire dédié à l’étiquetage spatial d’un épigraphe." textFill="WHITE" wrapText="true">
+													<font>
+														<Font size="18.0" />
+													</font>
+												</Label>
 												<Label fx:id="joinText" text="En utilisant la base de données ÉpiCherchell, aidez-nous à étiqueter des milliers d’épigraphies" textFill="#f4f4fc" wrapText="true">
 													<font>
 														<Font size="11.0" />
@@ -109,14 +108,16 @@
 													<HBox.margin>
 														<Insets right="10.0" />
 													</HBox.margin>
-                                       <padding>
-                                          <Insets bottom="7.0" left="15.0" right="15.0" top="7.0" />
-                                       </padding>
+
+													<padding>
+														<Insets bottom="7.0" left="15.0" right="15.0" top="7.0" />
+													</padding>
 												</Button>
+
 											</children>
-                                 <VBox.margin>
-                                    <Insets top="20.0" />
-                                 </VBox.margin>
+											<VBox.margin>
+												<Insets top="20.0" />
+											</VBox.margin>
 										</HBox>
 									</children>
 									<padding>
@@ -135,40 +136,40 @@
 													<font>
 														<Font size="18.0" />
 													</font>
-                                       <VBox.margin>
-                                          <Insets left="25.0" />
-                                       </VBox.margin>
+													<VBox.margin>
+														<Insets left="25.0" />
+													</VBox.margin>
 												</Label>
 												<Label fx:id="connecterText" prefWidth="200.0" text="Vous possédez déjà un compte membre et souhaitez vous connecter." textFill="#f4f4fc" wrapText="true">
 													<font>
 														<Font size="11.0" />
 													</font>
-                                       <VBox.margin>
-                                          <Insets left="25.0" />
-                                       </VBox.margin>
+													<VBox.margin>
+														<Insets left="25.0" />
+													</VBox.margin>
 												</Label>
-                                    <VBox alignment="TOP_CENTER" spacing="7.0">
-                                       <children>
+												<VBox alignment="TOP_CENTER" spacing="7.0">
+													<children>
 														<TextField fx:id="inputMail" promptText="E-mail">
 															<padding>
 																<Insets bottom="10.0" left="15.0" top="10.0" />
 															</padding>
 														</TextField>
-														<PasswordField fx:id="inputPassword" promptText="Mot de passe">
+														<TextField fx:id="inputPassword" promptText="Mot de passe">
 															<padding>
 																<Insets bottom="10.0" left="15.0" top="10.0" />
 															</padding>
-														</PasswordField>
-      														<Button fx:id="buttonConection" mnemonicParsing="false" onAction="#connexionButtonPressed" prefWidth="250.0" text="Connexion">
-                                             <padding>
-                                                <Insets bottom="10.0" top="10.0" />
-                                             </padding>
-                                          </Button>
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
-                                       </VBox.margin>
-                                    </VBox>
+														</TextField>
+														<Button fx:id="buttonConection" mnemonicParsing="false" onAction="#connexionButtonPressed" prefWidth="250.0" text="Connexion">
+															<padding>
+																<Insets bottom="10.0" top="10.0" />
+															</padding>
+														</Button>
+													</children>
+													<VBox.margin>
+														<Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+													</VBox.margin>
+												</VBox>
 											</children>
 										</VBox>
 										<HBox alignment="CENTER" maxHeight="2.0" maxWidth="250.0" minHeight="2.0" prefHeight="2.0" prefWidth="100.0" style="-fx-background-color: #2F3855;">
@@ -178,20 +179,20 @@
 										</HBox>
 										<VBox alignment="CENTER" maxWidth="250.0" spacing="10.0">
 											<children>
-														<VBox maxWidth="250.0" spacing="5.0">
-															<children>
-																		<Label fx:id="visiteurTitle" alignment="TOP_LEFT" text="Ou entrez directement un  numéro de Fiche ÉpiCherchell" textFill="WHITE" wrapText="true">
-																			<font>
-																				<Font size="12.0" />
-																			</font>
-																		</Label>
-																<Label fx:id="visiteurText" alignment="TOP_LEFT" text="Vous êtes visiteur et souhaitez visualiser les annotations épigraphiques de la communauté." textFill="#f4f4fc" wrapText="true">
-																	<font>
-																		<Font size="8.0" />
-																	</font>
-																</Label>
-															</children>
-														</VBox>
+												<VBox maxWidth="250.0" spacing="5.0">
+													<children>
+														<Label fx:id="visiteurTitle" alignment="TOP_LEFT" text="Ou entrez directement un  numéro de Fiche ÉpiCherchell" textFill="WHITE" wrapText="true">
+															<font>
+																<Font size="12.0" />
+															</font>
+														</Label>
+														<Label fx:id="visiteurText" alignment="TOP_LEFT" text="Vous êtes visiteur et souhaitez visualiser les annotations épigraphiques de la communauté." textFill="#f4f4fc" wrapText="true">
+															<font>
+																<Font size="8.0" />
+															</font>
+														</Label>
+													</children>
+												</VBox>
 												<HBox alignment="CENTER_LEFT" maxWidth="250.0" spacing="10.0">
 													<children>
 														<TextField fx:id="inputBar" promptText="n° de fiche ÉpiCherchell">
@@ -203,16 +204,16 @@
 															<font>
 																<Font size="10.0" />
 															</font>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
+															<padding>
+																<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+															</padding>
 														</Button>
 													</children>
 												</HBox>
 											</children>
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" top="10.0" />
-                                 </VBox.margin>
+											<VBox.margin>
+												<Insets bottom="10.0" top="10.0" />
+											</VBox.margin>
 										</VBox>
 									</children>
 								</VBox>
@@ -223,5 +224,6 @@
 			</center>
 		</BorderPane>
 		<fx:include fx:id="alert" source="alert.fxml" />
+		<Button id="btnConsulterDemandes" text="Consulter les demandes" onAction="#consulterDemandesBtnOnClick" />
 	</children>
 </AnchorPane>

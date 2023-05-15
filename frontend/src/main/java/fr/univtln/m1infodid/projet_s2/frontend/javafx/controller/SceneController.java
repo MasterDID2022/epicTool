@@ -50,7 +50,7 @@ public final class SceneController {
 
     /**
      * Cette méthode permet de changer vers une Scène en utilisant son SceneData
-     * 
+     *
      * @param <T> le Type de controller utilisé par SceneData
      * @param stage la Scène principale de l'application à modifié
      * @param sceneData l'objet SceneData contenant la scène et le controller d'une scène à afficher
@@ -67,12 +67,12 @@ public final class SceneController {
      * @throws IOException renvoi une erreur si le fichier FXML du menu n'a pas pu être chargé
      */
     public static <T> SceneData<T> switchToMenu ( Stage stage ) throws IOException {
-        return sceneSwitchAndLoad(stage, 
-                                    "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/menu.fxml", 
-                                    780, 
-                                    504, 
-                                    "/styles/menu.css", 
-                                    "/styles/alert.css");
+        return sceneSwitchAndLoad(stage,
+                "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/menu.fxml",
+                780,
+                504,
+                "/styles/menu.css",
+                "/styles/alert.css");
     }
 
     /**
@@ -83,14 +83,14 @@ public final class SceneController {
      * @throws IOException renvoi une erreur si le fichier FXML du menu n'a pas pu être chargé
      */
     public static <T> SceneData<T> switchToPageVisualisation ( Stage stage ) throws IOException {
-        return sceneSwitchAndLoad(stage, 
-                                    "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/page-visualisation.fxml", 
-                                    780, 
-                                    504, 
-                                    "/styles/page-visualisation.css", 
-                                    "/styles/transcription.css",
-                                    "/styles/traduction.css",
-                                    "/styles/alert.css");
+        return sceneSwitchAndLoad(stage,
+                "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/page-visualisation.fxml",
+                780,
+                504,
+                "/styles/page-visualisation.css",
+                "/styles/transcription.css",
+                "/styles/traduction.css",
+                "/styles/alert.css");
     }
 
     /**
@@ -101,11 +101,30 @@ public final class SceneController {
      * @throws IOException renvoi une erreur si le fichier FXML du menu n'a pas pu être chargé
      */
     public static <T> SceneData<T> switchToPageFormulaire ( Stage stage ) throws IOException {
-        return sceneSwitchAndLoad(stage, 
-                                    "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/formulaire.fxml", 
-                                    780, 
-                                    504, 
-                                    "/styles/formulaire.css",
-                                    "/styles/alert.css");
+        return sceneSwitchAndLoad(stage,
+                "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/formulaire.fxml",
+                780,
+                504,
+                "/styles/formulaire.css",
+                "/styles/alert.css");
     }
+
+    public static <T> SceneData<T> switchToPageGestionFormulaire ( Stage stage ) throws IOException {
+        return sceneSwitchAndLoad(stage,
+                "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/gestionAdhesion/gestionFormulaire.fxml",
+                780,
+                504,
+                "/styles/gestionFormulaire.css",
+                "/styles/alert.css");
+    }
+
+    public static <T> SceneData<T> switchToPageGestionFormulairUI2 ( Stage stage ) throws IOException {
+        return sceneSwitchAndLoad(stage,
+                "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/gestionAdhesion/affichageDemande.fxml",
+                780,
+                504,
+                "/styles/affichageDemande.css",
+                "/styles/alert.css");
+    }
+
 }

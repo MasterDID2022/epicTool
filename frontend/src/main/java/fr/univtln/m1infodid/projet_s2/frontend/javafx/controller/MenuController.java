@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +26,7 @@ public class MenuController implements Initializable {
     @FXML
     private Label connecter;
     @FXML
-    private PasswordField inputPassword;
+    private TextField inputPassword;
     @FXML
     private AnchorPane anchorPane;
     @FXML
@@ -79,11 +78,11 @@ public class MenuController implements Initializable {
     public void connexionButtonPressed() {
         String mail = inputMail.getText();
         // String password = inputPassword.getText();Pour l'authentification
-        if(testMailCorrectness(mail)) {
-            Facade.sendLoginAndPasseword(inputMail.getText(),inputPassword.getText());
-            }
+        testMailCorrectness(mail);
         inputMail.setText("");
         inputPassword.setText("");
+
+        //authentification
     }
 
 
@@ -92,22 +91,28 @@ public class MenuController implements Initializable {
      *
      * @param email
      */
-    public boolean testMailCorrectness(String email) {
+    public void testMailCorrectness(String email) {
         if (!Verification.isInputAvalideEmail(email)) {
             alert.setDisable(false);
             alertController.showNotValidEmail();
             inputMail.getStyleClass().add("wrongMail");
-            return false;
+            return;
             // inputMail.setStyle("-fx-control-inner-background: #2F3855; -fx-text-inner-color: #f4c4c4; -fx-prompt-text-fill: grey; -fx-text-box-border: #803C3C; -fx-background-radius: 10 10 0 0;");
         }
-        
+
         if (inputMail.getStyleClass().contains("wrongMail")) {
             inputMail.getStyleClass().clear();
             inputMail.getStyleClass().addAll("text-field", "text-input");
         }
         // inputMail.setStyle("-fx-control-inner-background: #2F3855; -fx-text-inner-color: #f4c4c4; -fx-prompt-text-fill: grey; -fx-text-box-border: #2F3855; -fx-background-radius: 10 10 0 0;");
-        return true;
     }
 
     public AlertController getAlertController() { return alertController; }
+
+    @FXML
+    private void consulterDemandesBtnOnClick() {
+        Facade.showScene(SceneType.GESTION_ADHESION);
+
+    }
+
 }

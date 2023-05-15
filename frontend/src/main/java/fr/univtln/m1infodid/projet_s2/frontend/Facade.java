@@ -9,6 +9,8 @@ import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.MenuController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.PageVisualisationController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.SceneController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.SceneController.SceneData;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion.AffichageDemandeController;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion.GestionFormulaireController;
 import fr.univtln.m1infodid.projet_s2.frontend.server.Api;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -34,6 +36,10 @@ public class Facade {
     private static SceneData<PageVisualisationController> visuEpiData; //scène et controller de la page visualisation
     private static SceneData<FormulaireController> formData;
 
+
+    private static SceneData<GestionFormulaireController> formGest;
+    private static SceneData<AffichageDemandeController> afficherDemande;
+
     public static void initStage(Stage primaryStage) {
         if (Facade.primaryStage != null) return;
         Facade.primaryStage = primaryStage;
@@ -44,7 +50,7 @@ public class Facade {
     public static boolean isFormulaireShown() { return primaryStage.getScene() == formData.scene(); }
 
     public static List<String> requestEpigraphieInfo(int epigraphieId) {
-       return Api.sendRequestOf(epigraphieId);
+        return Api.sendRequestOf(epigraphieId);
     }
 
     public static void postAnnotations(String idEpigraphie, Map<String, Rectangle> rectAnnotationsMap) {
@@ -88,6 +94,13 @@ public class Facade {
 
         Api.postFormulaire(jsonForm.toString());
     }
+    public static void visualiseGestionFormulaire (){
+        GestionFormulaireController gestionFormulaireController = formGest.controller();
+        gestionFormulaireController.reset();
+        List<List<String>> listeDeFormulaire = Api.tmpMethodeInit();
+        gestionFormulaireController.initialize(listeDeFormulaire);
+
+    }
 
     public static void sendLoginAndPasseword ( String email, String passeword ) {
 
@@ -109,9 +122,33 @@ public class Facade {
                     if (formData == null) formData = SceneController.switchToPageFormulaire(primaryStage);
                     else SceneController.switchToScene(primaryStage, formData);
                     break;
+                case GESTION_ADHESION:
+                    if (formGest == null) {
+                        formGest = SceneController.switchToPageGestionFormulaire(primaryStage);
+                        visualiseGestionFormulaire();
+                    } else {
+                        SceneController.switchToScene(primaryStage, formGest);
+                    }
+                    break;
+
+                case AFFICHAGE_DEMANDE:
+                    if (afficherDemande == null) {
+                        afficherDemande = SceneController.switchToPageGestionFormulairUI2(primaryStage);
+                    } else {
+                        resetAffichageDemande();
+                        SceneController.switchToScene(primaryStage, afficherDemande);
+                    }
+                    break;
             }
         } catch(IOException e) {
             throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public static void resetAffichageDemande() {
+        if (afficherDemande != null) {
+            AffichageDemandeController affichageDemandeController = afficherDemande.controller();
+            affichageDemandeController.initialize();
         }
     }
 
