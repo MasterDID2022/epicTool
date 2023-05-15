@@ -20,7 +20,7 @@ public class Facade {
 
         List<List<String>> contentList = new ArrayList<>();
         try {
-            contentList = SI.extractTextAndImageFromXml(id, xmlUrl);
+            contentList = SI.extractContentFromXML(id, xmlUrl);
         } catch (UrlInvalide u) {
             log.info(u.getMessage());
         } catch (SaxErreur s) {
