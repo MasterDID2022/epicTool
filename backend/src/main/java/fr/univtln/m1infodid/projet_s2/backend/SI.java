@@ -333,7 +333,7 @@ public class SI {
      * @param formulaire Llobjet Formulaire contenant les informations du formulaire
      */
     public static void sendMail(Boolean success, Formulaire formulaire){
-        final String fromEmail = "mail_gest@hotmail.com"; // adresse mail du gestionnaire
+        final String fromEmail = "projets2did@hotmail.com"; // adresse mail du gestionnaire
         final String password = configFich().getProperty("email.password");
         final String toEmail = formulaire.getEmail(); // adresse mail du destinataire
 
