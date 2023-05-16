@@ -134,4 +134,21 @@ public class Api {
 		return Response.notModified().build();
 	}
 
+
+	/**
+	 * Methode qui permet de récuperer le mot de passe du gestionnaire
+	 */
+	@GET
+	@Path("password")
+	public Response getPassword() {
+		String myPassword = System.getenv("MY_PASSWORD");
+		if (myPassword != null) {
+			return Response.ok(myPassword).build();
+		} else {
+			return Response.status(Response.Status.NOT_FOUND)
+					.entity("La variable d'environnement MY_PASSWORD n'est pas définie.")
+					.build();
+		}
+	}
+
 }

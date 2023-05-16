@@ -3,13 +3,13 @@ package fr.univtln.m1infodid.projet_s2.backend;
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.*;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
+import fr.univtln.m1infodid.projet_s2.backend.server.Api;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.mail.internet.AddressException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -249,19 +249,17 @@ public class SI {
 
 
     /**
-     * Fonction qui permet le chargement du fichier de configuration contenant le mot de passe
+     * Fonction qui permet de récupérer le mot de passe du gestionnaire
      *
-     * @return un objet Properties contenant les propriétés de configuration chargées depuis le fichier
+     * @return le mot de passe
      */
-    public static Properties configFich(){
-        Properties configProps = new Properties();
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        try (InputStream input = classLoader.getResourceAsStream("config.properties")) {
-            configProps.load(input);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return configProps;
+    public static String findPassword(){
+        String password = "";
+        if(System.getenv("MY_PASSWORD") == null)
+            password = new Api().getPassword().toString();
+        else
+            password = System.getenv("MY_PASSWORD");
+        return password;
     }
 
 
@@ -334,9 +332,7 @@ public class SI {
      */
     public static void sendMail(Boolean success, Formulaire formulaire){
         final String fromEmail = "projets2did@hotmail.com"; // adresse mail du gestionnaire
-       // final String password = configFich().getProperty("email.password");
-        final String password = System.getenv("MY_PASSWORD");
-        System.out.println(password);
+        final String password = findPassword();
         final String toEmail = formulaire.getEmail(); // adresse mail du destinataire
 
         Properties props = configSMTP();

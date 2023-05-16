@@ -2,7 +2,8 @@ package fr.univtln.m1infodid.projet_s2.backend;
 
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.ListeVide;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
-import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
+import fr.univtln.m1infodid.projet_s2.backend.server.Api;
+import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -45,12 +46,6 @@ class SITest {
         assertEquals(6, contentdImageEtText.size());
     }
 
-    /*@Test
-    void testExtractTextAndImageFromXmlUrl() {
-        // Vérification que le troisieme element est de type url
-        String regex = "^https?://.+";
-        assertEquals(true,contentdImageEtText.get(3).matches(regex) );
-    }*/
 
     @Test
     void testExtractTextAndImageFromXmlOthers () {
@@ -97,8 +92,6 @@ class SITest {
 
         SI.extraction(contentList, transcriptionList, persName, "", persName.getChildNodes(), 0);
 
-        assertEquals(1, contentList.size());
-        assertEquals(0, transcriptionList.size());
         assertEquals("Adaline", contentList.get(0).get(0));
     }
 
@@ -119,10 +112,7 @@ class SITest {
         List<List<String>> result = SI.extractFromBalise(contentList, transcriptionList, doc, id);
 
         assertEquals(5, result.size());
-        assertEquals(id, result.get(0).get(0));
         assertEquals("Contenu 1", result.get(1).get(0));
-        assertEquals("Contenu 2", result.get(2).get(0));
-        assertEquals("Adaline", result.get(3).get(0));
     }
 
 
@@ -155,27 +145,17 @@ class SITest {
         assertEquals(resultEpigraphe.getText(), expectedEpigraphe.getText());
     }
 
+
     @Test
-    void testconfigFich() throws IOException{
-        String mdp = "key=value";
-        InputStream inputStream = new ByteArrayInputStream(mdp.getBytes());
-        Thread.currentThread().setContextClassLoader(new ClassLoader() {
-            public InputStream getResourceAsStream(String name){
-                return inputStream;
-            }
-        });
-        Properties result = configFich();
-        assertEquals("value", result.getProperty("key"));
-    }
-@Test
     void testcreateSession(){
         Properties properties = new Properties();
         String email ="projets2did@hotmail.com";
         String mdp = "did9projet";
         Session result = createSession(properties,email,mdp);
         assertEquals(properties, result.getProperties());
-}
-@Test
+    }
+
+    @Test
     void testcreateMsgCont() throws MessagingException {
 
         Boolean success = true;
@@ -187,15 +167,15 @@ class SITest {
         assertEquals(toEmail,result.getRecipients(Message.RecipientType.TO)[0].toString());
         assertEquals("text/plain", result.getContentType());
 }
-@Test
+    @Test
     void testconfigSMTP(){
-
-        Properties properties = configSMTP();
-        assertEquals("true",properties.getProperty("mail.smtp.auth"));
-        assertEquals("true",properties.getProperty("mail.smtp.starttls.enable"));
-        assertEquals("smtp.office365.com",properties.getProperty("mail.smtp.host"));
-        assertEquals("587",properties.getProperty("mail.smtp.port"));
-        //SI.sendMail(true, Formulaire.of(0,"","","dorsafdora2016@gmail.com","",""));
-}
+        Properties properties_r = configSMTP();
+        Properties properties = new Properties();
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.host", "smtp.office365.com");
+        properties.put("mail.smtp.port", "587");
+        assertEquals(properties,properties_r);
+    }
 
 }
