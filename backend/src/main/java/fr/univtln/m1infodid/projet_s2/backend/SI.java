@@ -285,14 +285,20 @@ public class SI {
      * @param toEmail l'adresse mail du destinataire
      * @return un objet de type Message configuré avec les informations de l'email
      */
-    public static Message createMsgCont(Boolean success, Session session, String fromEmail, String toEmail) throws MessagingException {
+
+
+    public static Message createMsgCont(Boolean success, Session session, String fromEmail, String toEmail) throws MessagingException, IOException {
         Message message = new MimeMessage(session);
 
         // Définition de l'expéditeur, du destinataire et du sujet
         message.setFrom(new InternetAddress(fromEmail));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
 
-        // Contenu du message
+        // Création du contenu du message
+        MimeMultipart multipart = new MimeMultipart();
+
+        // Texte du message
+        MimeBodyPart textPart = new MimeBodyPart();
         String emailContent;
         if (success) {
             message.setSubject("Demande de création de compte acceptée");
@@ -302,9 +308,22 @@ public class SI {
             message.setSubject("Demande de création de compte refusée");
             emailContent = "Bonjour,<br><br>Votre demande de création de compte a été refusée.";
         }
-        message.setContent(emailContent, "text/html");
+        textPart.setContent(emailContent, "text/html");
+        multipart.addBodyPart(textPart);
+
+        // Ajout de l'image dans le contenu du message
+        MimeBodyPart imagePart = new MimeBodyPart();
+        String path = SI.class.getResource("icon.png").getPath();
+        imagePart.attachFile(path);
+        multipart.addBodyPart(imagePart);
+
+        // Définition du contenu du message
+        message.setContent(multipart);
+
         return message;
     }
+
+
 
 
     /**
@@ -345,6 +364,8 @@ public class SI {
 
         } catch (MessagingException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
