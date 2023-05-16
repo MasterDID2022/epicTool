@@ -3,6 +3,9 @@ package fr.univtln.m1infodid.projet_s2.backend;
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.*;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
+import jakarta.activation.DataHandler;
+import jakarta.activation.DataSource;
+import jakarta.activation.FileDataSource;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Invocation;
@@ -14,6 +17,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMultipart;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -269,6 +274,8 @@ public class SI {
     }
 
 
+
+
     /**
      * Fonction qui crée et retourne un objet Message à partir des paramètres fournis
      *
@@ -284,14 +291,17 @@ public class SI {
         // Définition de l'expéditeur, du destinataire et du sujet
         message.setFrom(new InternetAddress(fromEmail));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
-        message.setSubject("Validation du formulaire");
 
         // Contenu du message
-        String emailContent = null;
-        if (success == true)
-            emailContent = "Bonjour,<br><br>Votre demande de creation de compte a ete acceptee.";
-        else
-            emailContent = "Bonjour,<br><br>Votre demande de creation de compte a ete refusee.";
+        String emailContent;
+        if (success) {
+            message.setSubject("Demande de création de compte acceptée");
+            emailContent = "Bonjour,<br><br>Votre demande de création de compte a été acceptée. Vous pouvez désormais accéder à notre plateforme. Merci et bienvenue !" +
+                    "<br><br> Cordialement,<br>L'équipe de notre plateforme.";
+        } else {
+            message.setSubject("Demande de création de compte refusée");
+            emailContent = "Bonjour,<br><br>Votre demande de création de compte a été refusée.";
+        }
         message.setContent(emailContent, "text/html");
         return message;
     }
@@ -321,7 +331,6 @@ public class SI {
     public static void sendMail(Boolean success, Formulaire formulaire){
         final String fromEmail = "projets2did@hotmail.com"; // adresse mail du gestionnaire
         final String password = System.getenv("MY_PASSWORD");
-        System.out.println(password);
         final String toEmail = formulaire.getEmail(); // adresse mail du destinataire
 
         Properties props = configSMTP();

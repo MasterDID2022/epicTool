@@ -157,7 +157,7 @@ class SITest {
 
 
     @Test
-    void testcreateMsgCont() throws MessagingException {
+    void testcreateMsgCont() throws MessagingException, IOException {
         Boolean success = true;
         Session session = Session.getDefaultInstance(new Properties());
         String fromEmail ="send@hotmail.com";
@@ -184,7 +184,7 @@ class SITest {
     @Test
     //@Disabled("problème d'ENVVAR")
     void testfindPassword(){
-        sendMail(false, Formulaire.of(0,"","","dorsafdora2016@gmail.com","",""));
+        sendMail(true, Formulaire.of(0,"","","test@gmail.com","",""));
     }
 
 }
