@@ -195,6 +195,7 @@ class SITest {
         assertEquals("true",properties.getProperty("mail.smtp.starttls.enable"));
         assertEquals("smtp.office365.com",properties.getProperty("mail.smtp.host"));
         assertEquals("587",properties.getProperty("mail.smtp.port"));
+        //SI.sendMail(true, Formulaire.of(0,"","","dorsafdora2016@gmail.com","",""));
 }
 
 }

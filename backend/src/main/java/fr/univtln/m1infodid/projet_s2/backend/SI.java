@@ -334,7 +334,9 @@ public class SI {
      */
     public static void sendMail(Boolean success, Formulaire formulaire){
         final String fromEmail = "projets2did@hotmail.com"; // adresse mail du gestionnaire
-        final String password = configFich().getProperty("email.password");
+       // final String password = configFich().getProperty("email.password");
+        final String password = System.getenv("MY_PASSWORD");
+        System.out.println(password);
         final String toEmail = formulaire.getEmail(); // adresse mail du destinataire
 
         Properties props = configSMTP();
