@@ -182,7 +182,7 @@ class SITest {
 
 
     @Test
-    @Disabled("problème d'ENVVAR")
+    //@Disabled("problème d'ENVVAR")
     void testfindPassword(){
         sendMail(false, Formulaire.of(0,"","","dorsafdora2016@gmail.com","",""));
     }
