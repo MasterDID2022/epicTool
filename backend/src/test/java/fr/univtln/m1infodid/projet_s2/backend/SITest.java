@@ -2,8 +2,8 @@ package fr.univtln.m1infodid.projet_s2.backend;
 
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.ListeVide;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
-import fr.univtln.m1infodid.projet_s2.backend.server.Api;
-import jakarta.ws.rs.core.Response;
+import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -155,9 +155,9 @@ class SITest {
         assertEquals(properties, result.getProperties());
     }
 
+
     @Test
     void testcreateMsgCont() throws MessagingException {
-
         Boolean success = true;
         Session session = Session.getDefaultInstance(new Properties());
         String fromEmail ="send@hotmail.com";
@@ -166,7 +166,9 @@ class SITest {
         assertEquals(fromEmail,result.getFrom()[0].toString());
         assertEquals(toEmail,result.getRecipients(Message.RecipientType.TO)[0].toString());
         assertEquals("text/plain", result.getContentType());
-}
+    }
+
+
     @Test
     void testconfigSMTP(){
         Properties properties_r = configSMTP();
@@ -176,6 +178,13 @@ class SITest {
         properties.put("mail.smtp.host", "smtp.office365.com");
         properties.put("mail.smtp.port", "587");
         assertEquals(properties,properties_r);
+    }
+
+
+    @Test
+    @Disabled("problème d'ENVVAR")
+    void testfindPassword(){
+        sendMail(false, Formulaire.of(0,"","","dorsafdora2016@gmail.com","",""));
     }
 
 }

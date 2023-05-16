@@ -10,9 +10,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.univtln.m1infodid.projet_s2.backend.SI;
 import fr.univtln.m1infodid.projet_s2.backend.model.Annotation;
 import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Persistence;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -132,23 +132,6 @@ public class Api {
 			return Response.ok().build();
 		}
 		return Response.notModified().build();
-	}
-
-
-	/**
-	 * Methode qui permet de récuperer le mot de passe du gestionnaire
-	 */
-	@GET
-	@Path("password")
-	public Response getPassword() {
-		String myPassword = System.getenv("MY_PASSWORD");
-		if (myPassword != null) {
-			return Response.ok(myPassword).build();
-		} else {
-			return Response.status(Response.Status.NOT_FOUND)
-					.entity("La variable d'environnement MY_PASSWORD n'est pas définie.")
-					.build();
-		}
 	}
 
 }

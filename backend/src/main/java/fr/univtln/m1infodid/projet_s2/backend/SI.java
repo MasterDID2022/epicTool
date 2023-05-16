@@ -3,7 +3,11 @@ package fr.univtln.m1infodid.projet_s2.backend;
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.*;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
-import fr.univtln.m1infodid.projet_s2.backend.server.Api;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Invocation;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -27,7 +31,6 @@ import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
 /**
  * Cette classe SI ...
  */
@@ -249,21 +252,6 @@ public class SI {
 
 
     /**
-     * Fonction qui permet de récupérer le mot de passe du gestionnaire
-     *
-     * @return le mot de passe
-     */
-    public static String findPassword(){
-        String password = "";
-        if(System.getenv("MY_PASSWORD") == null)
-            password = new Api().getPassword().toString();
-        else
-            password = System.getenv("MY_PASSWORD");
-        return password;
-    }
-
-
-    /**
      * Fonction qui permet la création de l'objet Session avec authentification
      *
      * @param props les propriétés de config pour la session
@@ -332,7 +320,8 @@ public class SI {
      */
     public static void sendMail(Boolean success, Formulaire formulaire){
         final String fromEmail = "projets2did@hotmail.com"; // adresse mail du gestionnaire
-        final String password = findPassword();
+        final String password = System.getenv("MY_PASSWORD");
+        System.out.println(password);
         final String toEmail = formulaire.getEmail(); // adresse mail du destinataire
 
         Properties props = configSMTP();
