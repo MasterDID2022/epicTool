@@ -313,7 +313,7 @@ public class SI {
 
         // Ajout de l'image dans le contenu du message
         MimeBodyPart imagePart = new MimeBodyPart();
-        String path = SI.class.getResource("icon.png").getPath();
+        String path = SI.class.getResource("/plaque_epigraphe.png").getPath();
         imagePart.attachFile(path);
         multipart.addBodyPart(imagePart);
 
@@ -348,7 +348,7 @@ public class SI {
      * @param formulaire Llobjet Formulaire contenant les informations du formulaire
      */
     public static void sendMail(Boolean success, Formulaire formulaire){
-        final String fromEmail = "projets2did@hotmail.com"; // adresse mail du gestionnaire
+        final String fromEmail = "projetsdid@hotmail.com"; // adresse mail du gestionnaire
         final String password = System.getenv("MY_PASSWORD");
         final String toEmail = formulaire.getEmail(); // adresse mail du destinataire
 

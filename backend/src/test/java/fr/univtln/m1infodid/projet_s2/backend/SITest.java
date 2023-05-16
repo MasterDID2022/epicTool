@@ -149,7 +149,7 @@ class SITest {
     @Test
     void testcreateSession(){
         Properties properties = new Properties();
-        String email ="projets2did@hotmail.com";
+        String email ="projetsdid@hotmail.com";
         String mdp = "did9projet";
         Session result = createSession(properties,email,mdp);
         assertEquals(properties, result.getProperties());
@@ -184,7 +184,7 @@ class SITest {
     @Test
     //@Disabled("problème d'ENVVAR")
     void testfindPassword(){
-        sendMail(true, Formulaire.of(0,"","","projets2did@hotmail.com","",""));
+        sendMail(true, Formulaire.of(0,"","","projetsdid@hotmail.com","",""));
     }
 
 }
