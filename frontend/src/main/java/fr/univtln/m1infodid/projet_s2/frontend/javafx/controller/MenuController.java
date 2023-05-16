@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,7 @@ public class MenuController implements Initializable {
     @FXML
     private Label connecter;
     @FXML
-    private TextField inputPassword;
+    private PasswordField inputPassword;
     @FXML
     private AnchorPane anchorPane;
     @FXML
@@ -78,11 +79,11 @@ public class MenuController implements Initializable {
     public void connexionButtonPressed() {
         String mail = inputMail.getText();
         // String password = inputPassword.getText();Pour l'authentification
-        testMailCorrectness(mail);
+        if(testMailCorrectness(mail)) {
+            Facade.sendLoginAndPasseword(inputMail.getText(),inputPassword.getText());
+            }
         inputMail.setText("");
         inputPassword.setText("");
-
-        //authentification
     }
 
 
@@ -91,12 +92,12 @@ public class MenuController implements Initializable {
      *
      * @param email
      */
-    public void testMailCorrectness(String email) {
+    public boolean testMailCorrectness(String email) {
         if (!Verification.isInputAvalideEmail(email)) {
             alert.setDisable(false);
             alertController.showNotValidEmail();
             inputMail.getStyleClass().add("wrongMail");
-            return;
+            return false;
             // inputMail.setStyle("-fx-control-inner-background: #2F3855; -fx-text-inner-color: #f4c4c4; -fx-prompt-text-fill: grey; -fx-text-box-border: #803C3C; -fx-background-radius: 10 10 0 0;");
         }
         
@@ -105,6 +106,7 @@ public class MenuController implements Initializable {
             inputMail.getStyleClass().addAll("text-field", "text-input");
         }
         // inputMail.setStyle("-fx-control-inner-background: #2F3855; -fx-text-inner-color: #f4c4c4; -fx-prompt-text-fill: grey; -fx-text-box-border: #2F3855; -fx-background-radius: 10 10 0 0;");
+        return true;
     }
 
     public AlertController getAlertController() { return alertController; }

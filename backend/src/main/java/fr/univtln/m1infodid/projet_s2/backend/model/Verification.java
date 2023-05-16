@@ -1,4 +1,4 @@
-package fr.univtln.m1infodid.projet_s2.frontend.server;
+package fr.univtln.m1infodid.projet_s2.backend.model;
 
 import java.util.regex.Pattern;
 
@@ -13,7 +13,7 @@ public class Verification {
     // Norme HTML5 du W3C  (cf https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address)
 
 
-    private Verification() {
+    private Verification () {
         throw new IllegalStateException("Cette classe ne devrait pas etre instancier");
     }
 

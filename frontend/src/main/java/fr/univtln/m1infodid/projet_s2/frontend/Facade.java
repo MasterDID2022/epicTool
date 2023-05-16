@@ -1,14 +1,8 @@
 package fr.univtln.m1infodid.projet_s2.frontend;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.SceneType;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.FormulaireController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.MenuController;
@@ -19,24 +13,30 @@ import fr.univtln.m1infodid.projet_s2.frontend.server.Api;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Facade principale du Frontend pour faciliter la communication entre Api et UI
  */
 public class Facade {
 
     private Facade () {
-        throw new IllegalStateException("Ne dois pas être instancié");
+        throw new IllegalStateException("Ne doit pas être instancié");
     }
-    
+
     private static Stage primaryStage;
 
-    private static SceneData<MenuController> menuData; //scène et controller du menu 
+    private static SceneData<MenuController> menuData; //scène et controller du menu
     private static SceneData<PageVisualisationController> visuEpiData; //scène et controller de la page visualisation
     private static SceneData<FormulaireController> formData;
 
-    public static void initStage(Stage primaryStage) { 
+    public static void initStage(Stage primaryStage) {
         if (Facade.primaryStage != null) return;
-        Facade.primaryStage = primaryStage; 
+        Facade.primaryStage = primaryStage;
     }
 
     public static boolean isMenuStageShown() { return primaryStage.getScene() == menuData.scene(); }
@@ -87,6 +87,11 @@ public class Facade {
         jsonForm.put("commentaireFormulaire",commentaire);
 
         Api.postFormulaire(jsonForm.toString());
+    }
+
+    public static void sendLoginAndPasseword ( String email, String passeword ) {
+
+        Api.postLogin(Base64.getEncoder().encodeToString((email + ":" + passeword).getBytes()));
     }
 
     public static void showScene(SceneType type) {

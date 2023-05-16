@@ -1,23 +1,25 @@
 package fr.univtln.m1infodid.projet_s2.backend.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import fr.univtln.m1infodid.projet_s2.backend.DAO.FormulaireDAO;
-import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.univtln.m1infodid.projet_s2.backend.DAO.FormulaireDAO;
 import fr.univtln.m1infodid.projet_s2.backend.SI;
 import fr.univtln.m1infodid.projet_s2.backend.model.Annotation;
+import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.Persistence;
+import fr.univtln.m1infodid.projet_s2.backend.model.Verification;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.*;
+import java.util.Base64;
+import java.util.Optional;
 
 
 /**
@@ -134,4 +136,24 @@ public class Api {
 		return Response.notModified().build();
 	}
 
+	@Path("user/login")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response receiveLogin ( @Context HttpHeaders headers ) {
+		String authorizationHeader = headers.getHeaderString(HttpHeaders.AUTHORIZATION);
+
+		if (authorizationHeader != null && authorizationHeader.startsWith("Basic ")) {
+			String base64Credentials = authorizationHeader.substring("Basic ".length());
+			String decodedCredentials = new String(Base64.getDecoder().decode(base64Credentials));
+			String[] usernamePassword = decodedCredentials.split(":", 2);
+
+			if (usernamePassword.length == 2 && !usernamePassword[1].isEmpty() && Verification.isInputAvalideEmail(usernamePassword[0])) {
+				String username = usernamePassword[0];
+				String password = usernamePassword[1];
+				log.info("Username : " + username + ", password : " + password);
+				return Response.ok().entity("Bienvenue " + username + " !").build();
+			}
+		} // No Authorization header or invalid format
+		return Response.status(Response.Status.UNAUTHORIZED).entity("Missing or invalid Authorization header").build();
+	}
 }

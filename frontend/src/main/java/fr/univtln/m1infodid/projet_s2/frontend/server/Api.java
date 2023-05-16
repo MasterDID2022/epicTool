@@ -1,18 +1,17 @@
 package fr.univtln.m1infodid.projet_s2.frontend.server;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.ws.rs.Path;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Api REST pour les epigraphe
@@ -114,6 +113,7 @@ public class Api {
                 }
                 formJson = response.readEntity(String.class);
             } catch (Exception e) {
+                log.error(e.toString());
                 log.warn("Erreur lors de l'envoi des données");
             }
         } catch (Exception e) {
@@ -121,7 +121,30 @@ public class Api {
         }
         return formJson;
     }
+
+
+    public static String postLogin ( String encodedCredentials ) {
+        String loginJson="";
+        try (Client client = ClientBuilder.newClient();
+             Response response = client.target(URI_API_BACKEND + "user/login")
+                     .request(MediaType.APPLICATION_JSON).header("Authorization", "Basic " + encodedCredentials)
+                     .post(Entity.json(""))) {
+
+            if (response.getStatus() != 200) {
+                throw new IllegalStateException("La requête a échoué : code d'erreur HTTP " + response.getStatus());
+            }
+            loginJson = response.readEntity(String.class);
+            log.info(loginJson);
+        } catch (Exception e) {
+            log.warn("Erreur lors de l'envoi des données");
+            log.error(e.toString());
+            log.warn("Erreur lors de la lecture de la chaîne JSON");
+        }
+        return loginJson;
+    }
+
 }
+
 
 
 
