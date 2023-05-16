@@ -178,11 +178,6 @@ class SITest {
         properties.put("mail.smtp.host", "smtp.office365.com");
         properties.put("mail.smtp.port", "587");
         assertEquals(properties,properties_r);
+        //sendMail(true, Formulaire.of(0,"","","khebtanidorsaf@hotmail.com","",""));
     }
-
-
-
-        //sendMail(true, Formulaire.of(0,"","","projetsdid@hotmail.com","",""));
-
-
 }

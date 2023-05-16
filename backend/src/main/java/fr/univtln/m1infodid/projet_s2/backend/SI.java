@@ -285,8 +285,6 @@ public class SI {
      * @param toEmail l'adresse mail du destinataire
      * @return un objet de type Message configuré avec les informations de l'email
      */
-
-
     public static Message createMsgCont(Boolean success, Session session, String fromEmail, String toEmail) throws MessagingException, IOException {
         Message message = new MimeMessage(session);
 
@@ -305,7 +303,8 @@ public class SI {
                     "<br><br> Cordialement,<br>L'équipe de notre plateforme.";
         } else {
             message.setSubject("Demande de création de compte refusée");
-            emailContent = "Bonjour,<br><br>Votre demande de création de compte a été refusée.";
+            emailContent = "Bonjour,<br><br>Nous regrettons de vous informer que votre demande de création de compte a été refusée. Malheureusement, nous ne sommes pas en mesure de vous accorder l'accès à notre plateforme pour le moment. Nous vous remercions tout de même pour votre intérêt." +
+                    "<br><br>Cordialement,<br>L'équipe de notre plateforme.";
         }
         textPart.setContent(emailContent, "text/html;charset=utf-8");
         multipart.addBodyPart(textPart);
