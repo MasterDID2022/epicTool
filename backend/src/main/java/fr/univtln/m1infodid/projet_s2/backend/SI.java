@@ -297,7 +297,6 @@ public class SI {
         // Création du contenu du message
         MimeMultipart multipart = new MimeMultipart();
 
-        // Texte du message
         MimeBodyPart textPart = new MimeBodyPart();
         String emailContent;
         if (success) {
@@ -308,16 +307,12 @@ public class SI {
             message.setSubject("Demande de création de compte refusée");
             emailContent = "Bonjour,<br><br>Votre demande de création de compte a été refusée.";
         }
-        textPart.setContent(emailContent, "text/html");
+        textPart.setContent(emailContent, "text/html;charset=utf-8");
         multipart.addBodyPart(textPart);
-
-        // Ajout de l'image dans le contenu du message
         MimeBodyPart imagePart = new MimeBodyPart();
         String path = SI.class.getResource("/plaque_epigraphe.png").getPath();
         imagePart.attachFile(path);
         multipart.addBodyPart(imagePart);
-
-        // Définition du contenu du message
         message.setContent(multipart);
 
         return message;
