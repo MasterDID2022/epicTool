@@ -2,8 +2,6 @@ package fr.univtln.m1infodid.projet_s2.backend;
 
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.ListeVide;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
-import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -178,6 +176,6 @@ class SITest {
         properties.put("mail.smtp.host", "smtp.office365.com");
         properties.put("mail.smtp.port", "587");
         assertEquals(properties,properties_r);
-        //sendMail(true, Formulaire.of(0,"","","khebtanidorsaf@hotmail.com","",""));
+        //sendMail(true, Formulaire.of(0,"","","projetsdid@hotmail.com","",""));
     }
 }

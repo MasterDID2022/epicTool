@@ -33,7 +33,7 @@ public class Lanceur {
         log.info("l'API rest est active <C-c> pour la fermer");
 
         Map<String, String> env = System.getenv();
-        //SI.sendMail(false, Formulaire.of(0,"","","dorsafdora2016@gmail.com","",""));
+        //SI.sendMail(false, Formulaire.of(0,"","","projetsdid@hotmail.com","",""));
         em.close();
         emf.close();
         }

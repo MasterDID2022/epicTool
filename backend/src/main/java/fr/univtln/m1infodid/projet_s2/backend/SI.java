@@ -3,14 +3,7 @@ package fr.univtln.m1infodid.projet_s2.backend;
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.*;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
-import jakarta.activation.DataHandler;
-import jakarta.activation.DataSource;
-import jakarta.activation.FileDataSource;
-import jakarta.ws.rs.client.Client;
-import jakarta.ws.rs.client.ClientBuilder;
-import jakarta.ws.rs.client.Invocation;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -39,6 +32,7 @@ import javax.mail.internet.MimeMessage;
 /**
  * Cette classe SI ...
  */
+@Slf4j
 public class SI {
     private static String imgPath = "http://ccj-epicherchel.huma-num.fr/interface/phototheque/";
     public static final String URL_EPICHERCHELL = "http://ccj-epicherchel.huma-num.fr/interface/fiche_xml2.php?id=";
@@ -354,10 +348,10 @@ public class SI {
 
             // Envoi du message
             Transport.send(message);
-            System.out.println("E-mail envoyé avec succès !");
+            log.info("E-mail envoyé avec succès !");
 
         } catch (MessagingException e) {
-            e.printStackTrace();
+            log.error("Une erreur s'est produite lors de l'envoi du message : " + e.getMessage());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
