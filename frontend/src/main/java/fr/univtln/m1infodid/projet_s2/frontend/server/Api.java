@@ -143,6 +143,29 @@ public class Api {
         return loginJson;
     }
 
+    public static  List<List<String>> tmpMethodeInit(){
+        List<List<String>> listeDeFormulaire = new ArrayList<>();
+
+        List<String> listeFormulaire1 = new ArrayList<>();
+        listeFormulaire1.add(" rawiarayan@gmail.com");
+        listeFormulaire1.add(" ra");
+        listeFormulaire1.add(" ben");
+        listeFormulaire1.add(" comm");
+        listeFormulaire1.add(" aff");
+
+        List<String> listeFormulaire2 = new ArrayList<>();
+        listeFormulaire2.add(" meryam@gmail.com");
+        listeFormulaire2.add(" myr");
+        listeFormulaire2.add(" ben");
+        listeFormulaire2.add(" okk");
+        listeFormulaire2.add(" hihihi");
+
+        listeDeFormulaire.add(listeFormulaire1);
+        listeDeFormulaire.add(listeFormulaire2);
+        return listeDeFormulaire;
+
+    }
+
 }
 
 

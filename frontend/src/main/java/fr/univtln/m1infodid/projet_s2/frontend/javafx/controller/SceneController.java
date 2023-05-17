@@ -108,4 +108,22 @@ public final class SceneController {
                                     "/styles/formulaire.css",
                                     "/styles/alert.css");
     }
+
+    public static <T> SceneData<T> switchToPageGestionFormulaire ( Stage stage ) throws IOException {
+        return sceneSwitchAndLoad(stage,
+                "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/gestionAdhesion/gestionFormulaire.fxml",
+                780,
+                504,
+                "/styles/gestionFormulaire.css",
+                "/styles/alert.css");
+    }
+
+    public static <T> SceneData<T> switchToPageGestionFormulairUI2 ( Stage stage ) throws IOException {
+        return sceneSwitchAndLoad(stage,
+                "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/gestionAdhesion/affichageDemande.fxml",
+                780,
+                504,
+                "/styles/affichageDemande.css",
+                "/styles/alert.css");
+    }
 }

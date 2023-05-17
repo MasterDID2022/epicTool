@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="AnchorPaneDemande" prefHeight="497.0" prefWidth="226.0" stylesheets="/styles/affichageDemande.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion.AffichageDemandeController">
+    <children>
+
+
+        <Button fx:id="buttonBack" alignment="CENTER" layoutX="25.0" layoutY="25.0" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onAction="#handleRetourButton" text="revenir" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="35.0" />
+
+        <Label fx:id="title" layoutX="109.0" layoutY="24.0" text="Demande numéro...." AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="81.0" />
+
+        <VBox layoutX="106.0" layoutY="93.0" prefHeight="171.0" prefWidth="88.0" spacing="20" AnchorPane.bottomAnchor="233.0" AnchorPane.leftAnchor="106.0" AnchorPane.rightAnchor="106.0" AnchorPane.topAnchor="93.0">
+
+            <Separator orientation="HORIZONTAL" prefHeight="2.0" prefWidth="10" />
+
+            <children>
+                <HBox fx:id="nomHBox" spacing="10">
+                    <Label fx:id="nom" prefHeight="18.0" prefWidth="37.0" text="Nom :" AnchorPane.leftAnchor="95" AnchorPane.rightAnchor="95" />
+                    <Label fx:id="nomTextField" />
+                </HBox>
+                <HBox fx:id="prenomHBox" spacing="10">
+                    <Label fx:id="prenom" text="Prénom:" />
+                    <Label fx:id="prenomTextField" />
+                </HBox>
+                <HBox fx:id="commentaireHBox" spacing="10">
+                    <Label fx:id="commentaire" text="Commentaire:" />
+                    <Label fx:id="commentaireTextField" />
+                </HBox>
+                <HBox fx:id="emailHBox" spacing="10">
+                    <Label fx:id="email" text="Email:" />
+                    <Label fx:id="emailTextField" />
+                </HBox>
+                <HBox fx:id="affiliationHBox" spacing="10">
+                    <Label fx:id="affiliation" text="Affiliation:" />
+                    <Label fx:id="affiliationTextField" />
+                </HBox>
+                <HBox spacing="10" />
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
