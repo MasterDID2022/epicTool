@@ -25,8 +25,6 @@ public class Annotation {
     public Annotation () {
     }
     @ElementCollection
-    @CollectionTable(name = "point", joinColumns = @JoinColumn(name = "annotation_id"))
-    @OrderColumn(name = "point_index")
     private List<Point> listCoordonesPoints;
 
     /**
@@ -67,13 +65,22 @@ public class Annotation {
      * @param x
      * @param y
      */
-    public void addPoints(List<List<Double>> points) {
-        for (List<Double> point : points) {
-            double x = point.get(0);
-            double y = point.get(1);
-            this.listCoordonesPoints.add(new Point(x, y));
+    public void addPoints(List<List<Double>> rectangles) {
+        for (List<Double> rectanglePoints : rectangles) {
+            double x1 = rectanglePoints.get(0);
+            double y1 = rectanglePoints.get(1);
+            double x2 = rectanglePoints.get(2);
+            double y2 = rectanglePoints.get(3);
+
+            this.listCoordonesPoints.add(new Point(x1, y1));
+            this.listCoordonesPoints.add(new Point(x2, y1));
+            this.listCoordonesPoints.add(new Point(x2, y2));
+            this.listCoordonesPoints.add(new Point(x1, y2));
         }
     }
+
+
+
 
 
     @Override

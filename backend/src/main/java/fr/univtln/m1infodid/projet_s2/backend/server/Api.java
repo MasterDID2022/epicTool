@@ -35,37 +35,19 @@ public class Api {
 			String idEpigraphe = rootNode.path("idEpigraphe").asText();
 			annotation = Optional.of(Annotation.of(Integer.parseInt(idAnnotation), Integer.parseInt(idEpigraphe)));
 
-			JsonNode annotations = rootNode.get("annotations");
-			Iterator<Map.Entry<String, JsonNode>> fieldsIterator = annotations.fields();
-			while (fieldsIterator.hasNext()) {
-				Map.Entry<String, JsonNode> entry = fieldsIterator.next();
-				String pointIndex = entry.getKey();
-				JsonNode pointData = entry.getValue();
-				List<List<Double>> points = new ArrayList<>();
-
-				if (pointData.isArray()) {
-					if (pointData.size() == 4) {
-						// Convert rectangle coordinates to points
-						double x = pointData.get(0).asDouble();
-						double y = pointData.get(1).asDouble();
-						double width = pointData.get(2).asDouble();
-						double height = pointData.get(3).asDouble();
-
-						points.add(Arrays.asList(x, y));
-						points.add(Arrays.asList(x + width, y));
-						points.add(Arrays.asList(x + width, y + height));
-						points.add(Arrays.asList(x, y + height));
-					} else {
-						// Process points as they are
-						for (JsonNode jsonPoint : pointData) {
-							double x = jsonPoint.get(0).asDouble();
-							double y = jsonPoint.get(1).asDouble();
+			JsonNode annotationsNode = rootNode.get("annotations");
+			if (annotationsNode.isArray()) {
+				for (JsonNode annotationNode : annotationsNode) {
+					List<List<Double>> points = new ArrayList<>();
+					if (annotationNode.isArray()) {
+						for (JsonNode pointNode : annotationNode) {
+							double x = pointNode.get(0).asDouble();
+							double y = pointNode.get(1).asDouble();
 							points.add(Arrays.asList(x, y));
 						}
 					}
+					annotation.get().addPoints(points);
 				}
-
-				annotation.get().addPoints(points);
 			}
 
 			return annotation;
@@ -75,7 +57,6 @@ public class Api {
 
 		return annotation;
 	}
-
 
 
 	/**
