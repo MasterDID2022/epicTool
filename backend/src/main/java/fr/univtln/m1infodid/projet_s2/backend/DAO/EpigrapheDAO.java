@@ -1,6 +1,6 @@
 package fr.univtln.m1infodid.projet_s2.backend.DAO;
 
-import fr.univtln.m1infodid.projet_s2.backend.SI;
+import fr.univtln.m1infodid.projet_s2.backend.Facade;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -11,9 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 @Slf4j
 
@@ -105,7 +103,7 @@ public class EpigrapheDAO implements AutoCloseable {
                 return epigraphe;
             remove(epigraphe);
         }
-        epigraphe = SI.CreateEpigraphie(id);
+        epigraphe = Facade.createEpigraphie(id);
         persist(epigraphe);
         return epigraphe;
     }

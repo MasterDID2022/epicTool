@@ -1,8 +1,7 @@
 package fr.univtln.m1infodid.projet_s2.backend.model;
 
-import fr.univtln.m1infodid.projet_s2.backend.SI;
+import fr.univtln.m1infodid.projet_s2.backend.Facade;
 import jakarta.persistence.*;
-import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
@@ -51,7 +50,7 @@ public class Annotation {
 
     private Annotation(int idEpigraphe){
         try {
-            this.epigraphe = SI.CreateEpigraphie(idEpigraphe);
+            this.epigraphe = Facade.createEpigraphie(idEpigraphe);
             this.listCoordonesPoints = new ArrayList<>();
         }
         catch (Exception e) {

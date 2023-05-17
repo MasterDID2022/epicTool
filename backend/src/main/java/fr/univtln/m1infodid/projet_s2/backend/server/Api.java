@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.univtln.m1infodid.projet_s2.backend.DAO.FormulaireDAO;
-import fr.univtln.m1infodid.projet_s2.backend.SI;
+import fr.univtln.m1infodid.projet_s2.backend.Facade;
 import fr.univtln.m1infodid.projet_s2.backend.model.Annotation;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
@@ -80,7 +80,7 @@ public class Api {
 	public Response sendEpigraphe(@PathParam("id") String id) throws Exception {
 		ObjectMapper objectMapper = new ObjectMapper();
 		ObjectNode responseJson = objectMapper.createObjectNode();
-		Epigraphe epigraphe = SI.CreateEpigraphie(Integer.parseInt(id));
+		Epigraphe epigraphe = Facade.createEpigraphie(Integer.parseInt(id));
 		responseJson.put("id", epigraphe.getId());
 		responseJson.put("date", String.valueOf(epigraphe.getDate()));
 		responseJson.put("traduction", epigraphe.getTranslation());
