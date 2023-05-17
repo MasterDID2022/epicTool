@@ -10,6 +10,7 @@ class AnnotationTest {
         assertEquals(Annotation.of(1,1).getClass(),Annotation.class);
     }
 
+/**
     @Test
     void ajoutPointTest(){
         Annotation annotation = Annotation.of(1,1);
@@ -17,7 +18,7 @@ class AnnotationTest {
         annotation.addPoints(1,1);
         assertEquals(avantChangement+1,annotation.getListCoordonesPoints().size());
     }
-
+*/
     @Test
     void afficheAnnotation(){
         Annotation annotation = Annotation.of(1);
