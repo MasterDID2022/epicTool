@@ -9,7 +9,7 @@ import java.util.List;
 
 public class AnnotationDAO implements AutoCloseable{
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
     private AnnotationDAO ( EntityManager entityManager ) {
         this.entityManager = entityManager;
     }

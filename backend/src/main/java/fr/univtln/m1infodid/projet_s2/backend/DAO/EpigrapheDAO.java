@@ -1,6 +1,5 @@
 package fr.univtln.m1infodid.projet_s2.backend.DAO;
 
-import fr.univtln.m1infodid.projet_s2.backend.Facade;
 import fr.univtln.m1infodid.projet_s2.backend.SI;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import jakarta.persistence.EntityManager;
@@ -10,7 +9,6 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import lombok.extern.slf4j.Slf4j;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -18,7 +16,7 @@ import java.util.List;
 
 public class EpigrapheDAO implements AutoCloseable {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
 
 
@@ -81,7 +79,7 @@ public class EpigrapheDAO implements AutoCloseable {
     /**
      * Remove an epigraph using its id.
      */
-    public void remove ( int id ) throws SQLException {
+    public void remove ( int id ) {
         entityManager.getTransaction().begin();
         entityManager.remove(findById(id));
         entityManager.getTransaction().commit();
@@ -89,11 +87,11 @@ public class EpigrapheDAO implements AutoCloseable {
     }
 
 
-    public void remove(Epigraphe epigraphe) throws SQLException {
+    public void remove(Epigraphe epigraphe)  {
         remove(epigraphe.getId());
     }
 
-    public Epigraphe getEpigrapheNoCommit(int id) throws Exception {
+    public Epigraphe getEpigrapheNoCommit(int id)  {
         Epigraphe epigraphe = findById(id);
 
         if(epigraphe !=null) {
@@ -108,7 +106,7 @@ public class EpigrapheDAO implements AutoCloseable {
         return epigraphe;
     }
 
-    public Epigraphe getEpigraphe(int id) throws Exception {
+    public Epigraphe getEpigraphe(int id)  {
         entityManager.getTransaction().begin();
         Epigraphe epigraphe = getEpigrapheNoCommit(id);
         entityManager.getTransaction().commit();
