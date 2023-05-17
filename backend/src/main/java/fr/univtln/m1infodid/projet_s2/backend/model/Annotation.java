@@ -28,14 +28,9 @@ public class Annotation {
 
     /**
      * Factory annotation
-     * @param idAnnotation de epicherchell
      * @param idEpigraphe du system
-     * @deprecated  Should not be used, the idAnnotation is ignored.
      * @return
      */
-    public static Annotation of(Integer idAnnotation,Integer idEpigraphe){
-        return new Annotation(idEpigraphe);
-    }
     public static Annotation of(int idEpigraphe){
         return new Annotation(idEpigraphe);
     }

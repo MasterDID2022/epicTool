@@ -25,7 +25,6 @@ import java.util.List;
  * Cette classe SI ...
  */
 public class SI {
-    private static String imgPath = "http://ccj-epicherchel.huma-num.fr/interface/phototheque/";
     public static final String URL_EPICHERCHELL = "http://ccj-epicherchel.huma-num.fr/interface/fiche_xml2.php?id=";
 
     private SI () {
@@ -33,11 +32,12 @@ public class SI {
 
 
     /**
-     * @param id l'id de la fiche
-     * @param imgNumber
-     * @return l url de l image qui sera egale au chemin imgPath + id + imgNumber
+     * @param id        l'id de la fiche
+     * @param imgNumber le numéro de l'image récupéré
+     * @return l'url de l'image qui sera égale au chemin imgPath + id + imgNumber
      */
     public static String getImgUrl ( String id, String imgNumber ) {
+        String imgPath = "http://ccj-epicherchel.huma-num.fr/interface/phototheque/"; //NOSONAR
         return imgPath + id + '/' + imgNumber + ".jpg";
     }
 
@@ -70,7 +70,7 @@ public class SI {
      * @param contentList  liste à laquelle on rajoute le contenu
      * @param nodeList  liste de tous les noeuds du doc XML
      * @param id  id de la fiche
-     * @param a  indice de l'element 'facsimile' dans le nodeList
+     * @param a  indice de l'élément 'facsimile' dans le nodeList
      */
     public static void extractImage(List<List<String>> contentList, NodeList nodeList, String id, int a){
         Node child = nodeList.item(a + 1);
@@ -78,7 +78,7 @@ public class SI {
         //si une seule image existe
         if (firstElement.getTagName().equals("graphic"))
             contentList.add(List.of(firstElement.getAttribute("url")));
-            //sinon on fait appel a notre fonction
+            //sinon, on fait appel à notre fonction
         else if (firstElement.getTagName().equals("desc")) {
             String imgNum = firstElement.getTextContent();
             contentList.add(List.of(getImgUrl(id, imgNum)));
@@ -92,26 +92,22 @@ public class SI {
      * @param element  element XML duquel extraire le contenu
      * @param id  id de la fiche
      * @param nodeList  liste de tous les noeuds du doc XML
-     * @param a  indice de l'element dans le nodeList
+     * @param a  indice de l'élément dans le nodeList
      */
     public static void extraction(List<List<String>> contentList, List<String> transcriptionList, Element element, String id, NodeList nodeList, int a){
-        switch (element.getTagName()){
+        switch (element.getTagName()) { //NOSONAR
             //l'emplacement de texte sur le fichier xml
-            /*case "text":
-                contentList.add(nodeList.item(a + 3).getTextContent());break;*/
             //recherche transcription ligne par ligne
-            case "lb":
-                transcriptionList.add(nodeList.item(a).getNextSibling().getTextContent());break;
-            //recherche nom auteur
-            case "persName":
-                contentList.add(List.of(nodeList.item(a).getTextContent()));break;
-            //recherche date
-            case "date":
-                contentList.add(List.of(((Element) nodeList.item(a)).getAttribute("when")));break;
-            //recupere l image
-            case "facsimile":
-                extractImage(contentList, nodeList, id, a);
-                break;
+            case "lb" -> transcriptionList.add(nodeList.item(a).getNextSibling().getTextContent());
+
+            //recupère le nom auteur
+            case "persName" -> contentList.add(List.of(nodeList.item(a).getTextContent()));
+
+            //recupère date
+            case "date" -> contentList.add(List.of(((Element) nodeList.item(a)).getAttribute("when")));
+
+            //recupère l'image
+            case "facsimile" -> extractImage(contentList, nodeList, id, a);
         }
     }
 
@@ -134,7 +130,7 @@ public class SI {
                 Element element = (Element) node;
                 extraction(contentList, transcriptionList, element, id, nodeList, a);
 
-                //recupere le contenu de traduction
+                //recupère le contenu de traduction
                 if (element.hasAttribute("type") && element.getAttribute("type").equals("translation")) {
                     contentList.add(List.of(element.getTextContent()));
                 }
@@ -155,7 +151,7 @@ public class SI {
      * @param xmlUrl  url du document XML
      * @return liste qui contient le contenu des balises
      */
-    public static List<List<String>> extractContentFromXML(String id, String xmlUrl) throws Exception {
+    public static List<List<String>> extractContentFromXML(String id, String xmlUrl) throws UrlInvalide,RecuperationXml,DomParser,ExtractionXml {
         List<List<String>> contentList = new ArrayList<>();
         List<String> transcriptionList = new ArrayList<>();
         try {
@@ -177,22 +173,23 @@ public class SI {
 
 
     /**
-     * Fonction qui permet de renvoyer un object 'epigraphe' en remplissant ses attributs à l'aide de la liste contenant contenu du doc xml
+     * Fonction qui permet de renvoyer un objet 'epigraphe' en remplissant ses attributs à l'aide de la liste contenant contenu du doc xml
+     *
      * @param contentList liste contenant le contenu extrait d'un doc xml
      */
-    public static Epigraphe CreateEpigraphie (List<List<String>> contentList) throws ListeVide {
+    public static Epigraphe createEpigraphie ( List<List<String>> contentList ) throws ListeVide, ExtractionXml {
         Epigraphe epigraphe = new Epigraphe();
         try {
             if (contentList == null || contentList.isEmpty()) {
                 throw new ListeVide();
             }
 
-            parseValue(contentList,epigraphe);
+            parseValue(contentList, epigraphe);
 
         } catch (IndexOutOfBoundsException r) {
             throw new ListeVide();
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            throw new ExtractionXml();
         }
         epigraphe.setFetchDate(LocalDate.now());
         return epigraphe;
@@ -217,17 +214,17 @@ public class SI {
      * @param contentList liste contenant le contenu d'un doc xml
      * @param epigraphe object qu'on veut remplir avec le donnees extraites
      */
-    public static void parseValue(List<List<String>> contentList, Epigraphe epigraphe) throws ParseException {
+    public static void parseValue ( List<List<String>> contentList, Epigraphe epigraphe ) throws ParseException {
         epigraphe.setId(Integer.parseInt(contentList.get(0).get(0)));
         epigraphe.setName(contentList.get(1).get(0));
-        parseDate(contentList,epigraphe);
+        parseDate(contentList, epigraphe);
         epigraphe.setImgUrl(contentList.get(3).get(0));
         epigraphe.setTranslation(contentList.get(4).get(0));
         epigraphe.setText(contentList.get(5));
     }
 
-    public static Epigraphe CreateEpigraphie ( int id ) throws Exception {
-        return SI.CreateEpigraphie(
+    public static Epigraphe createEpigraphie ( int id ) throws UrlInvalide, DomParser, RecuperationXml, ExtractionXml, ListeVide {
+        return SI.createEpigraphie(
                 SI.extractContentFromXML(String.valueOf(id), URL_EPICHERCHELL + id));
     }
 }

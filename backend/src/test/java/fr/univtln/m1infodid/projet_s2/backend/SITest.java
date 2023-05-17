@@ -1,5 +1,6 @@
 package fr.univtln.m1infodid.projet_s2.backend;
 
+import fr.univtln.m1infodid.projet_s2.backend.exceptions.ExtractionXml;
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.ListeVide;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import org.junit.jupiter.api.Test;
@@ -122,7 +123,7 @@ class SITest {
 
 
     @Test
-    void testCreateEpigraphie () throws ParseException, ListeVide {
+    void testCreateEpigraphie () throws ParseException, ListeVide, ExtractionXml {
         List<List<String>>  contentList = new ArrayList<>();
         contentList.add(List.of("42"));
         contentList.add(List.of("philippe"));
@@ -140,7 +141,7 @@ class SITest {
         expectedEpigraphe.setText(List.of("Texte"));
         expectedEpigraphe.setTranslation("Traduction");
 
-        Epigraphe resultEpigraphe = SI.CreateEpigraphie(contentList);
+        Epigraphe resultEpigraphe = SI.createEpigraphie(contentList);
 
         assertEquals(resultEpigraphe.getId(), expectedEpigraphe.getId());
         assertEquals(resultEpigraphe.getDate(), expectedEpigraphe.getDate());

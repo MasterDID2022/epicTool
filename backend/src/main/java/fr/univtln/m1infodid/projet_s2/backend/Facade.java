@@ -16,7 +16,7 @@ public class Facade {
      */
 
     public static Epigraphe createEpigraphie ( int id ) throws Exception {
-        return SI.CreateEpigraphie(id);
+        return SI.createEpigraphie(id);
     }
 
 

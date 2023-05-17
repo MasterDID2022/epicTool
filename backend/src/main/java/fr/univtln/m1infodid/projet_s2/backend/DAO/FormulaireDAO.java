@@ -4,6 +4,7 @@ import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
 import jakarta.persistence.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 @Slf4j
@@ -102,7 +103,7 @@ FormulaireDAO {
     public static List<Formulaire> findAllFormulaire() {
         EntityManager em = emf.createEntityManager();
         try {
-            Query query = em.createQuery("SELECT f FROM Formulaire f");
+            TypedQuery<Formulaire> query = em.createQuery("SELECT f FROM Formulaire f",Formulaire.class);
             return query.getResultList();
         } finally {
             em.close();

@@ -34,10 +34,9 @@ public class Api {
 		JsonNode rootNode = null;
 		try {
 			rootNode = objectMapper.readTree(annotationJson);
-			String idAnnotation = rootNode.path("idAnnotation").asText();
 			String idEpigraphe = rootNode.path("idEpigraphe").asText();
 			annotation = Optional.of(
-					Annotation.of(Integer.parseInt(idAnnotation), Integer.parseInt(idEpigraphe)));
+					Annotation.of( Integer.parseInt(idEpigraphe)));
 			JsonNode annotations = rootNode.get("annotations");
 			for (JsonNode jsonPoints : annotations) {
 				for (JsonNode coordonner : jsonPoints) {
