@@ -1,5 +1,6 @@
 package fr.univtln.m1infodid.projet_s2.backend.server;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.univtln.m1infodid.projet_s2.backend.DAO.UtilisateurDAO;
 import fr.univtln.m1infodid.projet_s2.backend.SI;
 import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
@@ -10,8 +11,18 @@ import jakarta.persistence.Persistence;
 import lombok.extern.slf4j.Slf4j;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import fr.univtln.m1infodid.projet_s2.backend.DAO.UtilisateurDAO;
+import fr.univtln.m1infodid.projet_s2.backend.model.Utilisateur;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+
 
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,6 +42,7 @@ public class Lanceur {
             EntityManager em = emf.createEntityManager();
             try (UtilisateurDAO dao = UtilisateurDAO.create(em)) {
                 Utilisateur testUser = Utilisateur.of("test@test.fr", "leNomDuChien");
+                
                 if (dao.findByEmail(testUser.getEmail()).isEmpty()) {
                     dao.persist(testUser);
                 }
@@ -47,7 +59,7 @@ public class Lanceur {
      *
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JsonProcessingException {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("EpiPU");
         EntityManager em = emf.createEntityManager();
         final ResourceConfig rc = new ResourceConfig().packages("fr.univtln.m1infodid.projet_s2.backend.server");
@@ -55,7 +67,5 @@ public class Lanceur {
         addTestUser();
         log.info("l'API rest est active <C-c> pour la fermer");
         em.close();
-        emf.close();
-    }
+        emf.close();}
 }
-

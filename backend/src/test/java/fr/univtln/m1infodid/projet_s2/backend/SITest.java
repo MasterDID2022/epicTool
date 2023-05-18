@@ -2,10 +2,10 @@ package fr.univtln.m1infodid.projet_s2.backend;
 
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.ListeVide;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
+import fr.univtln.m1infodid.projet_s2.backend.model.Utilisateur;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-
 import javax.mail.*;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
@@ -149,7 +149,6 @@ class SITest {
 		Session result = createSession(properties, email, mdp);
 		assertEquals(properties, result.getProperties());
 	}
-
 	@Test
 	void testcreateMsgCont() throws MessagingException, IOException {
 		Boolean success = true;
@@ -161,7 +160,6 @@ class SITest {
 		assertEquals(toEmail, result.getRecipients(Message.RecipientType.TO)[0].toString());
 		assertEquals("text/plain", result.getContentType());
 	}
-
 	@Test
 	void testconfigSMTP() {
 		Properties properties_r = configSMTP();
@@ -173,4 +171,31 @@ class SITest {
 		assertEquals(properties, properties_r);
 		// sendMail(true, Formulaire.of(0,"","","projetsdid@hotmail.com","",""));
 	}
+	@Test
+	public void testRecupereUtilisateurs() {
+		String result = SI.recupereUtilisateurs();
+		assertNotNull(result);
+		assertFalse(result.isEmpty());
+	}
+
+	@Test
+	void testConvertirUtilisateursEnJSON() {
+		List<Utilisateur> utilisateurs = new ArrayList<>();
+		Utilisateur ut1 = new Utilisateur();
+		Utilisateur ut2 = new Utilisateur();
+		ut1.setEmail("gg@gg.fr");
+		ut1.setId(1);
+		ut2.setEmail("gg1@gg.fr");
+		ut2.setId(2);
+		utilisateurs.add(ut1);
+		utilisateurs.add(ut2);
+
+		String json = convertirUtilisateursEnJSON(utilisateurs);
+		assertNotNull(json);
+		assertFalse(json.isEmpty());
+
+		String expectedJson = "[\"{\\\"id\\\": \\\"1\\\", \\\"email\\\": \\\"gg@gg.fr\\\"}\",\"{\\\"id\\\": \\\"2\\\", \\\"email\\\": \\\"gg1@gg.fr\\\"}\"]";
+		assertEquals(expectedJson, json);
+	}
+
 }

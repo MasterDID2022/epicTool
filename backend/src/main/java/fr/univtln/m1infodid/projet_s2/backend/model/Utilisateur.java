@@ -49,7 +49,6 @@ public class Utilisateur {
         return new Utilisateur(email, mdp);
     }
 
-
     /**
      * Hash un mot de passe avec un sel, retourne une chaine de character traduite d'un byte
      *
@@ -137,5 +136,4 @@ public class Utilisateur {
     public int hashCode() {
         return getClass().hashCode();
     }
-
 }

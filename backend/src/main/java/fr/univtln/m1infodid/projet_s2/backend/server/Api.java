@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.univtln.m1infodid.projet_s2.backend.DAO.FormulaireDAO;
 import fr.univtln.m1infodid.projet_s2.backend.Facade;
+import fr.univtln.m1infodid.projet_s2.backend.SI;
 import fr.univtln.m1infodid.projet_s2.backend.model.*;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -20,7 +21,7 @@ import java.util.Optional;
 
 
 /**
- * Api REST pour les epigraphe
+ * Api REST cote backend
  */
 @Slf4j
 @Path("epicTools")
@@ -75,8 +76,6 @@ public class Api {
 		String jsonStr = objectMapper.writeValueAsString(responseJson);
 		return Response.ok(jsonStr, MediaType.APPLICATION_JSON).build();
 	}
-
-
 
 	private Optional<Formulaire> createFormulaire(String formulaireJson) {
 		Optional<Formulaire> formulaire = Optional.empty();
@@ -136,5 +135,26 @@ public class Api {
 			}
 		} // No Authorization header or invalid format
 		return Response.status(Response.Status.UNAUTHORIZED).entity("Missing or invalid Authorization header").build();
+	}
+	/**
+	 * Récupère la liste des utilisateurs et renvoie une réponse HTTP contenant les utilisateurs au format JSON.
+
+	 * return: Une réponse HTTP contenant la liste des utilisateurs au format JSON.
+	 */
+	@GET
+	@Path("utilisateurs")
+	public static Response sendUtilisateur() {
+		String utilisateursJson = SI.recupereUtilisateurs();
+		ObjectMapper objectMapper = new ObjectMapper();
+		ObjectNode responseJson = objectMapper.createObjectNode();
+		responseJson.put("utilisateurs", utilisateursJson);
+
+		String jsonStr = null;
+		try {
+			jsonStr = objectMapper.writeValueAsString(responseJson);
+		} catch (JsonProcessingException e) {
+			throw new RuntimeException(e);
+		}
+		return Response.ok(jsonStr, MediaType.APPLICATION_JSON).build();
 	}
 }
