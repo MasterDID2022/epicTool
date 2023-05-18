@@ -1,5 +1,6 @@
 package fr.univtln.m1infodid.projet_s2.frontend.server;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.client.Client;
@@ -8,13 +9,12 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * Api REST pour les epigraphe
+ * Api REST cote frontend
  */
 @Slf4j
 public class Api {
@@ -143,7 +143,51 @@ public class Api {
         }
         return loginJson;
     }
+    /**
+     * Récupère le contenu des utilisateurs à partir de l'API backend et le renvoie sous forme de chaîne de caractères.
+     *
+     * @return le contenu des utilisateurs en tant que chaîne de caractères
+     */
+    public static String recupereContenuUtilisateurs() {
+        String contenu = "";
+        try (Client client = ClientBuilder.newClient()) {
+            Response response = client.target(URI_API_BACKEND + "utilisateurs")
+                    .request(MediaType.APPLICATION_JSON)
+                    .get();
+            if (response.getStatus() != 200) {
+                log.error("Erreur lors de la récupération des utilisateurs : code d'erreur HTTP " + response.getStatus());
+            }
+            contenu = response.readEntity(String.class);
+            response.close();
+        } catch (Exception e) {
+            log.warn("Erreur lors de la récupération des utilisateurs", e);
+        }
+        return contenu;
+    }
 
+    /**
+     * Convertit une chaîne de caractères JSON en une liste d'objets.
+     *
+     * @param jsonString la chaîne de caractères JSON à convertir
+     * @return une liste d'objets obtenue à partir de la conversion du JSON
+     */
+    public static List<String> convertJsonToList(String jsonString) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<String> resultList = new ArrayList<>();
+        try {
+            JsonNode jsonNode = objectMapper.readTree(jsonString);
+            String utilisateursString = jsonNode.get("utilisateurs").asText();
+            resultList = objectMapper.readValue(utilisateursString, new ArrayList<>().getClass());
+        } catch (JsonProcessingException e) {
+            log.warn("Erreur lors de la désérialisation du JSON");
+        }
+        return resultList;
+    }
+
+    /**
+     * methode tmp pour faciliter tache, initalise une liste de formulaire pour tester ..
+     */
+    
     public static  List<List<String>> tmpMethodeInit(){
         List<List<String>> listeDeFormulaire = new ArrayList<>();
 

@@ -181,6 +181,15 @@ public class Facade {
         if (isMenuStageShown()) menuData.controller().getAlertController().showNoInternet();
         else if (isPageVisualisationShown()) visuEpiData.controller().getAlertController().showNoInternet();
     }
+    /**
+    methode qui affiche recupere les utilisateurs du back sou forme json et les convertit en liste
+
+     */
+    public static List<String> afficherUtilisateurs(){
+        String utilisateursString = Api.recupereContenuUtilisateurs();
+        List<String> utilisateursList = Api.convertJsonToList(utilisateursString);
+        return utilisateursList;
+    }
 
     /**
      * Méthode pour afficher le hub du gestionnaire
@@ -195,4 +204,5 @@ public class Facade {
         //déconnexion utilisateur courant WIP
         showScene(SceneType.MENU); // retour au menu de l'application
     }
+
 }

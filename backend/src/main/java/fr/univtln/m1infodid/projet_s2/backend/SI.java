@@ -1,8 +1,15 @@
 package fr.univtln.m1infodid.projet_s2.backend;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.univtln.m1infodid.projet_s2.backend.DAO.UtilisateurDAO;
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.*;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
+import fr.univtln.m1infodid.projet_s2.backend.model.Utilisateur;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -208,9 +215,7 @@ public class SI {
 			if (contentList == null || contentList.isEmpty()) {
 				throw new ListeVide();
 			}
-
 			parseValue(contentList, epigraphe);
-
 		} catch (IndexOutOfBoundsException r) {
 			throw new ListeVide();
 		} catch (ParseException e) {
@@ -361,5 +366,54 @@ public class SI {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	/**
+	 * Récupère la liste des utilisateurs à partir de la base de données.
+	 *
+	 * @return une liste d'objets Utilisateur
+	 */
+    public static List<Utilisateur> obtenirUtilisateurs() {
+        List<Utilisateur> utilisateurs = new ArrayList<>();
+        try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("EpiPU");
+             EntityManager entityManager = entityManagerFactory.createEntityManager();
+             UtilisateurDAO utilisateurDAO = UtilisateurDAO.create(entityManager)) {
+
+            utilisateurs = utilisateurDAO.findAll();
+        } catch (Exception e) {
+            log.warn("Erreur lors de la récupération des utilisateurs", e);
+        }
+        return utilisateurs;
+    }
+
+	/**
+	 * Convertit une liste d'utilisateurs en une chaîne de caractères JSON.
+	 * Chaque utilisateur est représenté par un objet JSON contenant l'ID et l'email.
+	 *
+	 * @param utilisateurs la liste d'utilisateurs à convertir
+	 * @return une chaîne de caractères représentant le JSON des utilisateurs
+	 */
+	public static String convertirUtilisateursEnJSON(List<Utilisateur> utilisateurs) {
+		List<String> listUtilisateurs = new ArrayList<>();
+		for (Utilisateur utilisateur : utilisateurs) {
+			String jsonUtilisateur = "{\"id\": \"" + utilisateur.getId() + "\", \"email\": \"" + utilisateur.getEmail() + "\"}";
+			listUtilisateurs.add(jsonUtilisateur);
+		}
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			return objectMapper.writeValueAsString(listUtilisateurs);
+		} catch (JsonProcessingException e) {
+			log.error("Erreur lors de la conversion des utilisateurs en JSON", e);
+			return "";
+		}
+	}
+	/**
+	 * Récupère la liste des utilisateurs à partir de la base de données et les renvoie sous forme de JSON.
+	 * Chaque utilisateur est représenté par un objet JSON contenant l'ID et l'email.
+	 *
+	 * @return une chaîne de caractères représentant le JSON des utilisateurs
+	 */
+	public static String recupereUtilisateurs() {
+		List<Utilisateur> utilisateurs = obtenirUtilisateurs();
+		return convertirUtilisateursEnJSON(utilisateurs);
 	}
 }
