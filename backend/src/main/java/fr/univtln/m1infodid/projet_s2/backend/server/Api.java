@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.univtln.m1infodid.projet_s2.backend.DAO.FormulaireDAO;
-import fr.univtln.m1infodid.projet_s2.backend.SI;
+import fr.univtln.m1infodid.projet_s2.backend.Facade;
 import fr.univtln.m1infodid.projet_s2.backend.model.*;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -25,29 +25,14 @@ import java.util.Optional;
 @Slf4j
 @Path("epicTools")
 public class Api {
-	private Optional<Annotation> createAnnotation(String annotationJson) {
-		Optional<Annotation> annotation = Optional.empty();
+	private Optional<Annotation> createAnnotation(String annotationJson)   {
+		try{
 		ObjectMapper objectMapper = new ObjectMapper();
-		JsonNode rootNode = null;
-		try {
-			rootNode = objectMapper.readTree(annotationJson);
-			String idAnnotation = rootNode.path("idAnnotation").asText();
-			String idEpigraphe = rootNode.path("idEpigraphe").asText();
-			annotation = Optional.of(
-					Annotation.of(Integer.parseInt(idAnnotation), Integer.parseInt(idEpigraphe)));
-			JsonNode annotations = rootNode.get("annotations");
-			for (JsonNode jsonPoints : annotations) {
-				for (JsonNode coordonner : jsonPoints) {
-					double y = (Double.parseDouble(String.valueOf(coordonner.toString().charAt(1))));
-					double x = (Double.parseDouble(String.valueOf(coordonner.toString().charAt(3))));
-					annotation.get().addPoints(x, y);
-				}
-			}
-			return annotation;
-		} catch (JsonProcessingException e) {
-			log.error("Parsing error, le json ne semble pas valide");
+			return Optional.of(objectMapper.readValue(annotationJson,Annotation.class));
+		} catch (JsonProcessingException e ) {
+			log.info(e.toString());
+			return Optional.empty();
 		}
-		return annotation;
 	}
 
 	/**
@@ -61,7 +46,6 @@ public class Api {
 	public Response receiveAnnotation(String annotationJson) {
 		Optional<Annotation> annotation = createAnnotation(annotationJson);
 		if (annotation.isPresent()){
-			log.info(annotation.toString());// Pour DAO persister ici
 			return Response.ok().build();
 		}
 		return Response.notModified().build();
@@ -77,7 +61,7 @@ public class Api {
 	public Response sendEpigraphe(@PathParam("id") String id) throws Exception {
 		ObjectMapper objectMapper = new ObjectMapper();
 		ObjectNode responseJson = objectMapper.createObjectNode();
-		Epigraphe epigraphe = SI.CreateEpigraphie(Integer.parseInt(id));
+		Epigraphe epigraphe = Facade.createEpigraphie(Integer.parseInt(id));
 		responseJson.put("id", epigraphe.getId());
 		responseJson.put("date", String.valueOf(epigraphe.getDate()));
 		responseJson.put("traduction", epigraphe.getTranslation());

@@ -52,32 +52,32 @@ public class Facade {
     }
 
     public static void postAnnotations(String idEpigraphie, Map<String, Rectangle> rectAnnotationsMap) {
-
         if (rectAnnotationsMap == null) return;
         if (rectAnnotationsMap.isEmpty()) return;
 
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode jsonForm = mapper.createObjectNode();
 
-        jsonForm.put("idEpigrahie", idEpigraphie);
-        jsonForm.put("idAnnotation", -1);
+        jsonForm.put("idEpigraphe", idEpigraphie);
 
-        ArrayNode annotations = jsonForm.putArray("annotations");
+        ArrayNode annotations = jsonForm.putArray("listePoly");
+
         for (var entry : rectAnnotationsMap.entrySet()) {
-            String btnIndex = entry.getKey();
             Rectangle r = entry.getValue();
 
-            ArrayNode btnArray = jsonForm.putArray(btnIndex);
-            btnArray.add(r.getX());
-            btnArray.add(r.getY());
-            btnArray.add(r.getWidth());
-            btnArray.add(r.getHeight());
+            ArrayNode rectangle = mapper.createArrayNode();
+            rectangle.add(r.getX());
+            rectangle.add(r.getY());
+            rectangle.add(r.getWidth());
+            rectangle.add(r.getHeight());
 
-            annotations.add(btnArray);
+            annotations.add(rectangle);
         }
 
-        Api.postAnnotations( jsonForm.toString() );
+        Api.postAnnotations(jsonForm.toString());
+        System.out.println(jsonForm);
     }
+
 
     public static void sendFormulaire(String nom, String prenom, String email, String affiliation, String commentaire) {
         ObjectMapper mapper = new ObjectMapper();

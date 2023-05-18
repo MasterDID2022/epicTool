@@ -1,6 +1,6 @@
 package fr.univtln.m1infodid.projet_s2.backend.DAO;
 
-import fr.univtln.m1infodid.projet_s2.backend.SI;
+import fr.univtln.m1infodid.projet_s2.backend.Facade;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -11,9 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 @Slf4j
 
@@ -94,7 +92,7 @@ public class EpigrapheDAO implements AutoCloseable {
         remove(epigraphe.getId());
     }
 
-    public Epigraphe getEpigraphe(int id) throws Exception {
+    public Epigraphe getEpigrapheNoCommit(int id) throws Exception {
         Epigraphe epigraphe = findById(id);
 
         if(epigraphe !=null) {
@@ -102,14 +100,19 @@ public class EpigrapheDAO implements AutoCloseable {
 
             if (date.isBefore(LocalDate.now().plusDays(2)))
                 return epigraphe;
-            remove(epigraphe);
+            entityManager.detach(epigraphe);
         }
-        epigraphe = SI.CreateEpigraphie(id);
-        persist(epigraphe);
+        epigraphe = Facade.createEpigraphie(id);
+        entityManager.merge(epigraphe);
         return epigraphe;
     }
 
-
+    public Epigraphe getEpigraphe(int id) throws Exception {
+        entityManager.getTransaction().begin();
+        Epigraphe epigraphe = getEpigrapheNoCommit(id);
+        entityManager.getTransaction().commit();
+        return epigraphe;
+    }
     @Override
     public void close () throws Exception {
         entityManager.close();
