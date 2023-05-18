@@ -86,6 +86,7 @@ public class Api {
                 annotationJson = response.readEntity(String.class);
             } catch (Exception e) {
                 log.warn("Erreur lors de l'envoi des données");
+                log.warn(e.toString());
             }
         } catch (Exception e) {
             log.warn("Erreur lors de la lecture de la chaîne JSON");

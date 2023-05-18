@@ -35,8 +35,10 @@
         <slf4j.version>2.0.5</slf4j.version>
         <junit.version>5.9.2</junit.version>
         <postgresql.version>42.5.4</postgresql.version>
+        <javax-mail.version>1.6.2</javax-mail.version>
         <surefire.version>3.0.0</surefire.version>
         <jakarta-activation.version>2.1.2</jakarta-activation.version>
+        <jackson.version>2.15.1</jackson.version>
         <exec.version>3.1.0</exec.version>
         <argline>${project.build.directory}/jacoco.exec</argline>
         <!--sonar.coverage.exclusions>src/main/java/fr/univtln/lhd/fr.univtln.m1infodid.projet_s2.javafx.fr.univtln.m1infodid.projet_s2.frontend.javafx.fr.univtln.m1infodid.projets2.frontend.javafx.fr.univtln.m1infodid.projet_s2.frontend.javafx.view/**,src/main/java/fr/univtln/lhd/controllers/**</sonar.coverage.exclusions-->
@@ -55,7 +57,12 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.dataformat</groupId>
                 <artifactId>jackson-dataformat-xml</artifactId>
-                <version>2.14.2</version>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
 
             <dependency>
@@ -131,8 +138,18 @@
             <dependency>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx</artifactId>
-                <version>19.0.2.1</version>
+                <version>${javafx.version}</version>
                 <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>javax.mail-api</artifactId>
+                <version>${javax-mail.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.mail</groupId>
+                <artifactId>javax.mail</artifactId>
+                <version>${javax-mail.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

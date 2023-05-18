@@ -1,13 +1,12 @@
 package fr.univtln.m1infodid.projet_s2.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "EPIGRAPHE")
@@ -19,15 +18,15 @@ public class Epigraphe {
     private int id;
     private String imgUrl;
     private Date date;
+    @JsonIgnore
     private LocalDate fetchDate;
     private String translation;
     private String name;
     @ElementCollection
     private List<String> text;
     @OneToMany(mappedBy = "epigraphe", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<Annotation> annotations;
-
-    private Epigraphe ( int id, String imgUrl, Date date, LocalDate fetchDate, String translation, String name, List<String> text, List<Annotation> annotations ) {
+    private Set<Annotation> annotations = new HashSet<>();
+    private Epigraphe ( int id, String imgUrl, Date date, LocalDate fetchDate, String translation, String name, List<String> text, Collection<Annotation> annotations ) {
         this.id = id;
         this.imgUrl = imgUrl;
         this.date = date;
@@ -35,7 +34,7 @@ public class Epigraphe {
         this.translation = translation;
         this.name = name;
         this.text = text;
-        this.annotations = annotations;
+        this.annotations.addAll(annotations);
     }
     private Epigraphe ( int id, String imgUrl, Date date, LocalDate fetchDate, String translation, String name, List<String> text) {
         this.id = id;
@@ -72,5 +71,8 @@ public class Epigraphe {
 
     public String toString () {
         return "Epigraphie : n°" + getId() + ", " + getName() + ", " + getText() + ", " + getDate() + ", " + getImgUrl() + ", " + getTranslation();
+    }
+    public void  addAnnotation(Annotation annotation){
+        this.getAnnotations().add(annotation);
     }
 }

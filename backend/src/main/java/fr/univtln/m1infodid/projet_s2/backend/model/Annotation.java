@@ -1,11 +1,12 @@
 package fr.univtln.m1infodid.projet_s2.backend.model;
 
+import com.fasterxml.jackson.annotation.*;
+import fr.univtln.m1infodid.projet_s2.backend.Facade;
 import fr.univtln.m1infodid.projet_s2.backend.SI;
 import jakarta.persistence.*;
-import lombok.Generated;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.Hibernate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,29 +15,34 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 public class Annotation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int idAnnotation;
 
     @ManyToOne
-    @JoinColumn(name = "idEpigraphe")
+    @JoinColumn(name = "idEpigraphe",nullable = false)
+    @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
+    @JsonIdentityReference(alwaysAsId=true)
     private Epigraphe epigraphe;
-    public Annotation () {
-    }
+    @Column(nullable = false)
     @ElementCollection
-    private List<Point> listCoordonesPoints;
+    private List<Polygone> listCoordonesPoly = new ArrayList<>();
+
+
+    @JsonCreator
+    public Annotation(@JsonProperty("idEpigraphe") Integer id,
+                      @JsonProperty("listePoly") List<Polygone> listpoly) {
+        this.listCoordonesPoly = listpoly;
+        Facade.updateEpigraphe(this,id);
+  }
 
     /**
      * Factory annotation
-     * @param idAnnotation de epicherchell
-     * @param idEpigraphe du system
-     * @deprecated  Should not be used, the idAnnotation is ignored.
-     * @return
+     * @param idEpigraphe
      */
-    public static Annotation of(Integer idAnnotation,Integer idEpigraphe){
-        return new Annotation(idEpigraphe);
-    }
+
     public static Annotation of(int idEpigraphe){
         return new Annotation(idEpigraphe);
     }
@@ -51,40 +57,27 @@ public class Annotation {
 
     private Annotation(int idEpigraphe){
         try {
-            this.epigraphe = SI.CreateEpigraphie(idEpigraphe);
-            this.listCoordonesPoints = new ArrayList<>();
+            this.epigraphe = Facade.createEpigraphie(idEpigraphe);
         }
         catch (Exception e) {
             throw new IllegalStateException("Could not get Epigraph");
         }
     }
 
-
-    /**
-     * Methode pour ajouter un couple de points a une annotation
-     * @param x
-     * @param y
-     */
-    public void addPoints(double x, double y){
-       this.listCoordonesPoints.add(new Point(x,y));
-    }
-
-
     @Override
     public String toString() {
         return "Annotation{" +
                 "idAnnotation=" + idAnnotation +
                 ", idEpigraphe=" +getEpigraphe().getId() +
-                ", listCoordonesPoints=" + listCoordonesPoints +
+                ", listCoordonesPoly=" + listCoordonesPoly +
                 '}';
     }
 
     @Override
     public boolean equals ( Object o ) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Annotation that = (Annotation) o;
-        return  Objects.equals(getIdAnnotation(), that.getIdAnnotation());
+        if (!(o instanceof Annotation annotation)) return false;
+        return Objects.equals(getIdAnnotation(), annotation.getIdAnnotation());
     }
 
     @Override
