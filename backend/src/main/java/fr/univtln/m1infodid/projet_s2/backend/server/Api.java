@@ -6,9 +6,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.univtln.m1infodid.projet_s2.backend.DAO.FormulaireDAO;
+import fr.univtln.m1infodid.projet_s2.backend.DAO.UtilisateurDAO;
 import fr.univtln.m1infodid.projet_s2.backend.Facade;
 import fr.univtln.m1infodid.projet_s2.backend.SI;
 import fr.univtln.m1infodid.projet_s2.backend.model.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
@@ -136,6 +140,8 @@ public class Api {
 		} // No Authorization header or invalid format
 		return Response.status(Response.Status.UNAUTHORIZED).entity("Missing or invalid Authorization header").build();
 	}
+
+
 	/**
 	 * Récupère la liste des utilisateurs et renvoie une réponse HTTP contenant les utilisateurs au format JSON.
 
@@ -156,5 +162,27 @@ public class Api {
 			throw new RuntimeException(e);
 		}
 		return Response.ok(jsonStr, MediaType.APPLICATION_JSON).build();
+	}
+
+
+	/**
+	 * Methode pour supprimer un utilisateur à partir de son id
+	 *
+	 * @param id du user
+	 */
+	@DELETE
+	@Path("userD/{id}")
+	public Response deleteUser(@PathParam("id") int id) {
+		try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("EpiPU");
+			 EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+
+			UtilisateurDAO utilisateurDAO = UtilisateurDAO.create(entityManager);
+			utilisateurDAO.remove(id);
+
+			return Response.ok().build();
+		} catch (Exception e) {
+			log.error(e.toString());
+			return Response.serverError().build();
+		}
 	}
 }

@@ -143,6 +143,8 @@ public class Api {
         }
         return loginJson;
     }
+
+
     /**
      * Récupère le contenu des utilisateurs à partir de l'API backend et le renvoie sous forme de chaîne de caractères.
      *
@@ -184,10 +186,31 @@ public class Api {
         return resultList;
     }
 
+
+    /**
+     * Fonction qui permet l'envoie d'une requête HTTP DELETE au backend pour supprimer l'utilisateur
+     */
+    public static void idUserToDelete(int userId){
+        try (Client client = ClientBuilder.newClient()) {
+            Response response = client.target(URI_API_BACKEND + "userD/" + userId)
+                    .request(MediaType.APPLICATION_JSON)
+                    .delete();
+
+            if (response.getStatus() != 200) {
+                throw new IllegalStateException("La requête a échoué : code d'erreur HTTP " + response.getStatus());
+            }
+            log.info("Utilisateur n° "+userId+" supprimé avec succès !");
+
+        } catch (Exception e) {
+            log.error(e.toString());
+            log.warn("Erreur lors de l'envoi des données");
+        }
+    }
+
+
     /**
      * methode tmp pour faciliter tache, initalise une liste de formulaire pour tester ..
      */
-    
     public static  List<List<String>> tmpMethodeInit(){
         List<List<String>> listeDeFormulaire = new ArrayList<>();
 

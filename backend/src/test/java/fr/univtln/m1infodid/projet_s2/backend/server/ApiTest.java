@@ -101,4 +101,6 @@ class ApiTest {
         Response response = api.sendUtilisateur();
         Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
+
+
 }

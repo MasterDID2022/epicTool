@@ -42,10 +42,9 @@ public class Lanceur {
             EntityManager em = emf.createEntityManager();
             try (UtilisateurDAO dao = UtilisateurDAO.create(em)) {
                 Utilisateur testUser = Utilisateur.of("test@test.fr", "leNomDuChien");
-                
-                if (dao.findByEmail(testUser.getEmail()).isEmpty()) {
-                    dao.persist(testUser);
-                }
+                Utilisateur testUser2 = Utilisateur.of("test2@test.fr", "leNomDuChien2");
+                dao.persist(testUser);
+                dao.persist(testUser2);
             } catch (Exception e) {
                 log.info("Erreur avec la BD");
             }

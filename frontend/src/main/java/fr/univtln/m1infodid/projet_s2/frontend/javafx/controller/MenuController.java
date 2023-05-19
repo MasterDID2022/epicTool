@@ -1,6 +1,7 @@
 package fr.univtln.m1infodid.projet_s2.frontend.javafx.controller;
 
-import fr.univtln.m1infodid.projet_s2.frontend.Facade;
+import
+        fr.univtln.m1infodid.projet_s2.frontend.Facade;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.SceneType;
 import fr.univtln.m1infodid.projet_s2.frontend.server.Verification;
 import javafx.application.Platform;
@@ -111,6 +112,6 @@ public class MenuController implements Initializable {
 
     @FXML
     private void consulterDemandesBtnOnClick() {
-        Facade.showScene(SceneType.GESTION_ADHESION);
+        Facade.showScene(SceneType.HUB_GESTIONNAIRE);
     }
 }
