@@ -12,6 +12,8 @@ import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.SceneController
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.SceneController.SceneData;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion.AffichageDemandeController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion.GestionFormulaireController;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.InfosAnnotateurController;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.GestionAnnotateurController;
 import fr.univtln.m1infodid.projet_s2.frontend.server.Api;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -21,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+
+import static fr.univtln.m1infodid.projet_s2.frontend.server.Api.convertJsonToList;
 
 /**
  * Facade principale du Frontend pour faciliter la communication entre Api et UI
@@ -39,6 +43,8 @@ public class Facade {
     private static SceneData<GestionFormulaireController> formGest;
     private static SceneData<AffichageDemandeController> afficherDemande;
     private static SceneData<HubGestionnaireController> hubData;
+    private static SceneData<GestionAnnotateurController> gestAnnotateur;
+    private static SceneData<InfosAnnotateurController> infosAnnotateur;
 
     public static void initStage(Stage primaryStage) {
         if (Facade.primaryStage != null) return;
@@ -102,6 +108,25 @@ public class Facade {
         gestionFormulaireController.initialize(listeDeFormulaire);
     }
 
+    public static void visualiseGestionAnnotateur (){
+        GestionAnnotateurController gestionAnnotateurController = gestAnnotateur.controller();
+        gestionAnnotateurController.reset();
+        List<String> listAnnotateurs = afficherUtilisateurs();
+        gestionAnnotateurController.initialize(listAnnotateurs);
+    }
+
+    public static void resetInfosAnnotateur() {
+        if (infosAnnotateur != null) {
+            InfosAnnotateurController infosAnnotateurController = infosAnnotateur.controller();
+            infosAnnotateurController.initialize();
+        }
+    }
+
+    public static void sendIdUserToDelete (int idUser){
+        Api.idUserToDelete(idUser);
+    }
+
+
     public static void sendLoginAndPasseword ( String email, String passeword ) {
 
         Api.postLogin(Base64.getEncoder().encodeToString((email + ":" + passeword).getBytes()));
@@ -143,6 +168,24 @@ public class Facade {
                 case HUB_GESTIONNAIRE: 
                     if (hubData == null) hubData = SceneController.switchToHubGestionnaire(primaryStage);
                     else SceneController.switchToScene(primaryStage, hubData);
+                    break;
+
+                case GESTION_ANNOTATEUR:
+                    if (gestAnnotateur == null) {
+                        gestAnnotateur = SceneController.switchToPageGestionAnnotateur(primaryStage);
+                        visualiseGestionAnnotateur();
+                    } else {
+                        resetAffichageDemande();
+                        SceneController.switchToScene(primaryStage, gestAnnotateur);
+                    }
+                    break;
+                case INFOS_ANNOTATEUR:
+                    if (infosAnnotateur == null) {
+                        infosAnnotateur = SceneController.switchToPageGestionAnnotateurUI2(primaryStage);
+                    } else {
+                        resetInfosAnnotateur();
+                        SceneController.switchToScene(primaryStage, infosAnnotateur);
+                    }
                     break;
             }
         } catch(IOException e) {
@@ -187,9 +230,10 @@ public class Facade {
      */
     public static List<String> afficherUtilisateurs(){
         String utilisateursString = Api.recupereContenuUtilisateurs();
-        List<String> utilisateursList = Api.convertJsonToList(utilisateursString);
+        List<String> utilisateursList = convertJsonToList(utilisateursString);
         return utilisateursList;
     }
+
 
     /**
      * Méthode pour afficher le hub du gestionnaire

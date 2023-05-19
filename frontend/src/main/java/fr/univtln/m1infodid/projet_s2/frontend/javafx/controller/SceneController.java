@@ -27,8 +27,6 @@ public final class SceneController {
      *
      * @param stage  la Scène principale de l'application sur laquelle le changement est effectué
      * @param url    le chemin du fichier FXML à charger
-     * @param width  la largeur de la nouvelle fenêtre
-     * @param height la hauteur de la nouvelle fenêtre
      * @return le Controller de la nouvelle scène
      * @throws IOException renvoi une erreur si le fichier FXML n'a pas pu être chargé
      */
@@ -124,5 +122,19 @@ public final class SceneController {
         return sceneSwitchAndLoad(stage, 
                                     "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/hub-gestionnaire.fxml",
                                     "/styles/hub-gestionnaire.css");
+    }
+
+    public static <T> SceneData<T> switchToPageGestionAnnotateur ( Stage stage ) throws IOException {
+        return sceneSwitchAndLoad(stage,
+                "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/gestionAnnotateur/gest-annotateur.fxml",
+                "/styles/gest-annotateur.css",
+                "/styles/alert.css");
+    }
+
+    public static <T> SceneData<T> switchToPageGestionAnnotateurUI2 ( Stage stage ) throws IOException {
+        return sceneSwitchAndLoad(stage,
+                "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/gestionAnnotateur/infos-annotateur.fxml",
+                "/styles/infos-annotateur.css",
+                "/styles/alert.css");
     }
 }

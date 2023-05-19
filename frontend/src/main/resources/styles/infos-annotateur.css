@@ -1,0 +1,62 @@
+* {
+    -fx-dark-blue: #24293D;
+    -fx-blue: #2F3855;
+    -fx-light-blue: #8EBBFF;
+    -fx-white: #F4F4FC;
+    -fx-green: #4A803C;
+    -fx-green-hover: #67b354;
+    -fx-red: #803C3C;
+    -fx-red-hover: #aa4343;
+    -fx-gray: #a6a09f;
+    -fx-coleurr : #9c9721;
+}
+
+#AnchorPaneAnnotateur {
+    -fx-font-family: "Product Sans";
+    -fx-background-color: -fx-dark-blue;
+}
+
+#title {
+    -fx-font-size: 25px;
+    -fx-text-fill: -fx-white;
+}
+
+#nom, #prenom, #email, #commentaire, #affiliation {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-coleurr ;
+}
+
+#nomLabel, #prenomLabel, #mailLabel, #affLabel, #commeLabel {
+    -fx-font-size: 13px;
+    -fx-text-fill: -fx-white;
+}
+
+#modifButton {
+    -fx-background-color: -fx-green;
+    -fx-text-fill: -fx-white;
+}
+
+#modifButton:hover {
+    -fx-cursor: hand;
+    -fx-background-color: -fx-green-hover;
+}
+
+#buttonBack{
+    -fx-border-width: 1;
+    -fx-border-color: -fx-blue;
+    -fx-border-radius: 10;
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-white;
+}
+
+#buttonBack:hover{
+    -fx-background-color: -fx-blue;
+    -fx-background-radius: 10;
+    -fx-text-fill: -fx-dark-blue;
+}
+
+#affiliationHBox, #commentaireHBox, #nomHBox, #prenomHBox, #emailHBox {
+    -fx-alignment: center;
+}
+
+

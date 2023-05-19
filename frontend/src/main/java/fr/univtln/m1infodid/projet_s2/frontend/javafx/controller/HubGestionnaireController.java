@@ -55,8 +55,6 @@ public class HubGestionnaireController implements Initializable {
      * renvoi vers la page de gestion d'annotateur
      */
     @FXML private void annotateurBtnOnClick() {
-        //à changer pour rediriger vers la page de gestion d'annotateur
-        //Facade.showScene(SceneType.GESTION_ANNOTATEUR);
-        log.info("redirection vers page gestion annotateur WIP - à changer");
+        Facade.showScene(SceneType.GESTION_ANNOTATEUR);
     }
 }

@@ -367,6 +367,7 @@ public class SI {
 			throw new RuntimeException(e);
 		}
 	}
+
 	/**
 	 * Récupère la liste des utilisateurs à partir de la base de données.
 	 *

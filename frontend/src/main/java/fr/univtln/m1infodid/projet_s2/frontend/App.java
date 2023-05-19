@@ -7,8 +7,8 @@ import javafx.application.Application;
 @Slf4j
 public class App {
 	public static void main(String[] args) {
-		Application.launch(MainApp.class);
 		log.info(Facade.afficherUtilisateurs().toString());
+		Application.launch(MainApp.class);
 	}
 
 }
