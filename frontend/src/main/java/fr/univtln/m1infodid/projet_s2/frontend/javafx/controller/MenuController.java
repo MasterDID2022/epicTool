@@ -98,14 +98,12 @@ public class MenuController implements Initializable {
             alertController.showNotValidEmail();
             inputMail.getStyleClass().add("wrongMail");
             return false;
-            // inputMail.setStyle("-fx-control-inner-background: #2F3855; -fx-text-inner-color: #f4c4c4; -fx-prompt-text-fill: grey; -fx-text-box-border: #803C3C; -fx-background-radius: 10 10 0 0;");
         }
         
         if (inputMail.getStyleClass().contains("wrongMail")) {
             inputMail.getStyleClass().clear();
             inputMail.getStyleClass().addAll("text-field", "text-input");
         }
-        // inputMail.setStyle("-fx-control-inner-background: #2F3855; -fx-text-inner-color: #f4c4c4; -fx-prompt-text-fill: grey; -fx-text-box-border: #2F3855; -fx-background-radius: 10 10 0 0;");
         return true;
     }
 
@@ -114,6 +112,5 @@ public class MenuController implements Initializable {
     @FXML
     private void consulterDemandesBtnOnClick() {
         Facade.showScene(SceneType.GESTION_ADHESION);
-
     }
 }
