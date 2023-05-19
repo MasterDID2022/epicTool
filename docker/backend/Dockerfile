@@ -4,6 +4,7 @@ RUN apk add --no-cache bash procps curl tar tree
 
 ENV MAVEN_HOME /usr/share/maven
 ENV MY_PASSWORD=did9projet
+ENV SECRET_KEY=leNomDuChienEstLongCarC'ESTainsiqu'ILlef@ut
 
 COPY --from=maven:3.9.1-eclipse-temurin-17 ${MAVEN_HOME} ${MAVEN_HOME}
 COPY --from=maven:3.9.1-eclipse-temurin-17 /usr/local/bin/mvn-entrypoint.sh /usr/local/bin/mvn-entrypoint.sh

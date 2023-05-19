@@ -15,6 +15,40 @@
     -fx-background-color: -fx-dark-blue;
 }
 
+#profileButton {
+    -fx-font: 40 "Product Sans Bold";
+    -fx-background-color: -fx-blue;
+    -fx-border-color: -fx-light-blue;
+    -fx-text-fill: -fx-white;
+    -fx-background-radius: 100;
+    -fx-border-radius: 100;
+}
+
+#profileButton:hover {
+    -fx-font: 33 "Product Sans Light";
+    -fx-background-color: -fx-dark-blue;
+    -fx-border-color: -fx-red-hover;
+    -fx-border-width: 6;
+    -fx-text-fill: #FA9AB1;
+    -fx-background-radius: 100;
+    -fx-border-radius: 100;
+}
+
+#buttonBack{
+    -fx-font: 22 "Product Sans Bold";
+    -fx-border-width: 1;
+    -fx-border-color: -fx-blue;
+    -fx-border-radius: 10;
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-white;
+}
+
+#buttonBack:hover{
+    -fx-background-color: -fx-blue;
+    -fx-background-radius: 10;
+    -fx-text-fill: -fx-dark-blue;
+}
+
 #plaqueImg {
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
@@ -22,11 +56,6 @@
     -fx-background-color: -fx-blue;
 }
 
-#TEST {
-    -fx-font-family: "Product Sans Bold";
-    -fx-font-size: 30px;
-    -fx-text-fill: -fx-white;
-}
 
 #inputBar {
     -fx-font-size: 13px;
@@ -39,7 +68,6 @@
 
 #acceptBtn {
     -fx-font-family: "Product Sans Bold";
-
     -fx-border-radius: 10 10 0 0;
     -fx-background-radius: 10 10 0 0;
 
@@ -59,7 +87,6 @@
     -fx-background-color: -fx-green;
     -fx-text-fill: -fx-white;
 }
-
 
 
 #annotationRect {

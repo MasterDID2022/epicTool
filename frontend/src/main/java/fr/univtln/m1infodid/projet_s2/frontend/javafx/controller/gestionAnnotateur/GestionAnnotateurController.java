@@ -28,8 +28,24 @@ import java.util.List;
 public class GestionAnnotateurController {
     @FXML
     private ListView<List<String>> AnnotateurListView;
-    public static String emailSelectionné;
-    public static String id;
+    private static String emailSelectionné;
+    private static String id;
+
+    public static void setEmailSelectionné(String emailSelectionné) {
+        GestionAnnotateurController.emailSelectionné = emailSelectionné;
+    }
+
+    public static void setId(String id) {
+        GestionAnnotateurController.id = id;
+    }
+
+    public static String getEmailSelectionné() {
+        return emailSelectionné;
+    }
+
+    public static String getId() {
+        return id;
+    }
 
     /**
      *
@@ -70,7 +86,7 @@ public class GestionAnnotateurController {
 
     public void reset() {
         AnnotateurListView.getItems().clear();
-        emailSelectionné = null;
+        GestionAnnotateurController.setEmailSelectionné("");
     }
 
 
@@ -108,7 +124,7 @@ public class GestionAnnotateurController {
             HBox.setHgrow(btnBox, Priority.ALWAYS);
 
             consulterButton.setOnAction(event -> consulterAnnotateur());
-            supprimerButton.setOnAction(event -> SupprimerAnnotateur());
+            supprimerButton.setOnAction(event -> supprimerAnnotateur());
 
             consulterButton.getStyleClass().add("consulter-button");
             supprimerButton.getStyleClass().add("supprimer-button");
@@ -121,8 +137,8 @@ public class GestionAnnotateurController {
         private void consulterAnnotateur() {
             List<String> itemData = getItem();
             if (itemData != null && !itemData.isEmpty()) {
-                id = itemData.get(0);
-                emailSelectionné = itemData.get(1);
+                GestionAnnotateurController.setId(itemData.get(0));
+                GestionAnnotateurController.setEmailSelectionné(itemData.get(1));
             }
             Facade.showScene(SceneType.INFOS_ANNOTATEUR);
         }
@@ -131,12 +147,12 @@ public class GestionAnnotateurController {
         /**
          * Supprime user sélectionné
          */
-        private void SupprimerAnnotateur() {
+        private void supprimerAnnotateur() {
             List<String> itemData = getItem();
-            if (itemData != null && !itemData.isEmpty()) {
-                getListView().getItems().remove(itemData);
+            if (! itemData.isEmpty()){
+                    getListView().getItems().remove(itemData);
+                Facade.sendIdUserToDelete(Integer.parseInt(itemData.get(0)));
             }
-            Facade.sendIdUserToDelete(Integer.parseInt(itemData.get(0)));
         }
 
 

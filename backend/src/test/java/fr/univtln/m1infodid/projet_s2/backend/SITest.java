@@ -131,7 +131,7 @@ class SITest {
 		expectedEpigraphe.setText(List.of("Texte"));
 		expectedEpigraphe.setTranslation("Traduction");
 
-		Epigraphe resultEpigraphe = SI.CreateEpigraphie(contentList);
+		Epigraphe resultEpigraphe = SI.createEpigraphie(contentList);
 
 		assertEquals(resultEpigraphe.getId(), expectedEpigraphe.getId());
 		assertEquals(resultEpigraphe.getDate(), expectedEpigraphe.getDate());

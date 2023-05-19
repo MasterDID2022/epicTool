@@ -3,6 +3,7 @@ package fr.univtln.m1infodid.projet_s2.frontend.server;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.univtln.m1infodid.projet_s2.frontend.Facade;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Api REST cote frontend
@@ -19,6 +21,11 @@ import java.util.List;
 @Slf4j
 public class Api {
 	static final String URI_API_BACKEND = "http://127.0.0.1:8080/api/epicTools/";
+    static final String HTTP_ERROR_MSG = "La requête a échoué : code d'erreur HTTP ";
+
+    private Api(){
+        throw new IllegalStateException("ne devrait pas etre instancier");
+    }
 
     /**
      * Methode static pour recupere le fichier XML de l'épigraphe d'ID id
@@ -35,9 +42,8 @@ public class Api {
                     .request(MediaType.APPLICATION_JSON)
                     .get();
             if (response.getStatus() != 200) {
-                throw new RuntimeException("La requête a échoué : code d'erreur HTTP " + response.getStatus());
+                log.error(HTTP_ERROR_MSG + response.getStatus());
             }
-
             epigraphJson = response.readEntity(String.class);
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(epigraphJson);
@@ -70,30 +76,35 @@ public class Api {
      * Methode qui gere les requetes REST post pour les annotations
      * Prend les annotations et les renvoie vers le back
      *
-     * @return String de message de retour
+     * @return True si erreur
      */
-    public static String postAnnotations(String annotationsJson) {
-        String annotationJson = "";
-        try {
-            try (Client client = ClientBuilder.newClient()) {
-                Entity<String> entity = Entity.entity(annotationsJson, MediaType.APPLICATION_JSON);
-                Response response = client.target(URI_API_BACKEND +"epigraphe/" + "annotation")
-                        .request(MediaType.APPLICATION_JSON)
-                        .post(entity);
-                if (response.getStatus() != 200) {
-                    throw new RuntimeException("La requête a échoué : code d'erreur HTTP " + response.getStatus());
+    public static int postAnnotations(String annotationsJson) {
+        try (Client client = ClientBuilder.newClient()) {
+            Entity<String> entity = Entity.entity(annotationsJson, MediaType.APPLICATION_JSON);
+            Response response = client.target(URI_API_BACKEND +"epigraphe/" + "annotation")
+                    .request(MediaType.APPLICATION_JSON)
+                    .post(entity);
+            if (response.getStatus() != 200) {
+                if (response.getStatus() == 401){
+                    sessionExpired();
+                    return 401;
                 }
-                annotationJson = response.readEntity(String.class);
-            } catch (Exception e) {
-                log.warn("Erreur lors de l'envoi des données");
-                log.warn(e.toString());
+                else {
+                    log.error(HTTP_ERROR_MSG+ response.getStatus());
+                    return response.getStatus();
+                }
             }
         } catch (Exception e) {
-            log.warn("Erreur lors de la lecture de la chaîne JSON");
+            log.warn("Erreur lors de l'envoi de l'annotation");
+            log.warn(e.toString());
         }
-        return annotationJson;
+        return 200;
     }
-
+    public static void sessionExpired(){
+        Facade.setToken("");
+        Facade.setRole(Facade.ROLE.VISITEUR);
+        Facade.setEmail("");
+    }
 
     /**
      * Methode qui gere les requetes REST post pour les formulaires
@@ -110,12 +121,12 @@ public class Api {
                         .request(MediaType.APPLICATION_JSON)
                         .post(entity);
                 if (response.getStatus() != 200) {
-                    throw new RuntimeException("La requête a échoué : code d'erreur HTTP " + response.getStatus());
+                    log.error(HTTP_ERROR_MSG+ response.getStatus());
                 }
                 formJson = response.readEntity(String.class);
             } catch (Exception e) {
                 log.error(e.toString());
-                log.warn("Erreur lors de l'envoi des données");
+                log.warn("Erreur lors de l'envoi du formulaire");
             }
         } catch (Exception e) {
             log.warn("Erreur lors de la lecture de la chaîne JSON");
@@ -124,40 +135,45 @@ public class Api {
     }
 
 
-    public static String postLogin ( String encodedCredentials ) {
-        String loginJson="";
+    public static Optional<String> postLogin (String encodedCredentials ) {
         try (Client client = ClientBuilder.newClient();
              Response response = client.target(URI_API_BACKEND + "user/login")
                      .request(MediaType.APPLICATION_JSON).header("Authorization", "Basic " + encodedCredentials)
                      .post(Entity.json(""))) {
-
             if (response.getStatus() != 200) {
-                throw new IllegalStateException("La requête a échoué : code d'erreur HTTP " + response.getStatus());
+                if (response.getStatus()== 401){
+                    log.info("Combo mot de passe email invalide");
+                    return Optional.empty();
+                }
+                throw new IllegalStateException(HTTP_ERROR_MSG+ response.getStatus());
             }
-            loginJson = response.readEntity(String.class);
-            log.info(loginJson);
+            return Optional.of(response.readEntity(String.class));
         } catch (Exception e) {
             log.warn("Erreur lors de l'envoi des données");
             log.error(e.toString());
             log.warn("Erreur lors de la lecture de la chaîne JSON");
         }
-        return loginJson;
+        return Optional.empty();
     }
 
-
     /**
-     * Récupère le contenu des utilisateurs à partir de l'API backend et le renvoie sous forme de chaîne de caractères.
+     * Récupère ls liste des utilisateurs à partir de l'API du backend et la renvoie sous forme d'une unique chaîne de caractères.
      *
      * @return le contenu des utilisateurs en tant que chaîne de caractères
      */
-    public static String recupereContenuUtilisateurs() {
+    public static String getAllAnnotateur() {
         String contenu = "";
         try (Client client = ClientBuilder.newClient()) {
             Response response = client.target(URI_API_BACKEND + "utilisateurs")
                     .request(MediaType.APPLICATION_JSON)
+                    .header("Authorization", Facade.getToken() )
                     .get();
             if (response.getStatus() != 200) {
-                log.error("Erreur lors de la récupération des utilisateurs : code d'erreur HTTP " + response.getStatus());
+                if (response.getStatus() == 401){
+                    sessionExpired();
+                    return "401";
+                }
+                log.error(HTTP_ERROR_MSG+ response.getStatus());
             }
             contenu = response.readEntity(String.class);
             response.close();
@@ -179,7 +195,7 @@ public class Api {
         try {
             JsonNode jsonNode = objectMapper.readTree(jsonString);
             String utilisateursString = jsonNode.get("utilisateurs").asText();
-            resultList = objectMapper.readValue(utilisateursString, new ArrayList<>().getClass());
+            resultList = objectMapper.readValue(utilisateursString, ArrayList.class);
         } catch (JsonProcessingException e) {
             log.warn("Erreur lors de la désérialisation du JSON");
         }
@@ -190,14 +206,14 @@ public class Api {
     /**
      * Fonction qui permet l'envoie d'une requête HTTP DELETE au backend pour supprimer l'utilisateur
      */
-    public static void idUserToDelete(int userId){
+    public static void deleteUserOf(int userId){
         try (Client client = ClientBuilder.newClient()) {
             Response response = client.target(URI_API_BACKEND + "userD/" + userId)
                     .request(MediaType.APPLICATION_JSON)
                     .delete();
 
             if (response.getStatus() != 200) {
-                throw new IllegalStateException("La requête a échoué : code d'erreur HTTP " + response.getStatus());
+                throw new IllegalStateException(HTTP_ERROR_MSG+ response.getStatus());
             }
             log.info("Utilisateur n° "+userId+" supprimé avec succès !");
 

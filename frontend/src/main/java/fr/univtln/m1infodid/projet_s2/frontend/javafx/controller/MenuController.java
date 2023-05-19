@@ -42,12 +42,15 @@ public class MenuController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         alertController.hideAlertPane();
         Platform.runLater(() -> anchorPane.requestFocus());
-
         inputBar.setText("");
-        inputBar.setOnAction( e -> numFicheBtnOnClick() );
+        inputBar.setOnAction(e -> numFicheBtnOnClick());
 
         anchorPane.widthProperty().addListener(
                 (obs, oldValue, newValue) -> alertController.setScreenWidth(newValue.doubleValue()));
+    }
+
+    public void showSessionAlert(){
+        alertController.showSessionExpired();
     }
 
     /**
@@ -62,9 +65,9 @@ public class MenuController implements Initializable {
             alertController.showNotValidId();
             return;
         }
-
         int validId = Integer.parseInt(inputBar.getText());
         log.info("VALID ID : " + validId);
+        inputBar.setText("");
         Facade.visualiseEpigraphie(validId);
     }
 
@@ -79,10 +82,17 @@ public class MenuController implements Initializable {
 
     public void connexionButtonPressed() {
         String mail = inputMail.getText();
-        // String password = inputPassword.getText();Pour l'authentification
-        if(testMailCorrectness(mail)) {
-            Facade.sendLoginAndPasseword(inputMail.getText(),inputPassword.getText());
+        String password = inputPassword.getText();
+        if (testMailCorrectness(mail)) {
+            Facade.ROLE role = Facade.sendLoginAndPasseword(mail, password);
+            Facade.setRole(role);
+            Facade.setEmail(mail);
+            switch (role) {
+                case GESTIONNAIRE -> Facade.showScene(SceneType.HUB_GESTIONNAIRE);
+                case ANNOTATEUR -> Facade.visualiseEpigraphie(42);
+                default -> alertController.showNotValidAuth();
             }
+        }
         inputMail.setText("");
         inputPassword.setText("");
     }
@@ -100,7 +110,7 @@ public class MenuController implements Initializable {
             inputMail.getStyleClass().add("wrongMail");
             return false;
         }
-        
+
         if (inputMail.getStyleClass().contains("wrongMail")) {
             inputMail.getStyleClass().clear();
             inputMail.getStyleClass().addAll("text-field", "text-input");
@@ -108,10 +118,8 @@ public class MenuController implements Initializable {
         return true;
     }
 
-    public AlertController getAlertController() { return alertController; }
-
-    @FXML
-    private void consulterDemandesBtnOnClick() {
-        Facade.showScene(SceneType.HUB_GESTIONNAIRE);
+    public AlertController getAlertController() {
+        return alertController;
     }
+
 }

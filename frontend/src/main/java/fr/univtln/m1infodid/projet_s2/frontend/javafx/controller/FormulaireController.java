@@ -85,6 +85,6 @@ public class FormulaireController implements Initializable{
 
 
     public void backToMenu() {
-        Facade.showScene(SceneType.MENU);
+        Facade.showScene(SceneType.HOME);
     }
 }
