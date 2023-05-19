@@ -65,7 +65,7 @@ public class GestionFormulaireController {
 
     @FXML
     public void backToMenu() {
-        Facade.showScene(SceneType.MENU);
+        Facade.showScene(SceneType.HOME);
     }
 
     /**

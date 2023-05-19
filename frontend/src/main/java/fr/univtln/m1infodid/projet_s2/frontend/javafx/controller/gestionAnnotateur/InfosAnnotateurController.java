@@ -42,8 +42,8 @@ public class InfosAnnotateurController {
     public void initialize() {
        reset();
        //reste plus qu'a récuperer le reste des infos de l'annotateur
-       title.setText("Page informations de l'annotateur n° "+GestionAnnotateurController.id);
-       mailLabel.setText(GestionAnnotateurController.emailSelectionné);
+       title.setText("Page informations de l'annotateur n° "+GestionAnnotateurController.getId());
+       mailLabel.setText(GestionAnnotateurController.getEmailSelectionné());
     }
 
     /**

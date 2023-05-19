@@ -3,8 +3,15 @@
     -fx-font-size: 13px;
     -fx-border-radius: 10 0 0 10;
     -fx-background-radius: 10 0 0 10;
-
     -fx-background-color: -fx-red;
+}
+
+#successPane{
+    -fx-font-family: "Product Sans Bold";
+    -fx-font-size: 13px;
+    -fx-border-radius: 10 0 0 10;
+    -fx-background-radius: 10 0 0 10;
+    -fx-background-color: #4A803C;
 }
 
 #alertMsg {

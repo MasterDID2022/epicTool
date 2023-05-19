@@ -57,7 +57,7 @@ public class Annotation {
 
     private Annotation(int idEpigraphe){
         try {
-            this.epigraphe = Facade.createEpigraphie(idEpigraphe);
+            this.epigraphe = SI.createEpigraphie(idEpigraphe);
         }
         catch (Exception e) {
             throw new IllegalStateException("Could not get Epigraph");

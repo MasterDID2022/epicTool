@@ -11,7 +11,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
-import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -109,6 +108,15 @@ public class AlertController implements Initializable {
 
 
     /**
+     * Montre une alerte pour un succes d'ajout d'annotation
+     */
+    public void showAnnotationSuccess() {
+        alertPane.setId("successPane");
+        showAlert("Annotation ajoute");
+    }
+
+
+    /**
      * Montre une alerte pour un ou plusieurs chmaps non remplis
      */
     public void showFillField () {
@@ -117,8 +125,13 @@ public class AlertController implements Initializable {
     /**
      * Montre une alerte pour un numéro de fiche non valide
      */
+
     public void showNotValidEmail () {
         showAlert("Email invalide");
+    }
+
+    public void showSessionExpired () {
+        showAlert("Session expire");
     }
 
     /**

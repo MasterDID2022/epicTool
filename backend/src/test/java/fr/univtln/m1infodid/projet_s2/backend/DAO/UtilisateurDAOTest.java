@@ -79,6 +79,8 @@ class UtilisateurDAOTest {
     @Test
     void findAll(){
         Utilisateur userFindall= Utilisateur.of("findAll@gmail.com","ntm");
+        log.info(Utilisateur.hash("1234","I5Cqt+cfO74yW7FTKW9pJLGxBNY="));
+        log.info(dao.findAll().toString());
         Integer oldNumber = dao.findAll().size();
         dao.persist(userFindall);
         assertEquals(oldNumber+1,dao.findAll().size());

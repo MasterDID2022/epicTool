@@ -28,10 +28,16 @@ public class Utilisateur {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    public enum Role {
+        ANNOTATEUR,
+        GESTIONNAIRE,
+        DEMANDEUR,
+    }
 
     @Email
     @Column(unique = true)
     private String email;
+    private Role role;
 
     private String mdp;
     private String sale;
@@ -39,6 +45,7 @@ public class Utilisateur {
     private Utilisateur(String email, String mdp) {
         generateSalt();
         this.email = email;
+        this.role = Role.ANNOTATEUR;
         this.mdp = hash(mdp, this.sale);
     }
 
@@ -89,6 +96,28 @@ public class Utilisateur {
     }
 
     /**
+     * Prend un email et retourne le role en String attaches au mail
+     * @param email de l'utilisateur dont on veut le role
+     * @return annotateur ou gestionnaire en String
+     */
+    public static Optional<String> getRoleOf(String email) {
+        try (EntityManagerFactory emf = Persistence.createEntityManagerFactory("EpiPU")) {
+            EntityManager em = emf.createEntityManager();
+            try (UtilisateurDAO dao = UtilisateurDAO.create(em)) {
+                Optional<Utilisateur> searchUserWithEmail = dao.findByEmail(email);
+                if (searchUserWithEmail.isEmpty()) {
+                    return Optional.empty();
+                }
+                Utilisateur userOfEmail = searchUserWithEmail.get();
+                return Optional.of(userOfEmail.getRole().toString());
+            } catch (Exception e) {
+                log.error("Err: impossible d'instancier la DAO de Utilisateur");
+                return Optional.empty();
+            }
+        }
+    }
+
+    /**
      * Prend un mot de passe en claire et un email, retrouve le sel associe a l'email, hash et verifie
      * la corespondance.
      * En cas de succe la fonction renvoie true, false sinon
@@ -119,6 +148,7 @@ public class Utilisateur {
     public String toString() {
         return "Utilisateur{" +
                 "IdUser=" + String.valueOf(this.getId()) +
+                ", role='" + role + '\'' +
                 ", email='" + email + '\'' +
                 ", mdp='" + mdp + '\'' +
                 ", sale='" + sale + '\'' +

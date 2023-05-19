@@ -1,6 +1,7 @@
 package fr.univtln.m1infodid.projet_s2.backend.DAO;
 
 import fr.univtln.m1infodid.projet_s2.backend.Facade;
+import fr.univtln.m1infodid.projet_s2.backend.SI;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -102,7 +103,7 @@ public class EpigrapheDAO implements AutoCloseable {
                 return epigraphe;
             entityManager.detach(epigraphe);
         }
-        epigraphe = Facade.createEpigraphie(id);
+        epigraphe = SI.createEpigraphie(id);
         entityManager.merge(epigraphe);
         return epigraphe;
     }

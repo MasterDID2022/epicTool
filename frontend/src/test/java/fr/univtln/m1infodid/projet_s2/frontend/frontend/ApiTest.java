@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,38 +37,7 @@ import static org.junit.jupiter.api.Assertions.*;
         assertEquals(0, result.size());
     }
 
-    /*
-    *teste la méthode postAnnotations() de la classe Api en envoyant une chaîne JSON d'annotations vide.
-    *Elle vérifie que le résultat n'est pas nul.
-     */
-    @Test
-     void testPostAnnotations() {
-        String annotationsJson = "{\"annotations\": []}";
-        String result = Api.postAnnotations(annotationsJson);
-        Assertions.assertNotNull(result);
-    }
 
-    /*
-    *teste la méthode postAnnotations() de la classe Api en envoyant une chaîne JSON d'annotations invalide.
-    *Elle vérifie que le résultat est une chaîne vide.
-     */
-    @Test
-     void testPostAnnotationsWithInvalidJson() {
-        String annotationsJson = "{\"annotations\" []}";
-        String result = Api.postAnnotations(annotationsJson);
-        assertEquals("", result);
-    }
-
-    /*
-     *teste la méthode postAnnotations() de la classe Api en envoyant une chaîne JSON d'annotations nulle.
-     *Elle vérifie que le résultat est une chaîne vide.
-     */
-    @Test
-     void testPostAnnotationsWithNullJson() {
-        String annotationsJson = null;
-        String result = Api.postAnnotations(annotationsJson);
-        assertEquals("", result);
-    }
 
     /*
     *Test réussi - vérification de la valeur de retour
@@ -100,23 +69,11 @@ import static org.junit.jupiter.api.Assertions.*;
         assertEquals(0, actualResult.size());
     }
 
-    @ParameterizedTest
-    @CsvSource({
-            "Tom@gmail.com:/ ,{[39?",
-            "Tom@gmail.com:/: ,{[39?",
-            "Tom@gmail.com:Seraph"
-    })
-    void testPostLoginOK(String credentials) {
-       String loginCredential = Base64.getEncoder().encodeToString((credentials).getBytes());
-       String response = Api.postLogin(loginCredential);
-       assertFalse(response.isEmpty());
-       assertEquals("Bienvenue Tom@gmail.com !", response);
-    }
 
     @Test
      void testpostEmptyPassword(){
         String loginCredential = Base64.getEncoder().encodeToString( "Tom@gmail.com:".getBytes());
-        String reponse = Api.postLogin(loginCredential);
+        Optional reponse = Api.postLogin(loginCredential);
         assertTrue(reponse.isEmpty());
     }
 

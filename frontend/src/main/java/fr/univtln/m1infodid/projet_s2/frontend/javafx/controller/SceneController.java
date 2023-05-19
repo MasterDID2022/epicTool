@@ -13,6 +13,7 @@ public final class SceneController {
 
     private static final int SCREEN_WIDTH = 780; // 1024; pour plus tard?
     private static final int SCREEN_HEIGHT = 504; // 700; pour plus tard?
+    private static final String PATH_TO_ALERT_CSS = "/styles/alert.css";
 
     public record SceneData<T>(Scene scene, T controller) {}
 
@@ -60,6 +61,7 @@ public final class SceneController {
         sceneSwitch(stage, sceneData);
     }
 
+
     /**
      * Cette méthode permet de changer de scène vers le menu de l'application
      *
@@ -68,11 +70,12 @@ public final class SceneController {
      * @throws IOException renvoi une erreur si le fichier FXML du menu n'a pas pu être chargé
      */
     public static <T> SceneData<T> switchToMenu ( Stage stage ) throws IOException {
-        return sceneSwitchAndLoad(stage, 
+        return sceneSwitchAndLoad(stage,
                                     "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/menu.fxml",
-                                    "/styles/menu.css", 
-                                    "/styles/alert.css");
+                                    "/styles/menu.css",
+                                    PATH_TO_ALERT_CSS);
     }
+
 
     /**
      * Cette méthode permet de changer de scène vers la page de visualisation d'épigraphie à partir de l'id de fiche
@@ -87,7 +90,7 @@ public final class SceneController {
                                     "/styles/page-visualisation.css", 
                                     "/styles/transcription.css",
                                     "/styles/traduction.css",
-                                    "/styles/alert.css");
+                                    PATH_TO_ALERT_CSS);
     }
 
     /**
@@ -101,7 +104,7 @@ public final class SceneController {
         return sceneSwitchAndLoad(stage, 
                                     "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/formulaire.fxml", 
                                     "/styles/formulaire.css",
-                                    "/styles/alert.css");
+                                    PATH_TO_ALERT_CSS);
     }
 
     public static <T> SceneData<T> switchToPageGestionFormulaire ( Stage stage ) throws IOException {
@@ -115,7 +118,7 @@ public final class SceneController {
         return sceneSwitchAndLoad(stage,
                 "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/gestionAdhesion/affichageDemande.fxml",
                 "/styles/affichageDemande.css",
-                "/styles/alert.css");
+                PATH_TO_ALERT_CSS);
     }
 
     public static <T> SceneData<T> switchToHubGestionnaire( Stage stage ) throws IOException {
@@ -128,13 +131,13 @@ public final class SceneController {
         return sceneSwitchAndLoad(stage,
                 "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/gestionAnnotateur/gest-annotateur.fxml",
                 "/styles/gest-annotateur.css",
-                "/styles/alert.css");
+                PATH_TO_ALERT_CSS);
     }
 
     public static <T> SceneData<T> switchToPageGestionAnnotateurUI2 ( Stage stage ) throws IOException {
         return sceneSwitchAndLoad(stage,
                 "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/gestionAnnotateur/infos-annotateur.fxml",
                 "/styles/infos-annotateur.css",
-                "/styles/alert.css");
+                PATH_TO_ALERT_CSS);
     }
 }
