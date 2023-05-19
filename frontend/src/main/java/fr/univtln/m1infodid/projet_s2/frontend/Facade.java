@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.SceneType;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.FormulaireController;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.HubGestionnaireController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.MenuController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.PageVisualisationController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.SceneController;
@@ -37,6 +38,7 @@ public class Facade {
     private static SceneData<FormulaireController> formData;
     private static SceneData<GestionFormulaireController> formGest;
     private static SceneData<AffichageDemandeController> afficherDemande;
+    private static SceneData<HubGestionnaireController> hubData;
 
     public static void initStage(Stage primaryStage) {
         if (Facade.primaryStage != null) return;
@@ -137,6 +139,11 @@ public class Facade {
                         SceneController.switchToScene(primaryStage, afficherDemande);
                     }
                     break;
+
+                case HUB_GESTIONNAIRE: 
+                    if (hubData == null) hubData = SceneController.switchToHubGestionnaire(primaryStage);
+                    else SceneController.switchToScene(primaryStage, hubData);
+                    break;
             }
         } catch(IOException e) {
             throw new RuntimeException(e.getMessage());
@@ -173,5 +180,19 @@ public class Facade {
     public static void showNoInternetAlert() {
         if (isMenuStageShown()) menuData.controller().getAlertController().showNoInternet();
         else if (isPageVisualisationShown()) visuEpiData.controller().getAlertController().showNoInternet();
+    }
+
+    /**
+     * Méthode pour afficher le hub du gestionnaire
+     * à appeler après avoir décidé quelle interface
+     * affiché selon le rôle de l'utilisateur connecté
+     */
+    public static void showHubGestionnaire() {
+        showScene(SceneType.HUB_GESTIONNAIRE);
+    }
+
+    public static void disconnectUser() {
+        //déconnexion utilisateur courant WIP
+        showScene(SceneType.MENU); // retour au menu de l'application
     }
 }

@@ -11,6 +11,9 @@ import java.net.URL;
 /* Sert à changer de scène, cette classe doit être utilisé uniquement pour ce but */
 public final class SceneController {
 
+    private static final int SCREEN_WIDTH = 780; // 1024; pour plus tard?
+    private static final int SCREEN_HEIGHT = 504; // 700; pour plus tard?
+
     public record SceneData<T>(Scene scene, T controller) {}
 
     private SceneController () {
@@ -29,12 +32,12 @@ public final class SceneController {
      * @return le Controller de la nouvelle scène
      * @throws IOException renvoi une erreur si le fichier FXML n'a pas pu être chargé
      */
-    private static <T> SceneData<T> sceneSwitchAndLoad( Stage stage, String url, int width, int height, String... stylePath ) throws IOException {
+    private static <T> SceneData<T> sceneSwitchAndLoad( Stage stage, String url, String... stylePath ) throws IOException {
         URL urlRef = SceneController.class.getResource(url);
         FXMLLoader fxmlLoader = new FXMLLoader(urlRef);
         Parent root = fxmlLoader.load();
 
-        Scene scene = new Scene(root, width, height);
+        Scene scene = new Scene(root, SCREEN_WIDTH, SCREEN_HEIGHT);
         scene.getStylesheets().addAll(stylePath);
 
         stage.setScene(scene);
@@ -68,9 +71,7 @@ public final class SceneController {
      */
     public static <T> SceneData<T> switchToMenu ( Stage stage ) throws IOException {
         return sceneSwitchAndLoad(stage, 
-                                    "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/menu.fxml", 
-                                    780, 
-                                    504, 
+                                    "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/menu.fxml",
                                     "/styles/menu.css", 
                                     "/styles/alert.css");
     }
@@ -85,8 +86,6 @@ public final class SceneController {
     public static <T> SceneData<T> switchToPageVisualisation ( Stage stage ) throws IOException {
         return sceneSwitchAndLoad(stage, 
                                     "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/page-visualisation.fxml", 
-                                    780, 
-                                    504, 
                                     "/styles/page-visualisation.css", 
                                     "/styles/transcription.css",
                                     "/styles/traduction.css",
@@ -103,8 +102,6 @@ public final class SceneController {
     public static <T> SceneData<T> switchToPageFormulaire ( Stage stage ) throws IOException {
         return sceneSwitchAndLoad(stage, 
                                     "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/formulaire.fxml", 
-                                    780, 
-                                    504, 
                                     "/styles/formulaire.css",
                                     "/styles/alert.css");
     }
@@ -112,8 +109,6 @@ public final class SceneController {
     public static <T> SceneData<T> switchToPageGestionFormulaire ( Stage stage ) throws IOException {
         return sceneSwitchAndLoad(stage,
                 "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/gestionAdhesion/gestionFormulaire.fxml",
-                780,
-                504,
                 "/styles/gestionFormulaire.css",
                 "/styles/alert.css");
     }
@@ -121,9 +116,13 @@ public final class SceneController {
     public static <T> SceneData<T> switchToPageGestionFormulairUI2 ( Stage stage ) throws IOException {
         return sceneSwitchAndLoad(stage,
                 "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/gestionAdhesion/affichageDemande.fxml",
-                780,
-                504,
                 "/styles/affichageDemande.css",
                 "/styles/alert.css");
+    }
+
+    public static <T> SceneData<T> switchToHubGestionnaire( Stage stage ) throws IOException {
+        return sceneSwitchAndLoad(stage, 
+                                    "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/hub-gestionnaire.fxml",
+                                    "/styles/hub-gestionnaire.css");
     }
 }

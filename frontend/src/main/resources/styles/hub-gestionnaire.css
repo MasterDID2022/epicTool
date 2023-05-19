@@ -1,0 +1,59 @@
+* {
+    -fx-dark-blue: #24293D;
+    -fx-blue: #2F3855;
+    -fx-light-blue: #8EBBFF;
+    -fx-white: #F4F4FC;
+    -fx-green: #4A803C;
+    -fx-green-hover: #67b354;
+    -fx-red: #803C3C;
+    -fx-red-hover: #aa4343;
+}
+
+#hubAnchor {
+    -fx-font-family: "Product Sans";
+    -fx-background-color: -fx-dark-blue;
+}
+
+#hubLabel {
+    -fx-font-family: "Product Sans";
+    -fx-font-size: 15px;
+    -fx-text-fill: -fx-white;
+}
+
+#hubDisconnectBtn{
+    -fx-border-style: solid inside;
+    -fx-border-width: 1;
+    -fx-border-color: -fx-white;
+    -fx-border-radius: 10;
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-white;
+}
+
+#hubDisconnectBtn:hover{
+    -fx-border-width: 3;
+    -fx-background-radius: 10;
+    -fx-background-color: -fx-blue;
+}
+
+#controlHBox > Button {
+    -fx-border-width: 2;
+    -fx-background-color: transparent;
+    -fx-border-color: -fx-white;
+    -fx-text-fill: -fx-white;
+    -fx-font-family: "Product Sans Bold";
+    -fx-font-size: 17px;
+}
+
+#controlHBox > Button:hover {
+    -fx-background-color: -fx-blue;
+    -fx-border-width: 3;
+}
+
+.btnFirstChild {
+    -fx-border-radius: 10 0 0 10;
+    -fx-background-radius: 10 0 0 10;
+}
+.btnLastChild {
+    -fx-border-radius: 0 10 10 0;
+    -fx-background-radius: 0 10 10 0;
+}
