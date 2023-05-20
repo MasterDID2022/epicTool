@@ -12,6 +12,8 @@ import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.SceneController
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.SceneController.SceneData;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion.AffichageDemandeController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion.GestionFormulaireController;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotations.AffAnnotationController;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotations.GestionAnnotationsController;
 import fr.univtln.m1infodid.projet_s2.frontend.server.Api;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -39,6 +41,13 @@ public class Facade {
     private static SceneData<GestionFormulaireController> formGest;
     private static SceneData<AffichageDemandeController> afficherDemande;
     private static SceneData<HubGestionnaireController> hubData;
+
+    private static SceneData<GestionAnnotationsController> annotations;
+
+    private static SceneData<AffAnnotationController> annotation;
+
+
+
 
     public static void initStage(Stage primaryStage) {
         if (Facade.primaryStage != null) return;
@@ -130,7 +139,6 @@ public class Facade {
                         SceneController.switchToScene(primaryStage, formGest);
                     }
                     break;
-
                 case AFFICHAGE_DEMANDE:
                     if (afficherDemande == null) {
                         afficherDemande = SceneController.switchToPageGestionFormulairUI2(primaryStage);
@@ -139,11 +147,19 @@ public class Facade {
                         SceneController.switchToScene(primaryStage, afficherDemande);
                     }
                     break;
-
                 case HUB_GESTIONNAIRE: 
                     if (hubData == null) hubData = SceneController.switchToHubGestionnaire(primaryStage);
                     else SceneController.switchToScene(primaryStage, hubData);
                     break;
+                case GESTION_ANNOTATION:
+                    if (annotations == null) annotations = SceneController.switchToHubGestionnaire(primaryStage);
+                    else SceneController.switchToScene(primaryStage, annotations);
+                    break;
+                case ANNOTATION:
+                    if (annotation == null) annotation = SceneController.switchToHubGestionnaire(primaryStage);
+                    else SceneController.switchToScene(primaryStage, annotation);
+                    break;
+
             }
         } catch(IOException e) {
             throw new RuntimeException(e.getMessage());
