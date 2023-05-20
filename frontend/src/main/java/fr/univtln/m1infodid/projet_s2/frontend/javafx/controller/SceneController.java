@@ -135,7 +135,7 @@ public final class SceneController {
      */
     public static <T> SceneData<T> switchToPageAnnotation(Stage stage) throws IOException {
         return sceneSwitchAndLoad(stage,
-                "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view.annotations.annotation.fxml",
+                "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/annotations/annotation.fxml",
                 "/styles/annotation.css",
                 "/styles/alert.css");
     }

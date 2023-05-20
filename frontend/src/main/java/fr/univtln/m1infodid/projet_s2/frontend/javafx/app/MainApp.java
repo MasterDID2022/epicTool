@@ -22,9 +22,9 @@ public class MainApp extends Application {
         Font.loadFont(MainApp.class.getResourceAsStream("/fonts/Product-Sans-Bold.ttf"), 10);
         Font.loadFont(MainApp.class.getResourceAsStream("/fonts/Product-Sans-Italic.ttf"), 10);
 
-        //changement de scène vers la vue du menu 
+        //changement de scène vers la vue du menu
         Facade.initStage(primaryStage);
-        Facade.showScene(SceneType.MENU);
+        Facade.showScene(SceneType.ANNOTATION);
 
         //définition du titre de la fenêtre de l'application puis la montre à l'écran
         primaryStage.setTitle("Projet Épigraphie S2");

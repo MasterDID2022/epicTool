@@ -111,6 +111,13 @@ public class Facade {
         gestionFormulaireController.initialize(listeDeFormulaire);
     }
 
+    public static void visualiseAnnotation(){
+        AffAnnotationController annotationController = annotation.controller();
+        annotationController.reset();
+        List<List<String>> listea = Api.tmpMethodeInit();
+        annotationController.initialize(listea);
+    }
+
     public static void sendLoginAndPasseword ( String email, String passeword ) {
 
         Api.postLogin(Base64.getEncoder().encodeToString((email + ":" + passeword).getBytes()));
@@ -152,12 +159,18 @@ public class Facade {
                     else SceneController.switchToScene(primaryStage, hubData);
                     break;
                 case GESTION_ANNOTATION:
-                    if (annotations == null) annotations = SceneController.switchToHubGestionnaire(primaryStage);
+                    if (annotations == null) annotations = SceneController.switchToPageGestionAnnotations(primaryStage);
                     else SceneController.switchToScene(primaryStage, annotations);
                     break;
                 case ANNOTATION:
-                    if (annotation == null) annotation = SceneController.switchToHubGestionnaire(primaryStage);
-                    else SceneController.switchToScene(primaryStage, annotation);
+                    if (annotation == null){
+                        annotation = SceneController.switchToPageAnnotation(primaryStage);
+                        visualiseAnnotation();
+                    }
+                    else
+                    {
+                        SceneController.switchToScene(primaryStage, annotation);
+                    }
                     break;
 
             }
