@@ -109,17 +109,20 @@ public class Facade {
             affichageDemandeController.initialize();
         }
     }
-    public static void visualiseGestionAnnotations (){
-        GestionAnnotationsController gestionAnnotationsController = annotations.controller();
-        gestionAnnotationsController.reset();
-        List<List<String>> listeAnnotation = Api.AnnotationsMethodeInit();
-        gestionAnnotationsController.initialize(listeAnnotation);
+    public static void visualiseAnnotationGest(){
+        GestionAnnotationsController gestion = annotations.controller();
+        List<List<String>> liste = Api.AnnotationsMethodeInit();
+        gestion.initialize(liste);
     }
-    public static void visualiseAnnotation(){
-        AffAnnotationController annotationController = annotation.controller();
-        annotationController.reset();
-        List<List<String>> listea = Api.AnnotationMethodeInit();
-        annotationController.initialize(listea);
+    static List<List<List<String>>> listea = Api.AnnotationMethodeInit();
+
+    public static void affichageAnnotation() {
+            AffAnnotationController aff = annotation.controller();
+            aff.initialize(listea);
+    }
+    public static void resetAnnotation() {
+        AffAnnotationController aff = annotation.controller();
+        aff.reset();
     }
 
     public static void sendLoginAndPasseword ( String email, String passeword ) {
@@ -160,24 +163,22 @@ public class Facade {
                     if (hubData == null) hubData = SceneController.switchToHubGestionnaire(primaryStage);
                     else SceneController.switchToScene(primaryStage, hubData);
                     break;
-                case GESTION_ANNOTATION:
-                    if (annotations == null) annotations = SceneController.switchToHubGestionnaire(primaryStage);
-                    else SceneController.switchToScene(primaryStage, annotations);
-                    break;
                 case ANNOTATION:
-                    if (annotation == null){
+                    if (annotation == null) {
                         annotation = SceneController.switchToPageAnnotation(primaryStage);
-                        visualiseAnnotation();
-                    }
-                    else
+                        affichageAnnotation();
+                    } else {
+                        resetAnnotation();
                         SceneController.switchToScene(primaryStage, annotation);
+                    }
                     break;
                 case ANNOTATIONS:
                     if (annotations == null) {
                         annotations = SceneController.switchToPageGestionAnnotations(primaryStage);
-                        visualiseGestionAnnotations();
-                    } else
+                        visualiseAnnotationGest();
+                    } else {
                         SceneController.switchToScene(primaryStage, annotations);
+                    }
                     break;
             }
         } catch(IOException e) {

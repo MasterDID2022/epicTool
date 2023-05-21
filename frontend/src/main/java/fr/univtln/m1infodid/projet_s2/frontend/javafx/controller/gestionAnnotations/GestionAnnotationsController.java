@@ -11,7 +11,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 import java.util.ArrayList;
@@ -23,8 +22,6 @@ public class GestionAnnotationsController {
     private ListView<List<String>> annotationListView;
     public static List<List<String>> listeAnnotations ;
     public static String epigraphieSelectionnée ;
-
-
 
     /**
      *
@@ -105,7 +102,6 @@ public class GestionAnnotationsController {
             }
             Facade.showScene(SceneType.ANNOTATION);
         }
-
         /**
          * La méthode updateItem affiche la cellule en fonction des données fournies.
          *

@@ -21,22 +21,32 @@ public class AffAnnotationController {
     private ListView<List<String>> annotationsListView;
     @FXML
     private Label title;
-    public static List<List<String>> listeAnnotations ;
-
+    public static List<List<List<String>>> listeAnnotations ;
+    public static List<List<String>> actuel ;
     public void reset() {
+        title.setText("les annotations de l'epigraphie "+GestionAnnotationsController.epigraphieSelectionnée);
         annotationsListView.getItems().clear();
-        title.setText("");
+        actuel = listeAnnotations.get(Integer.parseInt(GestionAnnotationsController.epigraphieSelectionnée)-1);
+        annotationsListView.getItems().addAll(actuel);
+        annotationsListView.setCellFactory(new Callback<ListView<List<String>>, ListCell<List<String>>>() {
+            @Override
+            public ListCell<List<String>> call(ListView<List<String>> listView) {
+                return new FormulaireListCell();
+            }
+        });
+        annotationsListView.getStyleClass().add("annotations-list-view");
     }
-    private static void setListeAnnotations(List<List<String>> listeAnnotation) {
+    private static void setListeAnnotations(List<List<List<String>>> listeAnnotation) {
         listeAnnotations = new ArrayList<>();
-        for (List<String> ann : listeAnnotation) {
+        for (List<List<String>> ann : listeAnnotation) {
             listeAnnotations.add(new ArrayList<>(ann));
         }
     }
-    public void initialize(List<List<String>> listeAnnotation) {
-        title.setText("les annotations de l'epigraphie "+GestionAnnotationsController.epigraphieSelectionnée);
+    public void initialize(List<List<List<String>>> listeAnnotation) {
         setListeAnnotations(listeAnnotation);
-        annotationsListView.getItems().addAll(listeAnnotations);
+        title.setText("les annotations de l'epigraphie "+GestionAnnotationsController.epigraphieSelectionnée);
+        actuel = listeAnnotation.get(Integer.parseInt(GestionAnnotationsController.epigraphieSelectionnée)-1);
+        annotationsListView.getItems().addAll(actuel);
         annotationsListView.setCellFactory(new Callback<ListView<List<String>>, ListCell<List<String>>>() {
             @Override
             public ListCell<List<String>> call(ListView<List<String>> listView) {
@@ -79,10 +89,15 @@ public class AffAnnotationController {
          */
         private void supprimerAnnotation() {
             List<String> itemData = getItem();
+            System.out.println("iiiiiiiiiii"+itemData);
             if (itemData != null && !itemData.isEmpty()) {
-                getListView().getItems().remove(itemData);
+                annotationsListView.getItems().remove(itemData);
+                actuel.remove(itemData);
+                listeAnnotations.get(Integer.parseInt(GestionAnnotationsController.epigraphieSelectionnée)-1).remove(itemData);
             }
         }
+
+
         /**
          * La méthode updateItem affiche la cellule en fonction des données fournies.
          *

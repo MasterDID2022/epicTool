@@ -222,11 +222,11 @@ public class Api {
 
         List<String> listeAnnotation1 = new ArrayList<>();
         listeAnnotation1.add(ann);
-        listeAnnotation1.add("42");
+        listeAnnotation1.add("1");
 
         List<String> listeAnnotation2 = new ArrayList<>();
         listeAnnotation2.add(ann);
-        listeAnnotation2.add("50");
+        listeAnnotation2.add("2");
 
         listeAnnotation.add(listeAnnotation1);
         listeAnnotation.add(listeAnnotation2);
@@ -237,29 +237,41 @@ public class Api {
      *
      * similaire a la methode precedente, juste elle initialise les annotation d une epigraphie particuliere
      */
-    public static  List<List<String>> AnnotationMethodeInit(){
-        List<List<String>> listeAnnotation = new ArrayList<>();
+    public static  List<List<List<String>>> AnnotationMethodeInit(){
+        List<List<List<String>>> listeAnnotation = new ArrayList<>();
+
+        List<List<String>> epigraphie1 = new ArrayList<>();
         String ann = "annotation numero  ";
 
         List<String> listeAnnotation1 = new ArrayList<>();
         listeAnnotation1.add(ann);
         listeAnnotation1.add("1");
-        listeAnnotation1.add("je vous decrit ici ...... ");
+        listeAnnotation1.add("ici l'annotation 1 de l'epigraphie 1");
 
         List<String> listeAnnotation2 = new ArrayList<>();
         listeAnnotation2.add(ann);
         listeAnnotation2.add("2");
-        listeAnnotation2.add("je vous decrit cette annotation ....");
+        listeAnnotation2.add("ici l'annotation 2 de l'epigraphie 1");
 
-        listeAnnotation.add(listeAnnotation1);
-        listeAnnotation.add(listeAnnotation2);
+        epigraphie1.add(listeAnnotation1);
+        epigraphie1.add(listeAnnotation2);
+        listeAnnotation.add(epigraphie1);
+
+        List<List<String>> epigraphie2 = new ArrayList<>();
+
+        List<String> listeAnnotation21 = new ArrayList<>();
+        listeAnnotation21.add(ann);
+        listeAnnotation21.add("1");
+        listeAnnotation21.add("ici l'annotation 1 de l'epigraphie 2 ");
+
+        List<String> listeAnnotation22 = new ArrayList<>();
+        listeAnnotation22.add(ann);
+        listeAnnotation22.add("2");
+        listeAnnotation22.add("ici l'annotation 2 de l'epigraphie 2");
+
+        epigraphie2.add(listeAnnotation21);
+        epigraphie2.add(listeAnnotation22);
+        listeAnnotation.add(epigraphie2);
         return listeAnnotation;
     }
-
 }
-
-
-
-
-
-
