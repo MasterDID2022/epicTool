@@ -41,14 +41,8 @@ public class Facade {
     private static SceneData<GestionFormulaireController> formGest;
     private static SceneData<AffichageDemandeController> afficherDemande;
     private static SceneData<HubGestionnaireController> hubData;
-
     private static SceneData<GestionAnnotationsController> annotations;
-
     private static SceneData<AffAnnotationController> annotation;
-    private static SceneData<AffAnnotationController> annotationm;
-
-
-
 
 
     public static void initStage(Stage primaryStage) {
@@ -91,7 +85,6 @@ public class Facade {
         System.out.println(jsonForm);
     }
 
-
     public static void sendFormulaire(String nom, String prenom, String email, String affiliation, String commentaire) {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode jsonForm = mapper.createObjectNode();
@@ -102,29 +95,37 @@ public class Facade {
         jsonForm.put("emailFormulaire",email);
         jsonForm.put("affiliationFormulaire",affiliation);
         jsonForm.put("commentaireFormulaire",commentaire);
-
         Api.postFormulaire(jsonForm.toString());
     }
-
     public static void visualiseGestionFormulaire (){
         GestionFormulaireController gestionFormulaireController = formGest.controller();
         gestionFormulaireController.reset();
         List<List<String>> listeDeFormulaire = Api.tmpMethodeInit();
         gestionFormulaireController.initialize(listeDeFormulaire);
     }
-
+    public static void resetAffichageDemande() {
+        if (afficherDemande != null) {
+            AffichageDemandeController affichageDemandeController = afficherDemande.controller();
+            affichageDemandeController.initialize();
+        }
+    }
     public static void visualiseGestionAnnotations (){
         GestionAnnotationsController gestionAnnotationsController = annotations.controller();
         gestionAnnotationsController.reset();
-        List<List<String>> listeAnnotation = Api.AnnotationMethodeInit();
+        List<List<String>> listeAnnotation = Api.AnnotationsMethodeInit();
         gestionAnnotationsController.initialize(listeAnnotation);
+    }
+    public static void visualiseAnnotation(){
+        AffAnnotationController annotationController = annotation.controller();
+        annotationController.reset();
+        List<List<String>> listea = Api.AnnotationMethodeInit();
+        annotationController.initialize(listea);
     }
 
     public static void sendLoginAndPasseword ( String email, String passeword ) {
 
         Api.postLogin(Base64.getEncoder().encodeToString((email + ":" + passeword).getBytes()));
     }
-
     public static void showScene(SceneType type) {
         try {
             switch(type) {
@@ -144,9 +145,8 @@ public class Facade {
                     if (formGest == null) {
                         formGest = SceneController.switchToPageGestionFormulaire(primaryStage);
                         visualiseGestionFormulaire();
-                    } else {
+                    } else
                         SceneController.switchToScene(primaryStage, formGest);
-                    }
                     break;
                 case AFFICHAGE_DEMANDE:
                     if (afficherDemande == null) {
@@ -170,31 +170,20 @@ public class Facade {
                         visualiseAnnotation();
                     }
                     else
-                    {
                         SceneController.switchToScene(primaryStage, annotation);
-                    }
                     break;
                 case ANNOTATIONS:
                     if (annotations == null) {
                         annotations = SceneController.switchToPageGestionAnnotations(primaryStage);
                         visualiseGestionAnnotations();
-                    } else {
+                    } else
                         SceneController.switchToScene(primaryStage, annotations);
-                    }
                     break;
             }
         } catch(IOException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
-
-    public static void resetAffichageDemande() {
-        if (afficherDemande != null) {
-            AffichageDemandeController affichageDemandeController = afficherDemande.controller();
-            affichageDemandeController.initialize();
-        }
-    }
-
     public static void visualiseEpigraphie(int epigraphieId) {
         List<String> epiInfo = requestEpigraphieInfo(epigraphieId);
         //rajouter try catch ? pour renvoyer des exceptions si jamais y a des soucis
@@ -228,7 +217,6 @@ public class Facade {
         List<String> utilisateursList = Api.convertJsonToList(utilisateursString);
         return utilisateursList;
     }
-
     /**
      * Méthode pour afficher le hub du gestionnaire
      * à appeler après avoir décidé quelle interface
@@ -241,13 +229,5 @@ public class Facade {
     public static void disconnectUser() {
         //déconnexion utilisateur courant WIP
         showScene(SceneType.MENU); // retour au menu de l'application
-    }
-
-
-    public static void visualiseAnnotation(){
-        AffAnnotationController annotationController = annotation.controller();
-        annotationController.reset();
-        List<List<String>> listea = Api.tmpMethodeInit();
-        annotationController.initialize(listea);
     }
 }

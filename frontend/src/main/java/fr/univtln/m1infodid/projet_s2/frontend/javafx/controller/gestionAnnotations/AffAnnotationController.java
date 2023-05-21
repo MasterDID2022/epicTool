@@ -11,7 +11,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 import java.util.ArrayList;
@@ -20,10 +19,13 @@ import java.util.List;
 public class AffAnnotationController {
     @FXML
     private ListView<List<String>> annotationsListView;
+    @FXML
+    private Label title;
     public static List<List<String>> listeAnnotations ;
 
     public void reset() {
         annotationsListView.getItems().clear();
+        title.setText("");
     }
     private static void setListeAnnotations(List<List<String>> listeAnnotation) {
         listeAnnotations = new ArrayList<>();
@@ -32,11 +34,9 @@ public class AffAnnotationController {
         }
     }
     public void initialize(List<List<String>> listeAnnotation) {
+        title.setText("les annotations de l'epigraphie "+GestionAnnotationsController.epigraphieSelectionnée);
         setListeAnnotations(listeAnnotation);
-        System.out.println(listeAnnotations);
-
         annotationsListView.getItems().addAll(listeAnnotations);
-
         annotationsListView.setCellFactory(new Callback<ListView<List<String>>, ListCell<List<String>>>() {
             @Override
             public ListCell<List<String>> call(ListView<List<String>> listView) {
@@ -83,8 +83,6 @@ public class AffAnnotationController {
                 getListView().getItems().remove(itemData);
             }
         }
-
-
         /**
          * La méthode updateItem affiche la cellule en fonction des données fournies.
          *

@@ -210,20 +210,50 @@ public class Api {
         return listeDeFormulaire;
 
     }
-    public static  List<List<String>> AnnotationMethodeInit(){
+
+    /**
+     *
+     * methode tmp initialise les annotations d une epigraphie
+     * a modifier plus tard lors de la recuperation du backend
+     */
+    public static  List<List<String>> AnnotationsMethodeInit(){
         List<List<String>> listeAnnotation = new ArrayList<>();
+        String ann = "les annotations de l'epygraphie ";
 
         List<String> listeAnnotation1 = new ArrayList<>();
-        listeAnnotation1.add(" annotation d'epygraphie n:42");
+        listeAnnotation1.add(ann);
+        listeAnnotation1.add("42");
 
         List<String> listeAnnotation2 = new ArrayList<>();
-        listeAnnotation2.add(" annotation d'epygraphie n:43");
-
+        listeAnnotation2.add(ann);
+        listeAnnotation2.add("50");
 
         listeAnnotation.add(listeAnnotation1);
         listeAnnotation.add(listeAnnotation2);
         return listeAnnotation;
+    }
 
+    /**
+     *
+     * similaire a la methode precedente, juste elle initialise les annotation d une epigraphie particuliere
+     */
+    public static  List<List<String>> AnnotationMethodeInit(){
+        List<List<String>> listeAnnotation = new ArrayList<>();
+        String ann = "annotation numero  ";
+
+        List<String> listeAnnotation1 = new ArrayList<>();
+        listeAnnotation1.add(ann);
+        listeAnnotation1.add("1");
+        listeAnnotation1.add("je vous decrit ici ...... ");
+
+        List<String> listeAnnotation2 = new ArrayList<>();
+        listeAnnotation2.add(ann);
+        listeAnnotation2.add("2");
+        listeAnnotation2.add("je vous decrit cette annotation ....");
+
+        listeAnnotation.add(listeAnnotation1);
+        listeAnnotation.add(listeAnnotation2);
+        return listeAnnotation;
     }
 
 }

@@ -11,6 +11,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 import java.util.ArrayList;
@@ -18,11 +19,10 @@ import java.util.List;
 
 public class GestionAnnotationsController {
 
-
     @FXML
     private ListView<List<String>> annotationListView;
     public static List<List<String>> listeAnnotations ;
-    public static String numeroAnnotation ;
+    public static String epigraphieSelectionnée ;
 
 
 
@@ -57,10 +57,8 @@ public class GestionAnnotationsController {
     }
     public void reset() {
         annotationListView.getItems().clear();
-        numeroAnnotation = null;
+        epigraphieSelectionnée = null;
     }
-
-
 
 
     @FXML
@@ -93,26 +91,20 @@ public class GestionAnnotationsController {
             HBox.setHgrow(btnBox, Priority.ALWAYS);
 
             consulterButton.setOnAction(event -> consulterAnnotation());
-
             consulterButton.getStyleClass().add("consulter-button");
 
         }
-
         /**
          * renvoie vers le annotation correspondant a l adresse selectionnée
          */
         private void consulterAnnotation() {
             List<String> itemData = getItem();
             if (itemData != null && !itemData.isEmpty()) {
-                String numero = itemData.get(0);
-                numeroAnnotation = numero;
+                String numero = itemData.get(1);
+                epigraphieSelectionnée = numero;
             }
             Facade.showScene(SceneType.ANNOTATION);
         }
-
-
-
-
 
         /**
          * La méthode updateItem affiche la cellule en fonction des données fournies.
@@ -121,15 +113,32 @@ public class GestionAnnotationsController {
          * @param empty Indique si la cellule est vide ou non.
          */
         @Override
-        protected void updateItem(List<String> item, boolean empty){
+        protected void updateItem(List<String> item, boolean empty) {
             super.updateItem(item, empty);
             if (empty || item == null) {
                 setGraphic(null);
             } else {
-                texteLabel.setText(item.get(0));
-                setGraphic(hbox);
+                HBox mainContainer = new HBox();
+                mainContainer.setAlignment(Pos.CENTER_LEFT);
+
+                HBox elementsContainer = new HBox();
+                elementsContainer.setSpacing(10);
+                elementsContainer.setAlignment(Pos.CENTER_LEFT);
+
+                for (String element : item) {
+                    Label label = new Label(element);
+                    elementsContainer.getChildren().add(label);
+                }
+                Button consulterButton = new Button("consulter");
+                consulterButton.setOnAction(event -> consulterAnnotation());
+
+                HBox.setHgrow(elementsContainer, Priority.ALWAYS);
+
+                mainContainer.getChildren().addAll(elementsContainer, consulterButton);
+                setGraphic(mainContainer);
             }
         }
+
     }
 
 }
