@@ -92,6 +92,8 @@ public class AffAnnotationController {
             supprimerButton = new Button("Supprimer");
 
             HBox btnBox = new HBox(10, supprimerButton);
+            supprimerButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+
             btnBox.setAlignment(Pos.CENTER_RIGHT);
             HBox.setMargin(btnBox, new Insets(0, 40, 0, 0));
 
@@ -132,6 +134,9 @@ public class AffAnnotationController {
                 }
 
                 Button supprimerButton = new Button("Supprimer");
+                supprimerButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+
+
                 supprimerButton.setOnAction(event -> supprimerAnnotation());
 
                 HBox.setHgrow(elementsContainer, Priority.ALWAYS);

@@ -9,22 +9,14 @@
     -fx-red-hover: #aa4343;
     -fx-gray: #a6a09f;
 }
-
 #anchorid {
     -fx-font-family: "Product Sans";
     -fx-background-color:  -fx-dark-blue;
 }
-
 #title {
     -fx-font-size: 25px;
-    -fx-text-fill: -fx-white;
+    -fx-text-fill: -fx-green-hover;
 }
-
-#Title {
-    -fx-font-size: 25px;
-    -fx-text-fill: -fx-green;
-}
-
 #annotationListView {
     -fx-background-color: -fx-blue;
 }
@@ -41,14 +33,9 @@
     -fx-text-fill: -fx-white;
 }
 
-.consulter-button {
-    -fx-background-color: -fx-blue;
-    -fx-text-fill: -fx-white;
-}
-
 #buttonBack{
     -fx-border-width: 1;
-    -fx-border-color: -fx-gray;
+    -fx-border-color: -fx-green-hover;
     -fx-border-radius: 10;
     -fx-background-color: transparent;
     -fx-text-fill: -fx-white;
@@ -58,4 +45,7 @@
     -fx-border-width: 3;
     -fx-background-radius: 10;
     -fx-text-fill: -fx-gray;
+}
+#vBox{
+    -fx-border-color: -fx-green-hover;
 }

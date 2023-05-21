@@ -74,6 +74,8 @@ public class GestionAnnotationsController {
             hbox = new HBox();
             texteLabel = new Label();
             consulterButton = new Button("Consulter");
+            consulterButton.setStyle("-fx-background-color: green; -fx-text-fill: white;");
+
 
             HBox btnBox = new HBox(10, consulterButton);
             btnBox.setAlignment(Pos.CENTER_RIGHT);
@@ -116,6 +118,8 @@ public class GestionAnnotationsController {
                 }
 
                 Button consulterButton = new Button("consulter");
+                consulterButton.setStyle("-fx-background-color: green; -fx-text-fill: white;");
+
                 consulterButton.setOnAction(event -> consulterAnnotation());
 
                 HBox.setHgrow(elementsContainer, Priority.ALWAYS);
