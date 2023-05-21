@@ -109,3 +109,11 @@
     -fx-background-color: -fx-green;
     -fx-text-fill: -fx-white;
 }
+
+#Consulterlesannotations {
+    -fx-font-family: "Product Sans Bold";
+    -fx-border-radius: 10 10 0 0;
+    -fx-background-radius: 10 10 0 0;
+    -fx-background-color: -fx-green;
+    -fx-text-fill: -fx-white;
+}

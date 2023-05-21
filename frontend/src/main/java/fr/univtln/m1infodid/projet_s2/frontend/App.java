@@ -8,7 +8,7 @@ import javafx.application.Application;
 public class App {
 	public static void main(String[] args) {
 		Application.launch(MainApp.class);
-		//log.info(Facade.afficherUtilisateurs().toString());
+		log.info(Facade.afficherUtilisateurs().toString());
 	}
 
 }

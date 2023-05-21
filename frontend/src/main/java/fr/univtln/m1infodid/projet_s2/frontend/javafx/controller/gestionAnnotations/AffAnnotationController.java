@@ -1,5 +1,7 @@
 package fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotations;
 
+import fr.univtln.m1infodid.projet_s2.frontend.Facade;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.SceneType;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -116,10 +118,9 @@ public class AffAnnotationController {
                 setGraphic(mainContainer);
             }
         }
-
-
-
-
-
+    }
+    @FXML
+    private void handleRetourButton() {
+        Facade.showScene(SceneType.ANNOTATIONS);
     }
 }

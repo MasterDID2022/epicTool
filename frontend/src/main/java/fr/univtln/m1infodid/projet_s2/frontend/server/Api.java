@@ -210,6 +210,21 @@ public class Api {
         return listeDeFormulaire;
 
     }
+    public static  List<List<String>> AnnotationMethodeInit(){
+        List<List<String>> listeAnnotation = new ArrayList<>();
+
+        List<String> listeAnnotation1 = new ArrayList<>();
+        listeAnnotation1.add(" annotation d'epygraphie n:42");
+
+        List<String> listeAnnotation2 = new ArrayList<>();
+        listeAnnotation2.add(" annotation d'epygraphie n:43");
+
+
+        listeAnnotation.add(listeAnnotation1);
+        listeAnnotation.add(listeAnnotation2);
+        return listeAnnotation;
+
+    }
 
 }
 

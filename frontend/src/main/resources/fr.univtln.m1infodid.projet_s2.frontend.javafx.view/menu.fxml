@@ -223,6 +223,6 @@
 			</center>
 		</BorderPane>
 		<fx:include fx:id="alert" source="alert.fxml" />
-		<Button id="btnConsulterDemandes" text="Consulter les demandes" onAction="#consulterDemandesBtnOnClick" />
-	</children>
+		<Button id="btnConsulterDemandes" text="Consulter les demandes" onAction="#consulterDemandesBtnOnClick" AnchorPane.rightAnchor="500.0" AnchorPane.topAnchor="10.0" />
+		<Button id="Consulterlesannotations" text="Consulter les annotations" onAction="#consulterAnnotationsBtnOnClick" AnchorPane.rightAnchor="130.0" AnchorPane.topAnchor="10.0" />	</children>
 </AnchorPane>

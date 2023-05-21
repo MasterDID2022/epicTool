@@ -113,4 +113,9 @@ public class MenuController implements Initializable {
     private void consulterDemandesBtnOnClick() {
         Facade.showScene(SceneType.GESTION_ADHESION);
     }
+
+    @FXML
+    private void consulterAnnotationsBtnOnClick() {
+        Facade.showScene(SceneType.ANNOTATIONS);
+    }
 }

@@ -45,6 +45,8 @@ public class Facade {
     private static SceneData<GestionAnnotationsController> annotations;
 
     private static SceneData<AffAnnotationController> annotation;
+    private static SceneData<AffAnnotationController> annotationm;
+
 
 
 
@@ -59,7 +61,7 @@ public class Facade {
     public static boolean isFormulaireShown() { return primaryStage.getScene() == formData.scene(); }
 
     public static List<String> requestEpigraphieInfo(int epigraphieId) {
-       return Api.sendRequestOf(epigraphieId);
+        return Api.sendRequestOf(epigraphieId);
     }
 
     public static void postAnnotations(String idEpigraphie, Map<String, Rectangle> rectAnnotationsMap) {
@@ -111,11 +113,11 @@ public class Facade {
         gestionFormulaireController.initialize(listeDeFormulaire);
     }
 
-    public static void visualiseAnnotation(){
-        AffAnnotationController annotationController = annotation.controller();
-        annotationController.reset();
-        List<List<String>> listea = Api.tmpMethodeInit();
-        annotationController.initialize(listea);
+    public static void visualiseGestionAnnotations (){
+        GestionAnnotationsController gestionAnnotationsController = annotations.controller();
+        gestionAnnotationsController.reset();
+        List<List<String>> listeAnnotation = Api.AnnotationMethodeInit();
+        gestionAnnotationsController.initialize(listeAnnotation);
     }
 
     public static void sendLoginAndPasseword ( String email, String passeword ) {
@@ -154,12 +156,12 @@ public class Facade {
                         SceneController.switchToScene(primaryStage, afficherDemande);
                     }
                     break;
-                case HUB_GESTIONNAIRE: 
+                case HUB_GESTIONNAIRE:
                     if (hubData == null) hubData = SceneController.switchToHubGestionnaire(primaryStage);
                     else SceneController.switchToScene(primaryStage, hubData);
                     break;
                 case GESTION_ANNOTATION:
-                    if (annotations == null) annotations = SceneController.switchToPageGestionAnnotations(primaryStage);
+                    if (annotations == null) annotations = SceneController.switchToHubGestionnaire(primaryStage);
                     else SceneController.switchToScene(primaryStage, annotations);
                     break;
                 case ANNOTATION:
@@ -172,7 +174,14 @@ public class Facade {
                         SceneController.switchToScene(primaryStage, annotation);
                     }
                     break;
-
+                case ANNOTATIONS:
+                    if (annotations == null) {
+                        annotations = SceneController.switchToPageGestionAnnotations(primaryStage);
+                        visualiseGestionAnnotations();
+                    } else {
+                        SceneController.switchToScene(primaryStage, annotations);
+                    }
+                    break;
             }
         } catch(IOException e) {
             throw new RuntimeException(e.getMessage());
@@ -211,7 +220,7 @@ public class Facade {
         else if (isPageVisualisationShown()) visuEpiData.controller().getAlertController().showNoInternet();
     }
     /**
-    methode qui affiche recupere les utilisateurs du back sou forme json et les convertit en liste
+     methode qui affiche recupere les utilisateurs du back sou forme json et les convertit en liste
 
      */
     public static List<String> afficherUtilisateurs(){
@@ -234,4 +243,11 @@ public class Facade {
         showScene(SceneType.MENU); // retour au menu de l'application
     }
 
+
+    public static void visualiseAnnotation(){
+        AffAnnotationController annotationController = annotation.controller();
+        annotationController.reset();
+        List<List<String>> listea = Api.tmpMethodeInit();
+        annotationController.initialize(listea);
+    }
 }

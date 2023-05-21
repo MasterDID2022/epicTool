@@ -24,7 +24,7 @@ public class MainApp extends Application {
 
         //changement de scène vers la vue du menu
         Facade.initStage(primaryStage);
-        Facade.showScene(SceneType.ANNOTATION);
+        Facade.showScene(SceneType.MENU);
 
         //définition du titre de la fenêtre de l'application puis la montre à l'écran
         primaryStage.setTitle("Projet Épigraphie S2");
