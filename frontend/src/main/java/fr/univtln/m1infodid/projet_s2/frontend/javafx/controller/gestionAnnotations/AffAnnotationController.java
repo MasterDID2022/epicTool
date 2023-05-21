@@ -17,47 +17,63 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AffAnnotationController {
+
     @FXML
     private ListView<List<String>> annotationsListView;
+
     @FXML
     private Label title;
-    public static List<List<List<String>>> listeAnnotations ;
-    public static List<List<String>> actuel ;
+
+    private List<List<List<String>>> listeAnnotations;
+    private List<List<String>> actuel;
+
     public void reset() {
-        title.setText("les annotations de l'epigraphie "+GestionAnnotationsController.epigraphieSelectionnée);
+        setTitleText();
         annotationsListView.getItems().clear();
-        actuel = listeAnnotations.get(Integer.parseInt(GestionAnnotationsController.epigraphieSelectionnée)-1);
+        actuel = listeAnnotations.get(getSelectedEpigraphieIndex());
         annotationsListView.getItems().addAll(actuel);
-        annotationsListView.setCellFactory(new Callback<ListView<List<String>>, ListCell<List<String>>>() {
-            @Override
-            public ListCell<List<String>> call(ListView<List<String>> listView) {
-                return new FormulaireListCell();
-            }
-        });
+        setupCellFactory();
         annotationsListView.getStyleClass().add("annotations-list-view");
     }
-    private static void setListeAnnotations(List<List<List<String>>> listeAnnotation) {
+
+    private void setTitleText() {
+        title.setText("Les annotations de l'épigraphie " + GestionAnnotationsController.getEpigraphieSelectionnée()) ;   }
+
+    /**
+     * Récupère l'index de l'épigraphie sélectionnée.
+     *
+     * @return L'index de l'épigraphie sélectionnée.
+     */
+    private int getSelectedEpigraphieIndex() {
+        return Integer.parseInt(GestionAnnotationsController.getEpigraphieSelectionnée()) - 1;
+    }
+
+
+    public void initialize(List<List<List<String>>> listeAnnotation) {
+        setListeAnnotations(listeAnnotation);
+        setTitleText();
+        actuel = listeAnnotation.get(getSelectedEpigraphieIndex());
+        annotationsListView.getItems().addAll(actuel);
+        setupCellFactory();
+        annotationsListView.getStyleClass().add("annotations-list-view");
+    }
+
+    private void setListeAnnotations(List<List<List<String>>> listeAnnotation) {
         listeAnnotations = new ArrayList<>();
         for (List<List<String>> ann : listeAnnotation) {
             listeAnnotations.add(new ArrayList<>(ann));
         }
     }
-    public void initialize(List<List<List<String>>> listeAnnotation) {
-        setListeAnnotations(listeAnnotation);
-        title.setText("les annotations de l'epigraphie "+GestionAnnotationsController.epigraphieSelectionnée);
-        actuel = listeAnnotation.get(Integer.parseInt(GestionAnnotationsController.epigraphieSelectionnée)-1);
-        annotationsListView.getItems().addAll(actuel);
+
+    private void setupCellFactory() {
         annotationsListView.setCellFactory(new Callback<ListView<List<String>>, ListCell<List<String>>>() {
             @Override
             public ListCell<List<String>> call(ListView<List<String>> listView) {
                 return new FormulaireListCell();
             }
         });
-        annotationsListView.getStyleClass().add("annotations-list-view");
     }
-    /**
-     * La classe FormulaireListCell pour les cellules de la liste des formulaires.
-     */
+
     public class FormulaireListCell extends ListCell<List<String>> {
         private HBox hbox;
         private Label texteLabel;
@@ -65,7 +81,12 @@ public class AffAnnotationController {
 
         public FormulaireListCell() {
             super();
+            createCellComponents();
+            setupButtonAction();
+            supprimerButton.getStyleClass().add("supprimer-button");
+        }
 
+        private void createCellComponents() {
             hbox = new HBox();
             texteLabel = new Label();
             supprimerButton = new Button("Supprimer");
@@ -77,33 +98,21 @@ public class AffAnnotationController {
             hbox.getChildren().addAll(texteLabel, btnBox);
             hbox.setSpacing(10);
             HBox.setHgrow(btnBox, Priority.ALWAYS);
-
-            supprimerButton.setOnAction(event -> supprimerAnnotation());
-
-            supprimerButton.getStyleClass().add("supprimer-button");
-
         }
 
-        /**
-         * supprime la ligne de la listView
-         */
+        private void setupButtonAction() {
+            supprimerButton.setOnAction(event -> supprimerAnnotation());
+        }
+
         private void supprimerAnnotation() {
             List<String> itemData = getItem();
-            System.out.println("iiiiiiiiiii"+itemData);
             if (itemData != null && !itemData.isEmpty()) {
                 annotationsListView.getItems().remove(itemData);
                 actuel.remove(itemData);
-                listeAnnotations.get(Integer.parseInt(GestionAnnotationsController.epigraphieSelectionnée)-1).remove(itemData);
+                listeAnnotations.get(getSelectedEpigraphieIndex()).remove(itemData);
             }
         }
 
-
-        /**
-         * La méthode updateItem affiche la cellule en fonction des données fournies.
-         *
-         * @param item  Les données de la cellule.
-         * @param empty Indique si la cellule est vide ou non.
-         */
         @Override
         protected void updateItem(List<String> item, boolean empty) {
             super.updateItem(item, empty);
@@ -125,15 +134,24 @@ public class AffAnnotationController {
                 Button supprimerButton = new Button("Supprimer");
                 supprimerButton.setOnAction(event -> supprimerAnnotation());
 
-                HBox.setHgrow(elementsContainer, Priority.ALWAYS); // Permet à la HBox des éléments de prendre toute la largeur disponible
+                HBox.setHgrow(elementsContainer, Priority.ALWAYS);
 
                 mainContainer.getChildren().addAll(elementsContainer, supprimerButton);
                 setGraphic(mainContainer);
             }
         }
     }
+
     @FXML
     private void handleRetourButton() {
         Facade.showScene(SceneType.ANNOTATIONS);
+    }
+
+    public void setAnnotationsListView(ListView<List<String>> annotationsListView) {
+        this.annotationsListView = annotationsListView;
+    }
+
+    public void setTitleLabel(Label title) {
+        this.title = title;
     }
 }

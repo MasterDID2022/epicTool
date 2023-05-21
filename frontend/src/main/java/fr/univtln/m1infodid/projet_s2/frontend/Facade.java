@@ -114,16 +114,25 @@ public class Facade {
         List<List<String>> liste = Api.AnnotationsMethodeInit();
         gestion.initialize(liste);
     }
-    static List<List<List<String>>> listea = Api.AnnotationMethodeInit();
 
+    /**
+     * Affiche les annotations en appelant la méthode d'initialisation dans l'API
+     * */
     public static void affichageAnnotation() {
-            AffAnnotationController aff = annotation.controller();
-            aff.initialize(listea);
+        List<List<List<String>>> listeA = Api.AnnotationMethodeInit();
+        AffAnnotationController aff = annotation.controller();
+        aff.initialize(listeA);
     }
+
+    /**
+     * Réinitialise l'affichage des annotations en appelant la méthode reset()
+     * du contrôleur de la vue des annotations.
+     */
     public static void resetAnnotation() {
         AffAnnotationController aff = annotation.controller();
         aff.reset();
     }
+
 
     public static void sendLoginAndPasseword ( String email, String passeword ) {
 
