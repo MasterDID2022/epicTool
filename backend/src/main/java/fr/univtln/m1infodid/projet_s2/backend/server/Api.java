@@ -103,12 +103,12 @@ public class Api {
 		return formulaire;
 	}
 
-	private Optional<Utilisateur> createUser(String utilisateurJson) {
+	private Optional<Utilisateur> createUser(String userJson) {
 		Optional<Utilisateur> utilisateur = Optional.empty();
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode rootNode = null;
 		try {
-
+			rootNode = objectMapper.readTree(userJson);
 			String emailUser = rootNode.path("emailUser").asText();
 			String mdpUser = rootNode.path("mdpUser").asText();
 
