@@ -15,6 +15,9 @@ import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.InfosAnnotateurController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.GestionAnnotateurController;
 import static fr.univtln.m1infodid.projet_s2.frontend.server.Api.convertJsonToList;
+
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotations.AffAnnotationController;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotations.GestionAnnotationsController;
 import fr.univtln.m1infodid.projet_s2.frontend.server.Api;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -39,10 +42,10 @@ public class Facade {
         ANNOTATEUR,
         GESTIONNAIRE
     }
-
-    private Facade() {
+    private Facade () {
         throw new IllegalStateException("Ne doit pas être instancié");
     }
+
 
     private static Stage primaryStage;
 
@@ -57,7 +60,8 @@ public class Facade {
     private static SceneData<HubGestionnaireController> hubData;
     private static SceneData<GestionAnnotateurController> gestAnnotateur;
     private static SceneData<InfosAnnotateurController> infosAnnotateur;
-
+    private static SceneData<GestionAnnotationsController> annotations;
+    private static SceneData<AffAnnotationController> annotation;
     public static void initStage(Stage primaryStage) {
         if (Facade.primaryStage != null) return;
         Facade.primaryStage = primaryStage;
@@ -258,6 +262,23 @@ public class Facade {
                         SceneController.switchToScene(primaryStage, infosAnnotateur);
                     }
                     break;
+                case ANNOTATION:
+                    if (annotation == null) {
+                        annotation = SceneController.switchToPageAnnotation(primaryStage);
+                        affichageAnnotation();
+                    } else {
+                        resetAnnotation();
+                        SceneController.switchToScene(primaryStage, annotation);
+                    }
+                    break;
+                case ANNOTATIONS:
+                    if (annotations == null) {
+                        annotations = SceneController.switchToPageGestionAnnotations(primaryStage);
+                        visualiseAnnotationGest();
+                    } else {
+                        SceneController.switchToScene(primaryStage, annotations);
+                    }
+                    break;
             }
         } catch (IOException e) {
             log.error("Impossible de change scene");
@@ -292,6 +313,27 @@ public class Facade {
             AffichageDemandeController affichageDemandeController = afficherDemande.controller();
             affichageDemandeController.initialize();
         }
+    }
+    public static void visualiseAnnotationGest(){
+        GestionAnnotationsController gestion = annotations.controller();
+        List<List<String>> liste = Api.annotationsMethodeInit();
+        gestion.initialize(liste);
+    }
+    /**
+     * Affiche les annotations en appelant la méthode d'initialisation dans l'API
+     * */
+    public static void affichageAnnotation() {
+        List<List<List<String>>> listeA = Api.annotationMethodeInit();
+        AffAnnotationController aff = annotation.controller();
+        aff.initialize(listeA);
+    }
+    /**
+     * Réinitialise l'affichage des annotations en appelant la méthode reset()
+     * du contrôleur de la vue des annotations.
+     */
+    public static void resetAnnotation() {
+        AffAnnotationController aff = annotation.controller();
+        aff.reset();
     }
 
     public static void visualiseEpigraphie(int epigraphieId) {

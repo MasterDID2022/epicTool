@@ -30,7 +30,7 @@ import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.Trad
  * Classe logique de la vue visualisation d'épigraphe
  */
 public class PageVisualisationController implements Initializable {
-    public Button buttonProfileIcon;
+    private Button buttonProfileIcon;
     @FXML
     private AnchorPane anchorPane;
     @FXML
@@ -150,13 +150,13 @@ public class PageVisualisationController implements Initializable {
         Facade.disconnectUser();
     }
 
-    public void ProfileButtonExited(MouseEvent mouseEvent) {
+    public void profileButtonExited(MouseEvent mouseEvent) {
         if (Facade.getRole().equals(Facade.ROLE.ANNOTATEUR)) {
             buttonProfileIcon.setText(Facade.getEmail().substring(0, 1).toUpperCase());
         }
     }
 
-    public void ProfileButtonEntered(MouseEvent mouseEvent) {
+    public void profileButtonEntered(MouseEvent mouseEvent) {
         if (Facade.getRole().equals(Facade.ROLE.ANNOTATEUR)) {
             buttonProfileIcon.setText("X");
         }

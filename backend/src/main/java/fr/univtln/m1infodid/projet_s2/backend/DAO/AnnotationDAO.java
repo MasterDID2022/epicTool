@@ -3,10 +3,8 @@ import fr.univtln.m1infodid.projet_s2.backend.model.Annotation;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AnnotationDAO implements AutoCloseable{

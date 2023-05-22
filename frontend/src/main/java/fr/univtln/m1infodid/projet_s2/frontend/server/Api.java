@@ -249,11 +249,109 @@ public class Api {
         return listeDeFormulaire;
 
     }
+    /**
+     *
+     * methode tmp initialise les annotations d une epigraphie
+     * a modifier plus tard lors de la recuperation du backend
+     */
+    public static  List<List<String>> annotationsMethodeInit(){
+        List<List<String>> listeAnnotation = new ArrayList<>();
+        String ann = "les annotations de l'epygraphie ";
 
+        List<String> listeAnnotation1 = new ArrayList<>();
+        listeAnnotation1.add(ann);
+        listeAnnotation1.add("1");
+
+        List<String> listeAnnotation2 = new ArrayList<>();
+        listeAnnotation2.add(ann);
+        listeAnnotation2.add("2");
+
+        List<String> listeAnnotation3 = new ArrayList<>();
+        listeAnnotation3.add(ann);
+        listeAnnotation3.add("3");
+
+        List<String> listeAnnotation4 = new ArrayList<>();
+        listeAnnotation4.add(ann);
+        listeAnnotation4.add("4");
+
+        listeAnnotation.add(listeAnnotation1);
+        listeAnnotation.add(listeAnnotation2);
+        listeAnnotation.add(listeAnnotation3);
+        listeAnnotation.add(listeAnnotation4);
+        return listeAnnotation;
+    }
+
+    /**
+     *
+     * similaire a la methode precedente, juste elle initialise les annotations d une epigraphie particuliere
+     */
+    public static  List<List<List<String>>> annotationMethodeInit(){
+        List<List<List<String>>> listeAnnotation = new ArrayList<>();
+
+        List<List<String>> epigraphie1 = new ArrayList<>();
+        String ann = "annotation numero  ";
+
+        List<String> listeAnnotation1 = new ArrayList<>();
+        listeAnnotation1.add(ann);
+        listeAnnotation1.add("1");
+        listeAnnotation1.add("ici l'annotation 1 de l'epigraphie 1");
+
+        List<String> listeAnnotation2 = new ArrayList<>();
+        listeAnnotation2.add(ann);
+        listeAnnotation2.add("2");
+        listeAnnotation2.add("ici l'annotation 2 de l'epigraphie 1");
+
+        epigraphie1.add(listeAnnotation1);
+        epigraphie1.add(listeAnnotation2);
+        listeAnnotation.add(epigraphie1);
+
+        List<List<String>> epigraphie2 = new ArrayList<>();
+
+        List<String> listeAnnotation21 = new ArrayList<>();
+        listeAnnotation21.add(ann);
+        listeAnnotation21.add("1");
+        listeAnnotation21.add("ici l'annotation 1 de l'epigraphie 2 ");
+
+        List<String> listeAnnotation22 = new ArrayList<>();
+        listeAnnotation22.add(ann);
+        listeAnnotation22.add("2");
+        listeAnnotation22.add("ici l'annotation 2 de l'epigraphie 2");
+
+        epigraphie2.add(listeAnnotation21);
+        epigraphie2.add(listeAnnotation22);
+        listeAnnotation.add(epigraphie2);
+
+        List<List<String>> epigraphie3 = new ArrayList<>();
+
+        List<String> listeAnnotation31 = new ArrayList<>();
+        listeAnnotation31.add(ann);
+        listeAnnotation31.add("1");
+        listeAnnotation31.add("ici l'annotation 1 de l'epigraphie 3 ");
+
+        List<String> listeAnnotation32 = new ArrayList<>();
+        listeAnnotation32.add(ann);
+        listeAnnotation32.add("2");
+        listeAnnotation32.add("ici l'annotation 2 de l'epigraphie 3");
+
+        epigraphie3.add(listeAnnotation31);
+        epigraphie3.add(listeAnnotation32);
+        listeAnnotation.add(epigraphie3);
+
+        List<List<String>> epigraphie4 = new ArrayList<>();
+
+        List<String> listeAnnotation41 = new ArrayList<>();
+        listeAnnotation41.add(ann);
+        listeAnnotation41.add("1");
+        listeAnnotation41.add("ici l'annotation 1 de l'epigraphie 4 ");
+
+        List<String> listeAnnotation42 = new ArrayList<>();
+        listeAnnotation42.add(ann);
+        listeAnnotation42.add("2");
+        listeAnnotation42.add("ici l'annotation 2 de l'epigraphie 4");
+
+        epigraphie4.add(listeAnnotation41);
+        epigraphie4.add(listeAnnotation42);
+        listeAnnotation.add(epigraphie4);
+        return listeAnnotation;
+    }
 }
-
-
-
-
-
-

@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class FormulaireTest {
     Formulaire formulaire1 = Formulaire.of(1, "Ben", "Rawi", "benrawi@mail.com", "gp A", "commentaire 1");
     @Test
-    public void testConstructorAndGetters() {
+     void testConstructorAndGetters() {
         assertEquals(1, formulaire1.getId());
         assertEquals("Ben", formulaire1.getNom());
         assertEquals("Rawi", formulaire1.getPrenom());
@@ -21,7 +21,7 @@ class FormulaireTest {
         assertFalse(formulaire1.equals(str));
     }
     @Test
-    public void testSetter() {
+     void testSetter() {
         Formulaire formulaire = new Formulaire();
         formulaire.setId(2);
         formulaire.setNom("ben");
@@ -57,7 +57,7 @@ class FormulaireTest {
     }
 
     @Test
-    public void testToString() {
+     void testToString() {
         String expected = "Demande inscription: n°1 pour le visiteur BenRawi d'adresse mail benrawi@mail.com et d'affiliation  gp A. \ncommentaire 1";
         assertEquals(expected, formulaire1.toString());
     }

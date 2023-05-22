@@ -28,19 +28,19 @@ import java.util.List;
 public class GestionAnnotateurController {
     @FXML
     private ListView<List<String>> AnnotateurListView;
-    private static String emailSelectionné;
+    private static String emailSelectionne;
     private static String id;
 
-    public static void setEmailSelectionné(String emailSelectionné) {
-        GestionAnnotateurController.emailSelectionné = emailSelectionné;
+    public static void setEmailSelectionne(String emailSelectionne) {
+        GestionAnnotateurController.emailSelectionne = emailSelectionne;
     }
 
     public static void setId(String id) {
         GestionAnnotateurController.id = id;
     }
 
-    public static String getEmailSelectionné() {
-        return emailSelectionné;
+    public static String getEmailSelectionne() {
+        return emailSelectionne;
     }
 
     public static String getId() {
@@ -86,7 +86,7 @@ public class GestionAnnotateurController {
 
     public void reset() {
         AnnotateurListView.getItems().clear();
-        GestionAnnotateurController.setEmailSelectionné("");
+        GestionAnnotateurController.setEmailSelectionne("");
     }
 
 
@@ -138,7 +138,7 @@ public class GestionAnnotateurController {
             List<String> itemData = getItem();
             if (itemData != null && !itemData.isEmpty()) {
                 GestionAnnotateurController.setId(itemData.get(0));
-                GestionAnnotateurController.setEmailSelectionné(itemData.get(1));
+                GestionAnnotateurController.setEmailSelectionne(itemData.get(1));
             }
             Facade.showScene(SceneType.INFOS_ANNOTATEUR);
         }
