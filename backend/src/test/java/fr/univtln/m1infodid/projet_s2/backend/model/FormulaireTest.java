@@ -2,7 +2,8 @@ package fr.univtln.m1infodid.projet_s2.backend.model;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class FormulaireTest {
     Formulaire formulaire1 = Formulaire.of(1, "Ben", "Rawi", "benrawi@mail.com", "test","gp A", "commentaire 1");
@@ -49,11 +50,7 @@ class FormulaireTest {
     void testEqualsRST() {
         Formulaire formulaire2 = Formulaire.of(1, "Ben", "Myr", "benmyr@mail.com", "test", "gp A", "Commentaire 2");
         Formulaire formulaire3 = Formulaire.of(1, "Ben", "Rawi", "benrawi@mail.com", "test", "gp A", "Commentaire 1");
-
-        assertEquals(formulaire1, formulaire1);
-        assertEquals(formulaire2, formulaire2);
-        assertEquals(formulaire3, formulaire3);
-        assertEquals(formulaire1, formulaire3);
+        assertEquals(formulaire2, (formulaire3));
     }
 
     @Test

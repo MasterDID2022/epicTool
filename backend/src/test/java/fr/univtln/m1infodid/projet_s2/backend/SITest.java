@@ -1,16 +1,10 @@
 package fr.univtln.m1infodid.projet_s2.backend;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import fr.univtln.m1infodid.projet_s2.backend.DAO.AnnotationDAO;
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.ListeVide;
 import fr.univtln.m1infodid.projet_s2.backend.model.Annotation;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import fr.univtln.m1infodid.projet_s2.backend.model.Utilisateur;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -30,7 +24,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static fr.univtln.m1infodid.projet_s2.backend.SI.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SITest {
@@ -80,27 +73,22 @@ class SITest {
 	void testCreateXMLDoc () throws ParserConfigurationException, SAXException, IOException {
 		String xml = "<root><element>test</element></root>";
 		InputStream inputStream = new ByteArrayInputStream(xml.getBytes());
-
 		Document result = SI.createXMLDoc(inputStream);
 		assertNotNull(result);
-
-		assertEquals(result.getDocumentElement().getNodeName(),"root");
+		assertEquals("root", result.getDocumentElement().getNodeName());
 	}
+
 
 	@Test
 	void testExtraction () throws ParserConfigurationException, IOException, SAXException {
 		List<List<String>> contentList = new ArrayList<>();
 		List<String> transcriptionList = new ArrayList<>();
 		String xmlString = "<root><persName>Adaline</persName></root>";
-
 		InputStream inputStream = new ByteArrayInputStream(xmlString.getBytes());
 		Document doc = SI.createXMLDoc(inputStream);
-
 		Element root = doc.getDocumentElement();
 		Element persName = (Element) root.getElementsByTagName("persName").item(0);
-
 		SI.extraction(contentList, transcriptionList, persName, "", persName.getChildNodes(), 0);
-
 		assertEquals("Adaline", contentList.get(0).get(0));
 	}
 
@@ -159,7 +147,7 @@ class SITest {
 		Properties properties = new Properties();
 		String email = "projetsdid@hotmail.com";
 		String mdp = "did9projet";
-		Session result = createSession(properties, email, mdp);
+		Session result = Facade.createSession(properties, email, mdp);
 		assertEquals(properties, result.getProperties());
 	}
 	@Test
@@ -168,14 +156,14 @@ class SITest {
 		Session session = Session.getDefaultInstance(new Properties());
 		String fromEmail = "send@hotmail.com";
 		String toEmail = "receiver@hotmail.com";
-		Message result = createMsgCont(success, session, fromEmail, toEmail);
+		Message result = Facade.createMsgCont(success, session, fromEmail, toEmail);
 		assertEquals(fromEmail, result.getFrom()[0].toString());
 		assertEquals(toEmail, result.getRecipients(Message.RecipientType.TO)[0].toString());
 		assertEquals("text/plain", result.getContentType());
 	}
 	@Test
 	void testconfigSMTP() {
-		Properties properties_r = configSMTP();
+		Properties properties_r = Facade.configSMTP();
 		Properties properties = new Properties();
 		properties.put("mail.smtp.auth", "true");
 		properties.put("mail.smtp.starttls.enable", "true");
@@ -187,7 +175,7 @@ class SITest {
 
 	@Test
 	void testRecupereUtilisateurs () {
-		String result = SI.recupereUtilisateurs();
+		String result = Facade.recupereUtilisateurs();
 		assertNotNull(result);
 		assertFalse(result.isEmpty());
 	}
@@ -204,7 +192,7 @@ class SITest {
 		utilisateurs.add(ut1);
 		utilisateurs.add(ut2);
 
-		String json = convertirUtilisateursEnJSON(utilisateurs);
+		String json = Facade.convertirUtilisateursEnJSON(utilisateurs);
 		assertNotNull(json);
 		assertFalse(json.isEmpty());
 
