@@ -61,8 +61,9 @@
                                     </padding></TextField>
                                       <TextField fx:id="emailid" promptText="Email">
                                     <padding>
+                                        <Insets bottom="7.0" left="10.0" top="7.0" />
                                     </padding></TextField>
-                                  <PasswordField fx:id="mdpid" promptText="Email">
+                                  <PasswordField fx:id="mdpid" promptText="mdp">
                                       <padding>
                                        <Insets bottom="7.0" left="10.0" top="7.0" />
                                     </padding></PasswordField>

@@ -103,14 +103,14 @@ public class Api {
 		return formulaire;
 	}
 
-	private Optional<Utilisateur> createUser(String userJson) {
+	private Optional<Utilisateur> createUser(String formulaireJson) {
 		Optional<Utilisateur> utilisateur = Optional.empty();
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode rootNode = null;
 		try {
-			rootNode = objectMapper.readTree(userJson);
-			String emailUser = rootNode.path("emailUser").asText();
-			String mdpUser = rootNode.path("mdpUser").asText();
+			rootNode = objectMapper.readTree(formulaireJson);
+			String emailUser = rootNode.path("emailFormulaire").asText();
+			String mdpUser = rootNode.path("mdpFormulaire").asText();
 
 			utilisateur = Optional.of(
 					Utilisateur.of(emailUser,mdpUser));
@@ -130,9 +130,15 @@ public class Api {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response receiveFormulaire(String formulaireJson) {
 		Optional<Formulaire> formulaire = createFormulaire(formulaireJson);
+		Optional<Utilisateur> utilisateur = createUser(formulaireJson);
 		if (formulaire.isPresent()){
 			FormulaireDAO.createFormulaire(formulaire.get());
-			return Response.ok().build();
+			try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("EpiPU");
+				 EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+				UtilisateurDAO utilisateurDAO = UtilisateurDAO.create(entityManager);
+				utilisateurDAO.persist(utilisateur.get());
+				return Response.ok().build();
+			}
 		}
 		return Response.notModified().build();
 	}
