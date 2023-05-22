@@ -160,12 +160,34 @@ public class Api {
                 log.error("Erreur lors de la récupération des utilisateurs : code d'erreur HTTP " + response.getStatus());
             }
             contenu = response.readEntity(String.class);
-            response.close();
         } catch (Exception e) {
             log.warn("Erreur lors de la récupération des utilisateurs", e);
         }
         return contenu;
     }
+
+
+    /**
+     * Récupère le contenu des formulaires à partir de l'API backend et le renvoie sous forme de chaîne de caractères.
+     *
+     * @return le contenu des formulaires en tant que chaîne de caractères
+     */
+    public static String recupererFormulaire() {
+        String contenu = "";
+        try (Client client = ClientBuilder.newClient()) {
+            Response response = client.target(URI_API_BACKEND + "formulaires")
+                    .request(MediaType.APPLICATION_JSON)
+                    .get();
+            if (response.getStatus() != 200) {
+                log.error("Erreur lors de la récupération des utilisateurs : code d'erreur HTTP " + response.getStatus());
+            }
+            contenu = response.readEntity(String.class);
+        } catch (Exception e) {
+            log.warn("Erreur lors de la récupération des utilisateurs", e);
+        }
+        return contenu;
+    }
+
 
     /**
      * Convertit une chaîne de caractères JSON en une liste d'objets.
@@ -173,13 +195,13 @@ public class Api {
      * @param jsonString la chaîne de caractères JSON à convertir
      * @return une liste d'objets obtenue à partir de la conversion du JSON
      */
-    public static List<String> convertJsonToList(String jsonString) {
+    public static List<String> convertJsonToList(String jsonString, String type) {
         ObjectMapper objectMapper = new ObjectMapper();
         List<String> resultList = new ArrayList<>();
         try {
             JsonNode jsonNode = objectMapper.readTree(jsonString);
-            String utilisateursString = jsonNode.get("utilisateurs").asText();
-            resultList = objectMapper.readValue(utilisateursString, new ArrayList<>().getClass());
+            String toConv = jsonNode.get(type).asText();
+            resultList = objectMapper.readValue(toConv, new ArrayList<>().getClass());
         } catch (JsonProcessingException e) {
             log.warn("Erreur lors de la désérialisation du JSON");
         }
@@ -205,33 +227,6 @@ public class Api {
             log.error(e.toString());
             log.warn("Erreur lors de l'envoi des données");
         }
-    }
-
-
-    /**
-     * methode tmp pour faciliter tache, initalise une liste de formulaire pour tester ..
-     */
-    public static  List<List<String>> tmpMethodeInit(){
-        List<List<String>> listeDeFormulaire = new ArrayList<>();
-
-        List<String> listeFormulaire1 = new ArrayList<>();
-        listeFormulaire1.add(" rawiarayan@gmail.com");
-        listeFormulaire1.add(" ra");
-        listeFormulaire1.add(" ben");
-        listeFormulaire1.add(" comm");
-        listeFormulaire1.add(" aff");
-
-        List<String> listeFormulaire2 = new ArrayList<>();
-        listeFormulaire2.add(" meryam@gmail.com");
-        listeFormulaire2.add(" myr");
-        listeFormulaire2.add(" ben");
-        listeFormulaire2.add(" okk");
-        listeFormulaire2.add(" hihihi");
-
-        listeDeFormulaire.add(listeFormulaire1);
-        listeDeFormulaire.add(listeFormulaire2);
-        return listeDeFormulaire;
-
     }
 
 }

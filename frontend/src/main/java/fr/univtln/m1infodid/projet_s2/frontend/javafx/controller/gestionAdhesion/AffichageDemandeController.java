@@ -2,6 +2,7 @@ package fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesio
 
 import fr.univtln.m1infodid.projet_s2.frontend.Facade;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.SceneType;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.GestionAnnotateurController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -58,19 +59,9 @@ public class AffichageDemandeController {
         email.setText("Email");
         commentaire.setText("Commentaire");
         affiliation.setText("Affiliation");
-        List<List<String>> formulaireData = GestionFormulaireController.listeDeFormulaires;
-        for (List<String> formulaire : formulaireData) {
-            if (!formulaire.isEmpty()) {
-                String email = formulaire.get(0);
-                if (email.equals(GestionFormulaireController.emailSelectionné)){
-                    emailTextField.setText(formulaire.get(0));
-                    nomTextField.setText(formulaire.get(1));
-                    prenomTextField.setText(formulaire.get(2));
-                    commentaireTextField.setText(formulaire.get(3));
-                    affiliationTextField.setText(formulaire.get(4));
-                }
-            }
-        }
+        reset();
+        //reste plus qu'a récuperer le reste des infos de l'annotateur
+        emailTextField.setText(GestionAnnotateurController.emailSelectionné);
     }
     /**
      * handleRetourButton est une méthode pour afficher la scène de gestion des adhésions en utilisant la classe Facade.

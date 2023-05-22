@@ -1,5 +1,7 @@
 package fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.univtln.m1infodid.projet_s2.backend.SI;
@@ -15,41 +17,51 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.util.Callback;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Contrôleur pour la gestion des formulaires.
  */
+@Slf4j
 public class GestionFormulaireController {
 
     @FXML
     private ListView<List<String>> formulaireListView;
-    public static List<List<String>> listeDeFormulaires ;
     public static String emailSelectionné ;
 
     /**
+     * Liste tous les formulaires
      *
-     * @param listeDeFormulaire
-     * remplie le champ liste de formulaire avec une liste de liste en parametre
+     * @param listPerFormulaire
      */
-    private static void setListeDeFormulaires(List<List<String>> listeDeFormulaire) {
-        listeDeFormulaires = new ArrayList<>();
-        for (List<String> formulaire : listeDeFormulaire) {
-            listeDeFormulaires.add(new ArrayList<>(formulaire));
+    private static List<List<String>> setListFormulaires(List<String> listPerFormulaire) {
+        List<List<String>> listFormulaires = new ArrayList<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        for (String formulaire : listPerFormulaire) {
+            try {
+                JsonNode jsonNode = objectMapper.readTree(formulaire);
+                String id = jsonNode.get("id").asText();
+                String email = jsonNode.get("email").asText();
+                listFormulaires.add(Arrays.asList(id, email));
+            } catch (JsonProcessingException e) {
+                log.warn("Erreur lors de la désérialisation du JSON");
+            }
         }
+        return listFormulaires;
     }
 
     /**
      * initialize est une méthode d'initialisation du contrôleur.
      * Cette méthode est de l'initialisation du fichier FXML.
      */
-    public void initialize(List<List<String>> listeDeFormulaire) {
-        setListeDeFormulaires(listeDeFormulaire);
-
-        formulaireListView.getItems().addAll(listeDeFormulaires);
+    public void initialize(List<String> listPerFormulaire) {
+        List<List<String>> listFormulaires = setListFormulaires(listPerFormulaire);
+        formulaireListView.getItems().addAll(listFormulaires);
 
         formulaireListView.setCellFactory(new Callback<ListView<List<String>>, ListCell<List<String>>>() {
             @Override
@@ -59,17 +71,17 @@ public class GestionFormulaireController {
         });
         formulaireListView.getStyleClass().add("formulaire-list-view");
     }
+
+
     public void reset() {
         formulaireListView.getItems().clear();
         emailSelectionné = null;
     }
 
 
-
-
     @FXML
     public void backToMenu() {
-        Facade.showScene(SceneType.MENU);
+        Facade.showScene(SceneType.HUB_GESTIONNAIRE);
     }
 
     /**
@@ -77,7 +89,7 @@ public class GestionFormulaireController {
      */
     public class FormulaireListCell extends ListCell<List<String>> {
         private HBox hbox;
-        private Label texteLabel;
+        private Label mailForm;
         private Button consulterButton;
         private Button validerButton;
         private Button supprimerButton;
@@ -86,7 +98,7 @@ public class GestionFormulaireController {
             super();
 
             hbox = new HBox();
-            texteLabel = new Label();
+            mailForm = new Label();
             consulterButton = new Button("Consulter");
             validerButton = new Button("Valider");
             supprimerButton = new Button("Supprimer");
@@ -95,7 +107,7 @@ public class GestionFormulaireController {
             btnBox.setAlignment(Pos.CENTER_RIGHT);
             HBox.setMargin(btnBox, new Insets(0, 40, 0, 0));
 
-            hbox.getChildren().addAll(texteLabel, btnBox);
+            hbox.getChildren().addAll(mailForm, btnBox);
             hbox.setSpacing(10);
             HBox.setHgrow(btnBox, Priority.ALWAYS);
 
@@ -115,8 +127,7 @@ public class GestionFormulaireController {
         private void consulterFormulaire() {
             List<String> itemData = getItem();
             if (itemData != null && !itemData.isEmpty()) {
-                String email = itemData.get(0);
-                emailSelectionné = email;
+                emailSelectionné = itemData.get(1);
             }
             Facade.showScene(SceneType.AFFICHAGE_DEMANDE);
         }
@@ -173,7 +184,7 @@ public class GestionFormulaireController {
             if (empty || item == null) {
                 setGraphic(null);
             } else {
-                texteLabel.setText(item.get(0));
+                mailForm.setText(item.get(1));
                 setGraphic(hbox);
             }
         }

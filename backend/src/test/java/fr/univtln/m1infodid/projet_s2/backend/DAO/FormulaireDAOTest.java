@@ -35,7 +35,7 @@ class FormulaireDAOTest {
     void testCreateFormulaire() {
         if (FormulaireDAO.findByIdFormulaire(101) != null)
             FormulaireDAO.deleteFormulaire(101);
-        Formulaire formulaire = Formulaire.of(101, "Nom", "Prenom", "email@test.com", "Affiliation", "Commentaire");
+        Formulaire formulaire = Formulaire.of(101, "Nom", "Prenom", "email@test.com", "hh","Affiliation", "Commentaire");
         FormulaireDAO.createFormulaire(formulaire);
         Formulaire formulaireRecupere = FormulaireDAO.findByIdFormulaire(101);
         System.err.println(formulaireRecupere);
@@ -48,7 +48,7 @@ class FormulaireDAOTest {
      */
     @Test
     void testUpdateFormulaire() {
-        Formulaire formulaire = Formulaire.of(101, "Nom2", "Prenom2", "email2@test.com", "Affiliation2", "Commentaire2");
+        Formulaire formulaire = Formulaire.of(101, "Nom2", "Prenom2", "email2@test.com", "ll", "Affiliation2", "Commentaire2");
         FormulaireDAO.createFormulaire(formulaire);
         formulaire.setNom("Nouveau nom");
         FormulaireDAO.updateFormulaire(formulaire);
@@ -62,7 +62,7 @@ class FormulaireDAOTest {
      */
     @Test
     void testDeleteFormulaire() {
-        Formulaire formulaire = Formulaire.of(101, "Nom3", "Prenom3", "email3@test.com", "Affiliation3", "Commentaire3");
+        Formulaire formulaire = Formulaire.of(101, "Nom3", "Prenom3", "email3@test.com", "lol","Affiliation3", "Commentaire3");
         FormulaireDAO.createFormulaire(formulaire);
         FormulaireDAO.deleteFormulaire(101);
         Formulaire formulaireRecupere = FormulaireDAO.findByIdFormulaire(3);
@@ -74,7 +74,7 @@ class FormulaireDAOTest {
     */
     @Test
     void testFindByIdFormulaire() {
-        Formulaire formulaire = Formulaire.of( 101,"Nom4", "Prenom4", "email4@test.com", "Affiliation4", "Commentaire4");
+        Formulaire formulaire = Formulaire.of( 101,"Nom4", "Prenom4", "email4@test.com",  "lol", "Affiliation4", "Commentaire4");
         FormulaireDAO.createFormulaire(formulaire);
         Formulaire formulaireRecupere = FormulaireDAO.findByIdFormulaire(101);
         assertEquals(formulaire, formulaireRecupere);
@@ -87,8 +87,8 @@ class FormulaireDAOTest {
     */
     @Test
     void testFindAllFormulaire() {
-        Formulaire formulaire1 = Formulaire.of(100, "Nom5", "Prenom5", "email5@test.com", "Affiliation5", "Commentaire5");
-        Formulaire formulaire2 = Formulaire.of(101, "Nom6", "Prenom6", "email6@test.com", "Affiliation6", "Commentaire6");
+        Formulaire formulaire1 = Formulaire.of(100, "Nom5", "Prenom5", "email5@test.com", "lol", "Affiliation5", "Commentaire5");
+        Formulaire formulaire2 = Formulaire.of(101, "Nom6", "Prenom6", "email6@test.com", "lol", "Affiliation6", "Commentaire6");
         FormulaireDAO.createFormulaire(formulaire1);
         FormulaireDAO.createFormulaire(formulaire2);
         List<Formulaire> formulaireListe = FormulaireDAO.findAllFormulaire();

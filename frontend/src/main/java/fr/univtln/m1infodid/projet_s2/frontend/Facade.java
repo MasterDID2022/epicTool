@@ -91,7 +91,6 @@ public class Facade {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode jsonForm = mapper.createObjectNode();
 
-        jsonForm.put("idFormulaire",0);
         jsonForm.put("nomFormulaire",nom);
         jsonForm.put("prenomFormulaire",prenom);
         jsonForm.put("emailFormulaire",email);
@@ -105,7 +104,7 @@ public class Facade {
     public static void visualiseGestionFormulaire (){
         GestionFormulaireController gestionFormulaireController = formGest.controller();
         gestionFormulaireController.reset();
-        List<List<String>> listeDeFormulaire = Api.tmpMethodeInit();
+        List<String> listeDeFormulaire = afficherFormulaire();
         gestionFormulaireController.initialize(listeDeFormulaire);
     }
 
@@ -176,7 +175,7 @@ public class Facade {
                         gestAnnotateur = SceneController.switchToPageGestionAnnotateur(primaryStage);
                         visualiseGestionAnnotateur();
                     } else {
-                        resetAffichageDemande();
+                        visualiseGestionAnnotateur();
                         SceneController.switchToScene(primaryStage, gestAnnotateur);
                     }
                     break;
@@ -231,8 +230,14 @@ public class Facade {
      */
     public static List<String> afficherUtilisateurs(){
         String utilisateursString = Api.recupereContenuUtilisateurs();
-        List<String> utilisateursList = convertJsonToList(utilisateursString);
+        List<String> utilisateursList = convertJsonToList(utilisateursString, "utilisateurs");
         return utilisateursList;
+    }
+
+    public static List<String> afficherFormulaire(){
+        String formulaireS = Api.recupererFormulaire();
+        List<String> formulaireList = convertJsonToList(formulaireS, "formulaires");
+        return formulaireList;
     }
 
     /**

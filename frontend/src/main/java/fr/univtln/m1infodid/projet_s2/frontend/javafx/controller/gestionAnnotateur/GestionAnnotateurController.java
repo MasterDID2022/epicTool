@@ -32,9 +32,9 @@ public class GestionAnnotateurController {
     public static String id;
 
     /**
+     * Liste tous les annotateurs
      *
      * @param listePerAnnotateurs
-     * Liste tous les annotateurs
      */
     private static List<List<String>> setListAnnotateurs(List<String> listePerAnnotateurs) {
         List<List<String>> listAnnotateurs = new ArrayList<>();

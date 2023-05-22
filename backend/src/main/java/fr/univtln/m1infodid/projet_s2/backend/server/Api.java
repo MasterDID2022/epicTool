@@ -87,7 +87,6 @@ public class Api {
 		JsonNode rootNode = null;
 		try {
 			rootNode = objectMapper.readTree(formulaireJson);
-			String idFormulaire = rootNode.path("idFormulaire").asText();
 			String nomFormulaire = rootNode.path("nomFormulaire").asText();
 			String prenomFormulaire = rootNode.path("prenomFormulaire").asText();
 			String emailFormulaire = rootNode.path("emailFormulaire").asText();
@@ -95,7 +94,7 @@ public class Api {
 			String affiliationFormulaire = rootNode.path("affiliationFormulaire").asText();
 			String commentaireFormulaire = rootNode.path("commentaireFormulaire").asText();
 			formulaire = Optional.of(
-					Formulaire.of(Integer.parseInt(idFormulaire),nomFormulaire,prenomFormulaire,emailFormulaire,mdpFormulaire,affiliationFormulaire,commentaireFormulaire));
+					Formulaire.of(nomFormulaire,prenomFormulaire,emailFormulaire,mdpFormulaire,affiliationFormulaire,commentaireFormulaire));
 			return formulaire;
 		} catch (JsonProcessingException e) {
 			log.error("Parsing error, le json ne semble pas valide");
@@ -112,14 +111,14 @@ public class Api {
 			String emailUser = rootNode.path("emailFormulaire").asText();
 			String mdpUser = rootNode.path("mdpFormulaire").asText();
 
-			utilisateur = Optional.of(
-					Utilisateur.of(emailUser,mdpUser));
+			utilisateur = Optional.of(Utilisateur.of(emailUser,mdpUser));
 			return utilisateur;
 		} catch (JsonProcessingException e) {
 			log.error("Parsing error, le json ne semble pas valide");
 		}
 		return utilisateur;
 	}
+
 	/**
 	 * Methode pour ajouter un formulaire
 	 *
@@ -131,16 +130,21 @@ public class Api {
 	public Response receiveFormulaire(String formulaireJson) {
 		Optional<Formulaire> formulaire = createFormulaire(formulaireJson);
 		Optional<Utilisateur> utilisateur = createUser(formulaireJson);
+
 		if (formulaire.isPresent()){
 			FormulaireDAO.createFormulaire(formulaire.get());
-			try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("EpiPU");
-				 EntityManager entityManager = entityManagerFactory.createEntityManager()) {
-				UtilisateurDAO utilisateurDAO = UtilisateurDAO.create(entityManager);
-				utilisateurDAO.persist(utilisateur.get());
-				return Response.ok().build();
-			}
+			persistUser(utilisateur.get());
+			return Response.ok().build();
 		}
 		return Response.notModified().build();
+	}
+
+	private void persistUser(Utilisateur utilisateur){
+		try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("EpiPU");
+			 EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+			UtilisateurDAO utilisateurDAO = UtilisateurDAO.create(entityManager);
+			utilisateurDAO.persist(utilisateur);
+		}
 	}
 
 	@Path("user/login")
@@ -178,6 +182,29 @@ public class Api {
 		ObjectMapper objectMapper = new ObjectMapper();
 		ObjectNode responseJson = objectMapper.createObjectNode();
 		responseJson.put("utilisateurs", utilisateursJson);
+
+		String jsonStr = null;
+		try {
+			jsonStr = objectMapper.writeValueAsString(responseJson);
+		} catch (JsonProcessingException e) {
+			throw new RuntimeException(e);
+		}
+		return Response.ok(jsonStr, MediaType.APPLICATION_JSON).build();
+	}
+
+
+	/**
+	 * Récupère la liste des formulaires et renvoie une réponse HTTP contenant les formulaires au format json
+
+	 * return: Une réponse HTTP contenant la liste des formulaires au format JSON.
+	 */
+	@GET
+	@Path("formulaires")
+	public static Response sendFormulaire() {
+		String formJson = SI.recupererFormulaires();
+		ObjectMapper objectMapper = new ObjectMapper();
+		ObjectNode responseJson = objectMapper.createObjectNode();
+		responseJson.put("formulaires", formJson);
 
 		String jsonStr = null;
 		try {

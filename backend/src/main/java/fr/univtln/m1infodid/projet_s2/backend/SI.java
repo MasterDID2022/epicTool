@@ -2,6 +2,7 @@ package fr.univtln.m1infodid.projet_s2.backend;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.univtln.m1infodid.projet_s2.backend.DAO.FormulaireDAO;
 import fr.univtln.m1infodid.projet_s2.backend.DAO.UtilisateurDAO;
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.*;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
@@ -416,5 +417,28 @@ public class SI {
 	public static String recupereUtilisateurs() {
 		List<Utilisateur> utilisateurs = obtenirUtilisateurs();
 		return convertirUtilisateursEnJSON(utilisateurs);
+	}
+
+
+	/**
+	 * Convertit une liste de formulaire en une chaîne de caractères JSON.
+	 * Chaque formulaire est représenté par un objet JSON contenant l'ID et l'email.
+	 *
+	 * @return une chaîne de caractères représentant le JSON des formulaires
+	 */
+	public static String recupererFormulaires() {
+		List<Formulaire> formulaires = FormulaireDAO.findAllFormulaire();
+		List<String> listFormulaires = new ArrayList<>();
+		for (Formulaire formulaire : formulaires) {
+			String jsonForm= "{\"id\": \"" + formulaire.getId() + "\", \"email\": \"" + formulaire.getEmail() + "\"}";
+			listFormulaires.add(jsonForm);
+		}
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			return objectMapper.writeValueAsString(listFormulaires);
+		} catch (JsonProcessingException e) {
+			log.error("Erreur lors de la conversion des utilisateurs en JSON", e);
+			return "";
+		}
 	}
 }

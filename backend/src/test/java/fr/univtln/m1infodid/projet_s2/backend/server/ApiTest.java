@@ -3,10 +3,19 @@ package fr.univtln.m1infodid.projet_s2.backend.server;
 import fr.univtln.m1infodid.projet_s2.backend.DAO.FormulaireDAO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import fr.univtln.m1infodid.projet_s2.backend.DAO.UtilisateurDAO;
+import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
+import fr.univtln.m1infodid.projet_s2.backend.model.Utilisateur;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -102,5 +111,4 @@ class ApiTest {
         Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 
-
-}
+    }

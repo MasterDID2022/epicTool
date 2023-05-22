@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FormulaireTest {
-    Formulaire formulaire1 = Formulaire.of(1, "Ben", "Rawi", "benrawi@mail.com", "gp A", "commentaire 1");
+    Formulaire formulaire1 = Formulaire.of(1, "Ben", "Rawi", "benrawi@mail.com","hh", "gp A", "commentaire 1");
     @Test
     public void testConstructorAndGetters() {
         assertEquals(1, formulaire1.getId());
@@ -47,8 +47,8 @@ class FormulaireTest {
     
     @Test
     void testEqualsRST() {
-        Formulaire formulaire2 = Formulaire.of(1, "Ben", "Myr", "benmyr@mail.com", "gp A", "Commentaire 2");
-        Formulaire formulaire3 = Formulaire.of(1, "Ben", "Rawi", "benrawi@mail.com", "gp A", "Commentaire 1");
+        Formulaire formulaire2 = Formulaire.of(1, "Ben", "Myr", "benmyr@mail.com", "hh","gp A", "Commentaire 2");
+        Formulaire formulaire3 = Formulaire.of(1, "Ben", "Rawi", "benrawi@mail.com", "hh", "gp A", "Commentaire 1");
 
         assertTrue(formulaire1.equals(formulaire1));
         assertTrue(formulaire2.equals(formulaire2));
