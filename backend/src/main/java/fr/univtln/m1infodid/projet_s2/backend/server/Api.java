@@ -239,16 +239,16 @@ public class Api {
 		}
 	}
     @DELETE
-    @Path("formulaireD/{id}")
-    public Response deleteFor(@PathParam("id") int id) {
+    @Path("formulaire/{email}")
+    public Response deleteFor(@PathParam("email") String email) {
         try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("FoPU");
              EntityManager entityManager = entityManagerFactory.createEntityManager()) {
             try {
-                Formulaire formulaire = entityManager.find(Formulaire.class, id);
+                Formulaire formulaire = entityManager.find(Formulaire.class, email);
                 if (formulaire != null) {
-                    SI.sendMail(true,formulaire);
+                    SI.sendMail(false,formulaire);
                     FormulaireDAO.createFormulaire(formulaire);
-                    FormulaireDAO.deleteFormulaire(id);
+                    FormulaireDAO.deleteFormulaireMail(email);
                     return Response.ok().build();
                 } else {
                     return Response.status(Response.Status.NOT_FOUND).build();

@@ -224,16 +224,16 @@ public class Api {
     }
 
 
-    public static void deleteFormOf(int formId){
+    public static void deleteFormOf(String formMail){
         try (Client client = ClientBuilder.newClient()) {
-            Response response = client.target(URI_API_BACKEND + "formulaireD/" + formId)
+            Response response = client.target(URI_API_BACKEND + "formulaireD/" + formMail)
                     .request(MediaType.APPLICATION_JSON)
                     .delete();
 
             if (response.getStatus() != 200) {
                 throw new IllegalStateException(HTTP_ERROR_MSG+ response.getStatus());
             }
-            log.info("Formulaire n° "+formId+" supprimé avec succès !");
+            log.info("Formulaire n° "+formMail+" supprimé avec succès !");
 
         } catch (Exception e) {
             log.error(e.toString());

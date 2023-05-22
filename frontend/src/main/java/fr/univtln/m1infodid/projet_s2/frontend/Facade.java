@@ -170,8 +170,8 @@ public class Facade {
     public static void sendIdUserToDelete (int idUser){
         Api.deleteUserOf(idUser);
     }
-    public static void sendIdFormulaireToDelete (int idFormulaire){
-        Api.deleteFormOf(idFormulaire);
+    public static void sendIdFormulaireToDelete (String emailFormulaire){
+        Api.deleteFormOf(emailFormulaire);
     }
 
 

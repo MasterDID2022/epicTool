@@ -77,7 +77,23 @@ FormulaireDAO {
             em.close();
         }
     }
-
+    public static void deleteFormulaireMail(String email) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            Formulaire formulaire = em.find(Formulaire.class, email);
+            em.remove(formulaire);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
 
     /**
     * chercher et retourner un objet Formulaire à partir de son identifiant dans la BD en utilisant l'EntityManager.

@@ -128,7 +128,7 @@ public class GestionFormulaireController {
             List<String> itemData = getItem();
             if (! itemData.isEmpty()){
                 getListView().getItems().remove(itemData);
-                Facade.sendIdFormulaireToDelete(Integer.parseInt(itemData.get(0)));
+                Facade.sendIdFormulaireToDelete(itemData.get(0));
             }
         }
 
