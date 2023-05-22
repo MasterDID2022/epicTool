@@ -63,7 +63,7 @@
                                     <padding>
                                         <Insets bottom="7.0" left="10.0" top="7.0" />
                                     </padding></TextField>
-                                  <PasswordField fx:id="mdpid" promptText="mdp">
+                                  <PasswordField fx:id="mdpid" promptText="mot de passe">
                                       <padding>
                                        <Insets bottom="7.0" left="10.0" top="7.0" />
                                     </padding></PasswordField>

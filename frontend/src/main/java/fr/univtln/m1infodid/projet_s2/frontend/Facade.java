@@ -91,7 +91,7 @@ public class Facade {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode jsonForm = mapper.createObjectNode();
 
-        jsonForm.put("idFormulaire",-1);
+        jsonForm.put("idFormulaire",0);
         jsonForm.put("nomFormulaire",nom);
         jsonForm.put("prenomFormulaire",prenom);
         jsonForm.put("emailFormulaire",email);
