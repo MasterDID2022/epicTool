@@ -1,0 +1,73 @@
+* {
+    -fx-dark-blue: #24293D;
+    -fx-blue: #2F3855;
+    -fx-light-blue: #8EBBFF;
+    -fx-white: #F4F4FC;
+    -fx-green: #4A803C;
+    -fx-green-hover: #67b354;
+    -fx-red: #803C3C;
+    -fx-red-hover: #aa4343;
+    -fx-gray: #a6a09f;
+}
+
+#anchorid {
+    -fx-font-family: "Product Sans";
+    -fx-background-color:  -fx-dark-blue;
+}
+
+#title {
+    -fx-font-size: 25px;
+    -fx-text-fill: -fx-white;
+}
+
+#Title {
+    -fx-font-size: 25px;
+    -fx-text-fill: -fx-green;
+}
+
+
+
+
+#annotationListView {
+    -fx-background-color: -fx-blue;
+}
+
+.list-view .list-cell {
+    -fx-background-color: -fx-dark-blue;
+    -fx-text-fill: -fx-white;
+}
+
+.list-view .list-cell:filled {
+    -fx-background-color: -fx-dark-blue;
+    -fx-text-fill: -fx-white;
+}
+.list-cell Label {
+    -fx-text-fill: -fx-white;
+}
+
+.consulter-button {
+    -fx-background-color: -fx-green;
+    -fx-text-fill: -fx-white;
+}
+.valider-button {
+    -fx-background-color: -fx-green;
+    -fx-text-fill: -fx-white;
+}
+.supprimer-button {
+    -fx-background-color: -fx-red-;
+    -fx-text-fill: -fx-white;
+}
+
+#buttonBack{
+    -fx-border-width: 1;
+    -fx-border-color: -fx-gray;
+    -fx-border-radius: 10;
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-white;
+}
+
+#buttonBack:hover{
+    -fx-border-width: 3;
+    -fx-background-radius: 10;
+    -fx-text-fill: -fx-gray;
+}

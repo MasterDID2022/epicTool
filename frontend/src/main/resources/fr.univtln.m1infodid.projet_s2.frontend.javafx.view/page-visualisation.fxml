@@ -40,7 +40,7 @@
                             <children>
                         <VBox alignment="TOP_CENTER" prefHeight="0.0" prefWidth="103.0">
                            <children>
-                              <Button fx:id="buttonProfileIcon" mnemonicParsing="false" onAction="#onClickProfileButton" onMouseEntered="#ProfileButtonEntered" onMouseExited="#ProfileButtonExited" text="A">
+                              <Button fx:id="buttonProfileIcon" mnemonicParsing="false" onAction="#onClickProfileButton" onMouseEntered="#profileButtonEntered" onMouseExited="#profileButtonExited" text="A">
                                  <font>
                                     <Font size="40.0" />
                                  </font></Button>

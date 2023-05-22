@@ -73,7 +73,7 @@ class SITest {
 		Document result = SI.createXMLDoc(inputStream);
 		assertNotNull(result);
 
-		assertTrue(result.getDocumentElement().getNodeName().equals("root"));
+		assertEquals(result.getDocumentElement().getNodeName(),"root");
 	}
 
 	@Test
