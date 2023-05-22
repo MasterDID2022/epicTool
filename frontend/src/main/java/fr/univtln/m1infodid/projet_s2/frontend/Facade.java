@@ -19,10 +19,10 @@ import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.InfosAnnotateurController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.GestionAnnotateurController;
 import static fr.univtln.m1infodid.projet_s2.frontend.server.Api.convertJsonToList;
-
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotations.AffAnnotationController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotations.GestionAnnotationsController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.manager.AnnotationsManager;
+import static fr.univtln.m1infodid.projet_s2.frontend.server.Api.convertJsonToListAnnotations;
 import fr.univtln.m1infodid.projet_s2.frontend.server.Api;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -335,19 +335,19 @@ public class Facade {
                 case ANNOTATION:
                     if (annotation == null) {
                         annotation = SceneController.switchToPageAnnotation(primaryStage);
-                        affichageAnnotation();
                     } else {
-                        resetAnnotation();
                         SceneController.switchToScene(primaryStage, annotation);
                     }
+                    resetAnnotation();
+                    affichageAnnotation();
                     break;
                 case ANNOTATIONS:
                     if (annotations == null) {
                         annotations = SceneController.switchToPageGestionAnnotations(primaryStage);
-                        visualiseAnnotationGest();
                     } else {
                         SceneController.switchToScene(primaryStage, annotations);
                     }
+                    visualiseAnnotationGest();
                     break;
             }
         } catch (IOException e) {
@@ -380,17 +380,26 @@ public class Facade {
 
     public static void visualiseAnnotationGest(){
         GestionAnnotationsController gestion = annotations.controller();
-        List<List<String>> liste = Api.annotationsMethodeInit();
+        List<List<String>> liste = new ArrayList<>();
+        String annotationsList = Api.annotationsMethodeInit();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode rootNode = objectMapper.readTree(annotationsList);
+            JsonNode annotations = rootNode.get("annotations");
+            if (annotations.isArray()) {
+                Iterator<JsonNode> elements = annotations.elements();
+                while(elements.hasNext()) {
+                    JsonNode elementNode = elements.next();
+                    liste.add(List.of("Épigraphie n°", elementNode.get("idEpigraphe").toString()));
+                }
+            }
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
         gestion.initialize(liste);
     }
-    /**
-     * Affiche les annotations en appelant la méthode d'initialisation dans l'API
-     * */
-    public static void affichageAnnotation() {
-        List<List<List<String>>> listeA = Api.annotationMethodeInit();
-        AffAnnotationController aff = annotation.controller();
-        aff.initialize(listeA);
-    }
+
     /**
      * Réinitialise l'affichage des annotations en appelant la méthode reset()
      * du contrôleur de la vue des annotations.
@@ -398,6 +407,15 @@ public class Facade {
     public static void resetAnnotation() {
         AffAnnotationController aff = annotation.controller();
         aff.reset();
+    }
+
+    /**
+     * Affiche les annotations en appelant la méthode d'initialisation dans l'API
+     * */
+    public static void affichageAnnotation() {
+        Optional<List<List<String>>> listeA = getListOfAnnotations( Integer.parseInt(GestionAnnotationsController.getEpigraphieSelectionnee()) );
+        AffAnnotationController aff = annotation.controller();
+        aff.initialize(listeA);
     }
 
     public static void visualiseEpigraphie(int epigraphieId) {
@@ -425,7 +443,7 @@ public class Facade {
         else if (isPageVisualisationShown()) visuEpiData.controller().getAlertController().showNoInternet();
     }
     /**
-    methode qui recupere les utilisateurs du back sou forme json et les convertit en liste
+     * methode qui recupere les utilisateurs du back sou forme json et les convertit en liste
      */
     public static Optional<List<String>> getListOfUser(){
         String utilisateursString = Api.getAllAnnotateur();
@@ -434,6 +452,19 @@ public class Facade {
         }
         List<String> utilisateursList = convertJsonToList(utilisateursString, "utilisateurs");
         return Optional.of(utilisateursList);
+    }
+    /**
+     * Récupère les annotations du backend sous forme JSON et les convertit en liste.
+     *
+     * @return une liste d'annotations, encapsulée dans un Optional
+     */
+    public static Optional<List<List<String>>> getListOfAnnotations(int idEpigraphe) {
+        String annotationsString = Api.getAnnotationsOfEpigraph(idEpigraphe);
+        if (annotationsString.equals("401")) {
+            return Optional.empty();
+        }
+        List<List<String>> annotationsList = convertJsonToListAnnotations(annotationsString);
+        return Optional.of(annotationsList);
     }
 
     public static Optional<List<String>> getListOfForms(){

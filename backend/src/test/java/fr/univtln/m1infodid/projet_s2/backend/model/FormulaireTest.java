@@ -57,9 +57,8 @@ class FormulaireTest {
     }
 
     @Test
-    void testToString() {
-        String expected = "Demande inscription: n°1 pour le visiteur Rawi Ben d'adresse mail benrawi@mail.com et d'affiliation gp A.\n" +
-                "commentaire 1";
+     void testToString() {
+        String expected = "Demande inscription: n°1 pour le visiteur Rawi Ben d'adresse mail benrawi@mail.com et d'affiliation gp A.\ncommentaire 1";
         assertEquals(expected, formulaire1.toString());
     }
 }

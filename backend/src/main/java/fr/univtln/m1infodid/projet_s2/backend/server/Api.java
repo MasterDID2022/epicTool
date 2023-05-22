@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import fr.univtln.m1infodid.projet_s2.backend.DAO.AnnotationDAO;
 import fr.univtln.m1infodid.projet_s2.backend.DAO.FormulaireDAO;
 import fr.univtln.m1infodid.projet_s2.backend.DAO.UtilisateurDAO;
 import fr.univtln.m1infodid.projet_s2.backend.Facade;
@@ -29,7 +30,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.security.Key;
 import java.util.*;
-
 
 /**
  * Api REST cote backend
@@ -158,8 +158,6 @@ public class Api {
         }
         return Response.ok(jsonStr, MediaType.APPLICATION_JSON).build();
     }
-
-
     private Optional<Formulaire> createFormulaire(String formulaireJson) {
         Optional<Formulaire> formulaire = Optional.empty();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -215,7 +213,6 @@ public class Api {
         return token;
     }
 
-
     /**
      * Methode pour ajouter un utilisateur
      *
@@ -250,8 +247,6 @@ public class Api {
     }
 
 
-
-
     private Optional<Utilisateur> createUser(String formulaireJson) {
         Optional<Utilisateur> utilisateur = Optional.empty();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -267,7 +262,6 @@ public class Api {
         }
         return utilisateur;
     }
-
 
 	/**
 	 * Récupère la liste des utilisateurs et renvoie une réponse HTTP contenant les utilisateurs au format JSON.
@@ -292,7 +286,6 @@ public class Api {
 		}
 		return Response.ok(jsonStr, MediaType.APPLICATION_JSON).build();
 	}
-
 
     /**
      * Récupère la liste des formulaires et renvoie une réponse HTTP contenant les formulaires au format json
@@ -369,9 +362,34 @@ public class Api {
         return Response.ok(jsonStr, MediaType.APPLICATION_JSON).build();
     }
 
-
-
     /**
+     * Récupère la liste des annotations et renvoie une réponse HTTP contenant les annotations au format JSON.
+     *
+     * @return Une réponse HTTP contenant la liste des annotations au format JSON.
+     */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("annotations")
+    public Response sendAnnotations(@HeaderParam("Authorization") String token) {
+        if (Boolean.FALSE.equals(this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE))) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        String jsonStr = "";
+        try(EntityManagerFactory emf = Persistence.createEntityManagerFactory("EpiPU");
+            EntityManager em = emf.createEntityManager();
+            AnnotationDAO annotationDAO = AnnotationDAO.create(em)
+        ){
+            ObjectMapper objectMapper = new ObjectMapper();
+            ObjectNode responseJson = objectMapper.createObjectNode();
+            responseJson.putPOJO("annotations", annotationDAO.findAll());
+            jsonStr = objectMapper.writeValueAsString(responseJson);
+        } catch (Exception e) {
+            log.error("Erreur lors du formatage du JSON des annotations");
+        }
+        return Response.ok(jsonStr).build();
+    }
+
+	/**
 	 * Methode pour supprimer un utilisateur à partir de son id
 	 *
 	 * @param id du user
@@ -386,10 +404,11 @@ public class Api {
 			 EntityManager entityManager = entityManagerFactory.createEntityManager()) {
 			try( UtilisateurDAO utilisateurDAO = UtilisateurDAO.create(entityManager)){
                 Utilisateur user = utilisateurDAO.findById(id);
-                utilisateurDAO.remove(id);
-
+                /*
                 Formulaire formulaire = FormulaireDAO.findByEmailFormulaire(user.getEmail());
                 FormulaireDAO.deleteFormulaire(formulaire.getId());
+                */
+                utilisateurDAO.remove(id);
                 return Response.ok().build();
             }
 		} catch (Exception e) {
@@ -397,6 +416,38 @@ public class Api {
 			return Response.serverError().build();
 		}
 	}
+
+    /**
+     * Méthode pour supprimer une annotation à partir de son ID.
+     *
+     * @param infosJson les infos de l'annotation à supprimer (id Epigraphe, mail)
+     * @return une réponse indiquant si la suppression a réussi ou non
+     */
+    @POST
+    @Path("annotationD")
+    public Response deleteAnnotation(@HeaderParam("Authorization") String token, String infosJson) {
+        if (! this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE)) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("EpiPU");
+             EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(infosJson);
+            String idEpigraphe = rootNode.path("idEpigraphe").asText();
+            String email = rootNode.path("email").asText();
+
+            try (AnnotationDAO annotationDAO = AnnotationDAO.create(entityManager)) {
+                annotationDAO.remove( annotationDAO.findByIdEpiMail(Integer.parseInt(idEpigraphe), email) );
+                return Response.ok().build();
+            }
+        } catch (Exception e) {
+            log.error(e.toString());
+            return Response.serverError().build();
+        }
+    }
+
+
 
     @Path("user/login")
     @POST
@@ -453,8 +504,6 @@ public class Api {
         }
         return Response.status(Response.Status.UNAUTHORIZED).entity(email + ":" + password + " est un combo incorrect").build();
     }
-
-
 
     /**
      * Methode pour mettre à jour un utilisateur à partir de son id

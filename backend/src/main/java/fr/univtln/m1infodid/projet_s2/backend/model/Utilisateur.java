@@ -42,7 +42,7 @@ public class Utilisateur {
 
     private String mdp;
     private String sale;
-    @OneToMany(mappedBy = "utilisateur")
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Annotation> annotations;
     private Utilisateur(String email, String mdp) {
         generateSalt();

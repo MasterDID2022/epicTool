@@ -221,7 +221,92 @@ public static String getAnnotationsOfEpigraph(int id ) {
         }
         return resultList;
     }
+    /**
+     * Récupère la liste des annotations à partir de l'API du backend et la renvoie sous forme d'une unique chaîne de caractères.
+     *
+     * @return le contenu des annotations en tant que chaîne de caractères
+     */
+    public static String getAllAnnotations() {
+        String contenu = "";
+        try (Client client = ClientBuilder.newClient()) {
+            Response response = client.target(URI_API_BACKEND + "annotations")
+                    .request(MediaType.APPLICATION_JSON)
+                    .header("Authorization", Facade.getToken())
+                    .get();
+            if (response.getStatus() != 200) {
+                if (response.getStatus() == 401) {
+                    sessionExpired();
+                    return "401";
+                }
+                log.error(HTTP_ERROR_MSG + response.getStatus());
+            }
+            contenu = response.readEntity(String.class);
+            response.close();
+        } catch (Exception e) {
+            log.warn("Erreur lors de la récupération des annotations", e);
+        }
+        return contenu;
+    }
 
+    /**
+     * Convertit une chaîne de caractères JSON en une liste d'objets.
+     *
+     * @param jsonString la chaîne de caractères JSON à convertir
+     * @return une liste d'objets obtenue à partir de la conversion du JSON
+     */
+    public static List<String> convertJsonToListAnnotateur(String jsonString) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<String> resultList = new ArrayList<>();
+        try {
+            JsonNode jsonNode = objectMapper.readTree(jsonString);
+            String annotationsString = jsonNode.get("annotations").asText();
+            resultList = objectMapper.readValue(annotationsString, ArrayList.class);
+        } catch (JsonProcessingException e) {
+            log.warn("Erreur lors de la désérialisation du JSON");
+        }
+        return resultList;
+    }
+    public static int getMaxEpigraphe(String jsonString) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        int maxEpigraphe = 0;
+
+        try {
+            JsonNode jsonNode = objectMapper.readTree(jsonString);
+            JsonNode annotationsNode = jsonNode.get("annotations");
+
+            if (annotationsNode != null && annotationsNode.isArray()) {
+                for (JsonNode annotationNode : annotationsNode) {
+                    int epigraphe = annotationNode.get("idEpigraphe").asInt();
+                    if (epigraphe > maxEpigraphe) {
+                        maxEpigraphe = epigraphe;
+                    }
+                }
+            }
+        } catch (JsonProcessingException e) {
+            log.warn("Erreur lors de la désérialisation du JSON");
+        }
+
+        return maxEpigraphe;
+    }
+
+    public static List<List<String>> convertJsonToListAnnotations(String jsonString) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<List<String>> resultList = new ArrayList<>();
+
+        try {
+            JsonNode jsonNode = objectMapper.readTree(jsonString);
+
+            if (jsonNode != null && jsonNode.isArray()) {
+                for (JsonNode annotationNode : jsonNode) {
+                    String epigraphe = annotationNode.get("idEpigraphe").toString();
+                    resultList.add(List.of(epigraphe + ":" + annotationNode.get("email").asText()));
+                }
+            }
+        } catch (JsonProcessingException e) {
+            log.warn("Erreur lors de la désérialisation du JSON");
+        }
+        return resultList;
+    }
 
     /**     * Fonction qui permet l'envoie d'une requête HTTP DELETE au backend pour supprimer l'utilisateur
      */
@@ -408,44 +493,29 @@ public static String getAnnotationsOfEpigraph(int id ) {
         return listeDeFormulaire;
 
     }
-
     /**
      *
      * methode tmp initialise les annotations d une epigraphie
      * a modifier plus tard lors de la recuperation du backend
      */
-    public static  List<List<String>> annotationsMethodeInit(){
+    public static  String annotationsMethodeInit(){
         List<List<String>> listeAnnotation = new ArrayList<>();
         String ann = "les annotations de l'epygraphie ";
+        String annotationsString = Api.getAllAnnotations();
+        /*int maxEpigraphe = getMaxEpigraphe(annotationsString);
+        for (int i = 0; i < maxEpigraphe; i++) {
+            listeAnnotation.add(new ArrayList<>(Arrays.asList(ann, String.valueOf(i+1))));
+        }*/
 
-        List<String> listeAnnotation1 = new ArrayList<>();
-        listeAnnotation1.add(ann);
-        listeAnnotation1.add("1");
 
-        List<String> listeAnnotation2 = new ArrayList<>();
-        listeAnnotation2.add(ann);
-        listeAnnotation2.add("2");
-
-        List<String> listeAnnotation3 = new ArrayList<>();
-        listeAnnotation3.add(ann);
-        listeAnnotation3.add("3");
-
-        List<String> listeAnnotation4 = new ArrayList<>();
-        listeAnnotation4.add(ann);
-        listeAnnotation4.add("4");
-
-        listeAnnotation.add(listeAnnotation1);
-        listeAnnotation.add(listeAnnotation2);
-        listeAnnotation.add(listeAnnotation3);
-        listeAnnotation.add(listeAnnotation4);
-        return listeAnnotation;
+        return annotationsString;
     }
 
     /**
      *
      * similaire a la methode precedente, juste elle initialise les annotations d une epigraphie particuliere
      */
-    public static  List<List<List<String>>> annotationMethodeInit(){
+    public static  List<List<List<String>>> annotationMethodeInit() {
         List<List<List<String>>> listeAnnotation = new ArrayList<>();
 
         List<List<String>> epigraphie1 = new ArrayList<>();
@@ -515,5 +585,27 @@ public static String getAnnotationsOfEpigraph(int id ) {
         return listeAnnotation;
     }
 
+    /*
+     * Fonction qui envoie une requête HTTP DELETE au backend pour supprimer une annotation.
+     *
+     * @param annotationId l'ID de l'annotation à supprimer
+     */
+    public static void deleteAnnotationOf(String idEpigraphe, String email) {
+        try (Client client = ClientBuilder.newClient()) {
+            Entity<String> entity = Entity.entity("{\"idEpigraphe\":\""+ idEpigraphe + "\", \"email\":\"" + email + "\"}", MediaType.APPLICATION_JSON);
+            Response response = client.target(URI_API_BACKEND + "annotationD")
+                    .request(MediaType.APPLICATION_JSON)
+                    .header( autorisation, Facade.getToken() )
+                    .post(entity);
 
+            if (response.getStatus() != 200) {
+                throw new IllegalStateException(HTTP_ERROR_MSG + response.getStatus());
+            }
+            log.info("Annotation de " + email + " pour l'épigraphie n°" + idEpigraphe + " supprimée avec succès!");
+
+        } catch (Exception e) {
+            log.error(e.toString());
+            log.warn("Erreur lors de l'envoi des données");
+        }
+    }
 }

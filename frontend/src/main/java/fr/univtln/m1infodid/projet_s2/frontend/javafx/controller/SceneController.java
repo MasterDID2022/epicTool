@@ -120,7 +120,6 @@ public final class SceneController {
                 "/styles/gestion-annotations.css");
     }
 
-
     /**
      * Charge et affiche la page d'annotation dans la fenêtre principale.
      *

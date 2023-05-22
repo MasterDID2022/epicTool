@@ -35,6 +35,8 @@ public class GestionAnnotationsController {
     }
 
     public void initialize(List<List<String>> listeAnnotation) {
+        annotationListView.getItems().clear();
+        if (listeAnnotation == null || listeAnnotation.isEmpty()) return;
         setListeAnnotations(listeAnnotation);
 
         annotationListView.getItems().addAll(listeAnnotations);
