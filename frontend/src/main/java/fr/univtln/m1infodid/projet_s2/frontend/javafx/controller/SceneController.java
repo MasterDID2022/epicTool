@@ -110,9 +110,37 @@ public final class SceneController {
     public static <T> SceneData<T> switchToPageGestionFormulaire ( Stage stage ) throws IOException {
         return sceneSwitchAndLoad(stage,
                 "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/gestionAdhesion/gestionFormulaire.fxml",
-                "/styles/gestionFormulaire.css",
-                "/styles/alert.css");
+                "/styles/gestionFormulaire.css");
     }
+
+    /**
+     * Charge et affiche la page de gestion des annotations dans la fenêtre principale.
+     *
+     * @param stage La fenêtre principale de l'application.
+     * @return Les données de scène associées à la page de gestion des annotations.
+     * @throws IOException Si une erreur se produit lors du chargement de la page FXML.
+     */
+    public static <T> SceneData<T> switchToPageGestionAnnotations(Stage stage) throws IOException {
+        return sceneSwitchAndLoad(stage,
+                "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/annotations/gestion-annotations.fxml",
+                "/styles/gestion-annotations.css");
+    }
+
+
+    /**
+     * Charge et affiche la page d'annotation dans la fenêtre principale.
+     *
+     * @param stage La fenêtre principale de l'application.
+     * @return Les données de scène associées à la page d'annotation.
+     * @throws IOException Si une erreur se produit lors du chargement de la page FXML.
+     */
+    public static <T> SceneData<T> switchToPageAnnotation(Stage stage) throws IOException {
+        return sceneSwitchAndLoad(stage,
+                "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/annotations/annotation.fxml",
+                "/styles/annotation.css");
+    }
+
+
 
     public static <T> SceneData<T> switchToPageGestionFormulairUI2 ( Stage stage ) throws IOException {
         return sceneSwitchAndLoad(stage,

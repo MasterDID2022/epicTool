@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="anchorid" prefHeight="600.0" prefWidth="800.0" stylesheets="/styles/gestion-annotations.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotations.GestionAnnotationsController">
+    <children>
+
+        <Button fx:id="buttonBack" alignment="CENTER" layoutX="28.0" layoutY="18.0" minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onAction="#backToMenu" text="&lt;" AnchorPane.leftAnchor="28.0" AnchorPane.topAnchor="18.0" />
+        <Label fx:id="title" alignment="CENTER" styleClass="title-label" text="Page de gestion des annotations" AnchorPane.leftAnchor="80" AnchorPane.topAnchor="20" />
+        <VBox fx:id="vBox" prefHeight="600.0" prefWidth="800.0" spacing="20" AnchorPane.bottomAnchor="90" AnchorPane.leftAnchor="40" AnchorPane.rightAnchor="80" AnchorPane.topAnchor="80">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="500.0" prefWidth="500.0" vbarPolicy="AS_NEEDED">
+                <content>
+                    <ListView fx:id="annotationListView" prefHeight="500.0" prefWidth="650.0" styleClass="annotation-list-view" />
+                </content>
+            </ScrollPane>
+        </VBox>
+
+    </children>
+</AnchorPane>

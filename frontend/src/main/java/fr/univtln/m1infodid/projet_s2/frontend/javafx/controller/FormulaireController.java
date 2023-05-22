@@ -50,7 +50,7 @@ public class FormulaireController implements Initializable{
     }
 
     @FXML
-    private void EnvFormBtnOnClick()  {
+    private void envFormBtnOnClick()  {
         String nom = nomid.getText();
         String prenom = prenomid.getText();
         String email = emailid.getText();

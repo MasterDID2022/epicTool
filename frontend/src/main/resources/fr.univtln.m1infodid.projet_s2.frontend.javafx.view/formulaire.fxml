@@ -76,7 +76,7 @@
                                  <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
                               </VBox.margin>
                            </VBox>
-                               <Button fx:id="envoyer" onAction="#EnvFormBtnOnClick" text="Envoyer">
+                               <Button fx:id="envoyer" onAction="#envFormBtnOnClick" text="Envoyer">
                               <VBox.margin>
                                  <Insets />
                               </VBox.margin>
