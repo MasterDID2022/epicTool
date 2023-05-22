@@ -3,32 +3,34 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="AnchorPaneAnnotateur" prefHeight="497.0" prefWidth="386.0" stylesheets="/styles/infos-annotateur.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.InfosAnnotateurController">
+<AnchorPane fx:id="AnchorPaneDemande" prefHeight="497.0" prefWidth="386.0" stylesheets="/styles/recapDemande.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion.RecapDemandeController">
     <children>
         <Button fx:id="buttonBack" alignment="CENTER" layoutX="28.0" layoutY="18.0" minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onAction="#backToPage" text="&lt;" AnchorPane.leftAnchor="28.0" AnchorPane.topAnchor="18.0" />
-        <Label fx:id="title" alignment="CENTER" styleClass="title-label" text="Page informations annotateur" AnchorPane.leftAnchor="80" AnchorPane.topAnchor="20" />
+        <Label fx:id="title" alignment="CENTER" styleClass="title-label" text="" AnchorPane.leftAnchor="80" AnchorPane.topAnchor="20" />
         <VBox layoutX="60.0" layoutY="91.0" prefHeight="600.0" prefWidth="800.0" spacing="30" AnchorPane.bottomAnchor="79.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="91.0">
             <Separator orientation="HORIZONTAL" prefHeight="2.0" prefWidth="180.0" />
 
             <HBox fx:id="nomHBox" spacing="10">
                 <Label fx:id="nom" text="Nom:" />
-                <TextField fx:id="nomTxt" text=""/>
+                <Label fx:id="nomLabel" text=""/>
             </HBox>
             <HBox fx:id="prenomHBox" spacing="10">
                 <Label fx:id="prenom" text="Prénom:" />
-                <TextField fx:id="prenomTxt" text=""/>
+                <Label fx:id="prenomLabel" text=""/>
             </HBox>
             <HBox fx:id="emailHBox" spacing="10">
                 <Label fx:id="email" text="E-mail:" />
-                <TextField fx:id="mailTxt" text=""/>
+                <Label fx:id="mailLabel" text=""/>
             </HBox>
             <HBox fx:id="affiliationHBox" spacing="10">
                 <Label fx:id="affiliation" text="Affiliation:" />
-                <TextField fx:id="affTxt" text=""/>
+                <Label fx:id="affLabel" text=""/>
             </HBox>
-
+            <HBox fx:id="commentaireHBox" spacing="10">
+                <Label fx:id="commentaire" text="Commentaire:" />
+                <Label fx:id="commeLabel" text=""/>
+            </HBox>
         </VBox>
-        <Button fx:id="modifButton" alignment="CENTER" layoutX="350.0" layoutY="398.0" minHeight="40.0" minWidth="40.0" onAction="#updateInfos" text="Modifier" />
 
     </children>
 </AnchorPane>

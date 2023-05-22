@@ -119,6 +119,19 @@ public class UtilisateurDAO implements AutoCloseable{
         entityManager.getTransaction().commit();
     }
 
+    /**
+     * Met a jour un utilisateur de la BD
+     *
+     * @param utilisateur l'utilisateur a mettre à jour
+     */
+    public void update(Utilisateur utilisateur) {
+        entityManager.getTransaction().begin();
+        entityManager.merge(utilisateur);
+        entityManager.getTransaction().commit();
+
+    }
+
+
 
     @Override
     public void close () throws Exception {

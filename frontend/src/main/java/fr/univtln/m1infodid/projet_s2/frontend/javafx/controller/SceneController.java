@@ -138,8 +138,8 @@ public final class SceneController {
 
     public static <T> SceneData<T> switchToPageGestionFormulairUI2 ( Stage stage ) throws IOException {
         return sceneSwitchAndLoad(stage,
-                "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/gestionAdhesion/affichageDemande.fxml",
-                "/styles/affichageDemande.css",
+                "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/gestionAdhesion/recapDemande.fxml",
+                "/styles/recapDemande.css",
                 PATH_TO_ALERT_CSS);
     }
 

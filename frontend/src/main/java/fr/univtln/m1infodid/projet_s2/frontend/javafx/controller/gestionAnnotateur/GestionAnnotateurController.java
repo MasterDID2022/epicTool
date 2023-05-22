@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.univtln.m1infodid.projet_s2.frontend.Facade;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.SceneType;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.AlertController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.util.Callback;
@@ -31,21 +34,23 @@ public class GestionAnnotateurController {
     private static String emailSelectionne;
     private static String id;
 
+
     public static void setEmailSelectionne(String emailSelectionne) {
         GestionAnnotateurController.emailSelectionne = emailSelectionne;
-    }
-
-    public static void setId(String id) {
-        GestionAnnotateurController.id = id;
     }
 
     public static String getEmailSelectionne() {
         return emailSelectionne;
     }
 
+    public static void setId (String id) {
+        GestionAnnotateurController.id = id;
+    }
+
     public static String getId() {
         return id;
     }
+
 
     /**
      *
@@ -140,7 +145,16 @@ public class GestionAnnotateurController {
                 GestionAnnotateurController.setId(itemData.get(0));
                 GestionAnnotateurController.setEmailSelectionne(itemData.get(1));
             }
-            Facade.showScene(SceneType.INFOS_ANNOTATEUR);
+            String jsonInfos = Facade.getUserInfos(GestionAnnotateurController.getEmailSelectionne());
+            if(!jsonInfos.isEmpty()) {
+                if(!jsonInfos.equals("FIN")){
+                    InfosAnnotateurController.setInfos(jsonInfos);
+                    Facade.showScene(SceneType.INFOS_ANNOTATEUR);
+                }
+            }
+            else{
+                log.error("Erreur lors de la récuperation des données.");
+            }
         }
 
 

@@ -10,7 +10,7 @@ import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.MenuController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.PageVisualisationController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.SceneController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.SceneController.SceneData;
-import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion.AffichageDemandeController;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion.RecapDemandeController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion.GestionFormulaireController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.InfosAnnotateurController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.GestionAnnotateurController;
@@ -55,8 +55,8 @@ public class Facade {
     private static String token;
     private static String email;
     private static ROLE role = ROLE.VISITEUR;
-    private static SceneData<GestionFormulaireController> formGest;
-    private static SceneData<AffichageDemandeController> afficherDemande;
+    private static SceneData<GestionFormulaireController> gestFormulaire;
+    private static SceneData<RecapDemandeController> recapDemande;
     private static SceneData<HubGestionnaireController> hubData;
     private static SceneData<GestionAnnotateurController> gestAnnotateur;
     private static SceneData<InfosAnnotateurController> infosAnnotateur;
@@ -124,7 +124,7 @@ public class Facade {
     }
 
 
-    public static void sendFormulaire(String nom, String prenom, String email, String affiliation, String commentaire) {
+    public static void sendFormulaire(String nom, String prenom, String email, String mdp, String affiliation, String commentaire) {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode jsonForm = mapper.createObjectNode();
 
@@ -132,17 +132,41 @@ public class Facade {
         jsonForm.put("nomFormulaire", nom);
         jsonForm.put("prenomFormulaire", prenom);
         jsonForm.put("emailFormulaire", email);
+        jsonForm.put("mdpFormulaire", mdp);
         jsonForm.put("affiliationFormulaire", affiliation);
         jsonForm.put("commentaireFormulaire", commentaire);
 
         Api.postFormulaire(jsonForm.toString());
     }
 
-    public static void visualiseGestionFormulaire() {
-        GestionFormulaireController gestionFormulaireController = formGest.controller();
-        gestionFormulaireController.reset();
-        List<List<String>> listeDeFormulaire = Api.tmpMethodeInit();
-        gestionFormulaireController.initialize(listeDeFormulaire);
+    public static void sendUser(String email, String mdp) {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode jsonForm = mapper.createObjectNode();
+
+        jsonForm.put("emailFormulaire",email);
+        jsonForm.put("mdpFormulaire",mdp);
+
+        String resultat = Api.postUser(jsonForm.toString());
+        if (resultat.equals("401")) {
+            sessionEnded();
+        }
+    }
+
+
+    public static void sendInfos(String id, String nom, String prenom, String email, String affiliation) {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode jsonForm = mapper.createObjectNode();
+
+        jsonForm.put("id",id);
+        jsonForm.put("nom",nom);
+        jsonForm.put("prenom",prenom);
+        jsonForm.put("email",email);
+        jsonForm.put("affiliation",affiliation);
+
+        String resultat = Api.updateUser(Integer.parseInt(id), jsonForm.toString());
+        if (resultat.equals("401")) {
+            sessionEnded();
+        }
     }
 
     /**
@@ -152,6 +176,18 @@ public class Facade {
         Facade.showScene(SceneType.HOME);
         Facade.showSessionExpired();
     }
+
+    public static void visualiseGestionFormulaire() {
+        GestionFormulaireController gestionFormulaireController = gestFormulaire.controller();
+        gestionFormulaireController.reset();
+        Optional<List<String>> listFormulaires = getListOfForms();
+        if (listFormulaires.isEmpty()){
+            sessionEnded();
+            return;
+        }
+        gestionFormulaireController.initialize(listFormulaires.get());
+    }
+
 
     public static void visualiseGestionAnnotateur (){
         GestionAnnotateurController gestionAnnotateurController = gestAnnotateur.controller();
@@ -171,11 +207,35 @@ public class Facade {
         }
     }
 
-    public static void sendIdUserToDelete (int idUser){
-        Api.deleteUserOf(idUser);
+    public static void resetRecapDemande() {
+        if (recapDemande != null) {
+            RecapDemandeController affichageDemandeController = recapDemande.controller();
+            affichageDemandeController.initialize();
+        }
     }
 
+    public static void sendIdUserToDelete (int idUser){
+        String resultat = Api.deleteUserOf(idUser);
+        if (resultat.equals("401")) {
+            sessionEnded();
+        }
+    }
 
+    public static void sendFormulaireToDelete(int idForm){
+        String resultat = Api.deleteFormOf(idForm);
+        if (resultat.equals("401")) {
+            sessionEnded();
+        }
+    }
+
+    public static String getUserInfos (String mail){
+        String resultat = Api.infosUserOf(mail);
+        if (resultat.equals("401")){
+            sessionEnded();
+            return "FIN";
+        }
+        return resultat;
+    }
 
     public static ROLE sendLoginAndPasseword ( String email, String passeword ) {
         Optional<String> response = Api.postLogin(Base64.getEncoder().encodeToString((email + ":" + passeword).getBytes()));
@@ -223,20 +283,20 @@ public class Facade {
                     else SceneController.switchToScene(primaryStage, formData);
                     break;
                 case GESTION_ADHESION:
-                    if (formGest == null) {
-                        formGest = SceneController.switchToPageGestionFormulaire(primaryStage);
-                        visualiseGestionFormulaire();
+                    if (gestFormulaire == null) {
+                        gestFormulaire = SceneController.switchToPageGestionFormulaire(primaryStage);
                     } else {
-                        SceneController.switchToScene(primaryStage, formGest);
+                        SceneController.switchToScene(primaryStage, gestFormulaire);
                     }
+                    visualiseGestionFormulaire();
                     break;
 
                 case AFFICHAGE_DEMANDE:
-                    if (afficherDemande == null) {
-                        afficherDemande = SceneController.switchToPageGestionFormulairUI2(primaryStage);
+                    if (recapDemande == null) {
+                        recapDemande = SceneController.switchToPageGestionFormulairUI2(primaryStage);
                     } else {
-                        resetAffichageDemande();
-                        SceneController.switchToScene(primaryStage, afficherDemande);
+                        resetRecapDemande();
+                        SceneController.switchToScene(primaryStage, recapDemande);
                     }
                     break;
 
@@ -248,11 +308,10 @@ public class Facade {
                 case GESTION_ANNOTATEUR:
                     if (gestAnnotateur == null) {
                         gestAnnotateur = SceneController.switchToPageGestionAnnotateur(primaryStage);
-                        visualiseGestionAnnotateur();
                     } else {
-                        resetAffichageDemande();
                         SceneController.switchToScene(primaryStage, gestAnnotateur);
                     }
+                    visualiseGestionAnnotateur();
                     break;
                 case INFOS_ANNOTATEUR:
                     if (infosAnnotateur == null) {
@@ -308,12 +367,6 @@ public class Facade {
     }
 
 
-    public static void resetAffichageDemande() {
-        if (afficherDemande != null) {
-            AffichageDemandeController affichageDemandeController = afficherDemande.controller();
-            affichageDemandeController.initialize();
-        }
-    }
     public static void visualiseAnnotationGest(){
         GestionAnnotationsController gestion = annotations.controller();
         List<List<String>> liste = Api.annotationsMethodeInit();
@@ -361,16 +414,24 @@ public class Facade {
         else if (isPageVisualisationShown()) visuEpiData.controller().getAlertController().showNoInternet();
     }
     /**
-    methode qui affiche recupere les utilisateurs du back sou forme json et les convertit en liste
-
+    methode qui recupere les utilisateurs du back sou forme json et les convertit en liste
      */
     public static Optional<List<String>> getListOfUser(){
         String utilisateursString = Api.getAllAnnotateur();
         if (utilisateursString.equals("401")){
             return Optional.empty();
         }
-        List<String> utilisateursList = convertJsonToList(utilisateursString);
+        List<String> utilisateursList = convertJsonToList(utilisateursString, "utilisateurs");
         return Optional.of(utilisateursList);
+    }
+
+    public static Optional<List<String>> getListOfForms(){
+        String formulairesString = Api.getAllFormulaire();
+        if (formulairesString.equals("401")){
+            return Optional.empty();
+        }
+        List<String> formulairesist = convertJsonToList(formulairesString, "formulaires");
+        return Optional.of(formulairesist);
     }
 
 

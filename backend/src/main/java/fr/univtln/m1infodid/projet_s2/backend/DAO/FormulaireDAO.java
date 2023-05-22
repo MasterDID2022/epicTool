@@ -10,6 +10,7 @@ import java.util.List;
 public class
 FormulaireDAO {
     private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("EpiPU");
+    private FormulaireDAO() {}
 
 
     /**
@@ -17,6 +18,8 @@ FormulaireDAO {
      * @param formulaire l'objet Formulaire à persister
      * @throws RuntimeException si la transaction ne marche pas
      */
+
+
     public static void createFormulaire(Formulaire formulaire) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -92,6 +95,17 @@ FormulaireDAO {
         }
     }
 
+    public static Formulaire findByEmailFormulaire(String mail) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            Query query = em.createQuery("SELECT f FROM Formulaire f where f.email= :email");
+            query.setParameter("email", mail);
+            return (Formulaire) query.getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+
 
 
     /**
@@ -108,4 +122,15 @@ FormulaireDAO {
             em.close();
         }
     }
+
+    public static List<Formulaire> findFormulaireNotValidated() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            Query query = em.createQuery("SELECT f FROM Formulaire f WHERE f.email NOT IN (SELECT u.email FROM Utilisateur u)");
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
 }

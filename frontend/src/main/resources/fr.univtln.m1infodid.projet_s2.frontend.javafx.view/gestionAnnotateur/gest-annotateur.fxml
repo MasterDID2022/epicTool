@@ -3,6 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+
 <AnchorPane fx:id="anchorid" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.GestionAnnotateurController">
     <children>
         <Button fx:id="buttonBack" alignment="CENTER" layoutX="28.0" layoutY="18.0" minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onAction="#backToHub" text="&lt;" AnchorPane.leftAnchor="28.0" AnchorPane.topAnchor="18.0" />

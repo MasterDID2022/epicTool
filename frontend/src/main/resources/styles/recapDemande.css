@@ -12,13 +12,13 @@
 }
 
 #AnchorPaneDemande {
+    -fx-font-family: "Product Sans";
     -fx-background-color: -fx-dark-blue;
 }
 
 #title {
-    -fx-font-size: 35px;
-    -fx-text-fill: -fx-blue;
-    -fx-alignment: center;
+    -fx-font-size: 25px;
+    -fx-text-fill: -fx-white;
 }
 
 #nom, #prenom, #email, #commentaire, #affiliation {
@@ -26,29 +26,26 @@
     -fx-text-fill: -fx-coleurr ;
 }
 
-#nomTextField, #prenomTextField, #affiliationTextField, #commentaireTextField, #emailTextField {
+#nomLabel, #prenomLabel, #mailLabel, #affLabel,#commeLabel {
+    -fx-background-radius: 10 10 0 0;
     -fx-font-size: 13px;
+    -fx-background-color: -fx-blue;
     -fx-text-fill: -fx-white;
 }
 
-.button {
-    -fx-pref-width: 100px;
-    -fx-background-color: #4CAF50;
-    -fx-text-fill: white;
-}
 
 #buttonBack{
     -fx-border-width: 1;
-    -fx-border-color: -fx-gray;
+    -fx-border-color: -fx-blue;
     -fx-border-radius: 10;
     -fx-background-color: transparent;
     -fx-text-fill: -fx-white;
 }
 
 #buttonBack:hover{
-    -fx-border-width: 3;
+    -fx-background-color: -fx-blue;
     -fx-background-radius: 10;
-    -fx-text-fill: -fx-gray;
+    -fx-text-fill: -fx-dark-blue;
 }
 
 #affiliationHBox, #commentaireHBox, #nomHBox, #prenomHBox, #emailHBox {
