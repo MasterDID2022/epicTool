@@ -33,28 +33,36 @@ class FormulaireDAOTest {
 
     @Test
     void testCreateFormulaire() {
-        if (FormulaireDAO.findByIdFormulaire(101) != null)
-            FormulaireDAO.deleteFormulaire(101);
-        Formulaire formulaire = Formulaire.of(101, "Nom", "Prenom", "email@test.com", "Affiliation", "Commentaire");
-        FormulaireDAO.createFormulaire(formulaire);
-        Formulaire formulaireRecupere = FormulaireDAO.findByIdFormulaire(101);
-        System.err.println(formulaireRecupere);
-        System.err.println(formulaire);
-        assertTrue( formulaire.equals(formulaireRecupere) );
-        FormulaireDAO.deleteFormulaire(101);
+        Formulaire formulaire = Formulaire.of( "Nom4", "Prenom4", "email4389@test.com", "test", "Affiliation4", "Commentaire4");
+
+        Formulaire formulaireExistant = FormulaireDAO.findByIdFormulaire(formulaire.getId());
+        if (formulaireExistant != null) {
+            FormulaireDAO.deleteFormulaire(formulaire.getId());
+        }
+        else {
+            FormulaireDAO.createFormulaire(formulaire);
+
+            Formulaire formulaireRecupere = FormulaireDAO.findByIdFormulaire(formulaire.getId());
+            System.err.println(formulaireRecupere);
+            System.err.println(formulaire);
+            assertTrue(formulaire.equals(formulaireRecupere));
+
+            FormulaireDAO.deleteFormulaire(formulaire.getId());
+        }
     }
+
     /*
      * Teste la méthode de la mise a jour d'un formulaire dans la base de données.
      */
     @Test
     void testUpdateFormulaire() {
-        Formulaire formulaire = Formulaire.of(101, "Nom2", "Prenom2", "email2@test.com", "Affiliation2", "Commentaire2");
+        Formulaire formulaire = Formulaire.of( "Nom4", "Prenom4", "email4389@test.com", "test", "Affiliation4", "Commentaire4");
         FormulaireDAO.createFormulaire(formulaire);
         formulaire.setNom("Nouveau nom");
         FormulaireDAO.updateFormulaire(formulaire);
-        Formulaire formulaireRecupere = FormulaireDAO.findByIdFormulaire(101);
+        Formulaire formulaireRecupere = FormulaireDAO.findByIdFormulaire(formulaire.getId());
         assertEquals("Nouveau nom", formulaireRecupere.getNom());
-        FormulaireDAO.deleteFormulaire(101);
+        FormulaireDAO.deleteFormulaire(formulaire.getId());
     }
 
     /*
@@ -62,10 +70,10 @@ class FormulaireDAOTest {
      */
     @Test
     void testDeleteFormulaire() {
-        Formulaire formulaire = Formulaire.of(101, "Nom3", "Prenom3", "email3@test.com", "Affiliation3", "Commentaire3");
+        Formulaire formulaire = Formulaire.of( "Nom4", "Prenom4", "email438g@test.com", "test", "Affiliation4", "Commentaire4");
         FormulaireDAO.createFormulaire(formulaire);
-        FormulaireDAO.deleteFormulaire(101);
-        Formulaire formulaireRecupere = FormulaireDAO.findByIdFormulaire(3);
+        FormulaireDAO.deleteFormulaire(formulaire.getId());
+        Formulaire formulaireRecupere = FormulaireDAO.findByIdFormulaire(formulaire.getId());
         assertNull(formulaireRecupere);
     }
 
@@ -74,28 +82,28 @@ class FormulaireDAOTest {
     */
     @Test
     void testFindByIdFormulaire() {
-        Formulaire formulaire = Formulaire.of( 101,"Nom4", "Prenom4", "email4@test.com", "Affiliation4", "Commentaire4");
+        Formulaire formulaire = Formulaire.of( "Nom4", "Prenom4", "email4389@test.com", "test", "Affiliation4", "Commentaire4");
         FormulaireDAO.createFormulaire(formulaire);
-        Formulaire formulaireRecupere = FormulaireDAO.findByIdFormulaire(101);
+        Formulaire formulaireRecupere = FormulaireDAO.findByIdFormulaire(formulaire.getId());
         assertEquals(formulaire, formulaireRecupere);
-        FormulaireDAO.deleteFormulaire(101);
+        FormulaireDAO.deleteFormulaire(formulaire.getId());
 
     }
 
     /**
-    * Teste la méthode de recherche de tous les formulaires dans la base de données.
-    */
+     * Teste la méthode de recherche de tous les formulaires dans la base de données.
+     */
     @Test
     void testFindAllFormulaire() {
-        Formulaire formulaire1 = Formulaire.of(100, "Nom5", "Prenom5", "email5@test.com", "Affiliation5", "Commentaire5");
-        Formulaire formulaire2 = Formulaire.of(101, "Nom6", "Prenom6", "email6@test.com", "Affiliation6", "Commentaire6");
+        Formulaire formulaire1 = Formulaire.of( "Nom5", "Prenom5", "emailhaj5@test.com", "test", "Affiliation5", "Commentaire5");
+        Formulaire formulaire2 = Formulaire.of( "Nom6", "Prenom6", "email6ji@test.com", "test", "Affiliation6", "Commentaire6");
         FormulaireDAO.createFormulaire(formulaire1);
         FormulaireDAO.createFormulaire(formulaire2);
         List<Formulaire> formulaireListe = FormulaireDAO.findAllFormulaire();
         assertTrue(formulaireListe.contains(formulaire1));
         assertTrue(formulaireListe.contains(formulaire2));
-        FormulaireDAO.deleteFormulaire(100);
-        FormulaireDAO.deleteFormulaire(101);
+        FormulaireDAO.deleteFormulaire(formulaire1.getId());
+        FormulaireDAO.deleteFormulaire(formulaire2.getId());
 
     }
 

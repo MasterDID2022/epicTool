@@ -26,10 +26,13 @@
     -fx-text-fill: -fx-coleurr ;
 }
 
-#nomLabel, #prenomLabel, #mailLabel, #affLabel, #commeLabel {
+#nomTxt, #prenomTxt, #mailTxt, #affTxt {
+    -fx-background-radius: 10 10 0 0;
     -fx-font-size: 13px;
+    -fx-background-color: -fx-blue;
     -fx-text-fill: -fx-white;
 }
+
 
 #modifButton {
     -fx-background-color: -fx-green;
@@ -58,5 +61,4 @@
 #affiliationHBox, #commentaireHBox, #nomHBox, #prenomHBox, #emailHBox {
     -fx-alignment: center;
 }
-
 

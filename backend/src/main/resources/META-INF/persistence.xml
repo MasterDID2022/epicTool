@@ -8,6 +8,7 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe</class>
         <class>fr.univtln.m1infodid.projet_s2.backend.model.Annotation</class>
+        <class>fr.univtln.m1infodid.projet_s2.backend.model.Formulaire</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://db:5432,127.0.0.1:5432/epigraphsBDD"/>

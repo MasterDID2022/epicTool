@@ -2,6 +2,7 @@ package fr.univtln.m1infodid.projet_s2.backend;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.univtln.m1infodid.projet_s2.backend.DAO.FormulaireDAO;
 import fr.univtln.m1infodid.projet_s2.backend.DAO.UtilisateurDAO;
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.*;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
@@ -352,12 +353,12 @@ public class SI {
 	 *
 	 * @param success    un booléen indiquant si la demande de création de compte a
 	 *                   été validée ou non
-	 * @param formulaire Llobjet Formulaire contenant les informations du formulaire
+	 * @param mail du demandeur
 	 */
-	public static void sendMail(Boolean success, Formulaire formulaire) {
-		final String fromEmail = "projetsdid@hotmail.com"; // adresse mail du gestionnaire
+	public static void sendMail(Boolean success, String mail) {
+		final String fromEmail = "projetsdids23@hotmail.com"; // adresse mail du gestionnaire
 		final String password = System.getenv("MY_PASSWORD");
-		final String toEmail = formulaire.getEmail(); // adresse mail du destinataire
+		final String toEmail = mail; // adresse mail du destinataire
 		Properties props = configSMTP();
 		Session session = createSession(props, fromEmail, password);
 		try {
@@ -422,6 +423,29 @@ public class SI {
     public static String recupereUtilisateurs() {
         List<Utilisateur> utilisateurs = obtenirUtilisateurs();
         return convertirUtilisateursEnJSON(utilisateurs);
+    }
+
+
+    /**
+     * Convertit une liste de formulaire en une chaîne de caractères JSON.
+     * Chaque formulaire est représenté par un objet JSON contenant l'ID et l'email.
+     *
+     * @return une chaîne de caractères représentant le JSON des formulaires
+     */
+    public static String recupererFormulaires() {
+        List<Formulaire> formulaires = FormulaireDAO.findFormulaireNotValidated();
+        List<String> listFormulaires = new ArrayList<>();
+        for (Formulaire formulaire : formulaires) {
+            String jsonForm= "{\"id\": \"" + formulaire.getId() + "\", \"email\": \"" + formulaire.getEmail() + "\"}";
+            listFormulaires.add(jsonForm);
+        }
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(listFormulaires);
+        } catch (JsonProcessingException e) {
+            log.error("Erreur lors de la conversion des utilisateurs en JSON", e);
+            return "";
+        }
     }
 
     /**

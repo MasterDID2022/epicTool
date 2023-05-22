@@ -38,7 +38,7 @@
     -fx-text-fill: -fx-dark-blue;
 }
 
-#nomid,#prenomid,#emailid,#commentaireid,#afiliationid {
+#nomid,#prenomid,#emailid, #mdpid, #commentaireid,#afiliationid {
     -fx-font-size: 13px;
     /* -fx-border-radius: 10 10 10 10;
     -fx-background-radius: 10 10 10 10; */

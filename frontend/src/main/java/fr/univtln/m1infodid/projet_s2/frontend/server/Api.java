@@ -22,6 +22,8 @@ import java.util.Optional;
 public class Api {
 	static final String URI_API_BACKEND = "http://127.0.0.1:8080/api/epicTools/";
     static final String HTTP_ERROR_MSG = "La requête a échoué : code d'erreur HTTP ";
+    static final String JSON_ERROR_MSG = "Erreur lors de la lecture de la chaîne JSON ";
+    static final String autorisation = "Authorization";
 
     private Api(){
         throw new IllegalStateException("ne devrait pas etre instancier");
@@ -129,7 +131,7 @@ public class Api {
                 log.warn("Erreur lors de l'envoi du formulaire");
             }
         } catch (Exception e) {
-            log.warn("Erreur lors de la lecture de la chaîne JSON");
+            log.warn(JSON_ERROR_MSG);
         }
         return formJson;
     }
@@ -138,7 +140,7 @@ public class Api {
     public static Optional<String> postLogin (String encodedCredentials ) {
         try (Client client = ClientBuilder.newClient();
              Response response = client.target(URI_API_BACKEND + "user/login")
-                     .request(MediaType.APPLICATION_JSON).header("Authorization", "Basic " + encodedCredentials)
+                     .request(MediaType.APPLICATION_JSON).header(autorisation, "Basic " + encodedCredentials)
                      .post(Entity.json(""))) {
             if (response.getStatus() != 200) {
                 if (response.getStatus()== 401){
@@ -151,7 +153,7 @@ public class Api {
         } catch (Exception e) {
             log.warn("Erreur lors de l'envoi des données");
             log.error(e.toString());
-            log.warn("Erreur lors de la lecture de la chaîne JSON");
+            log.warn(JSON_ERROR_MSG);
         }
         return Optional.empty();
     }
@@ -166,7 +168,7 @@ public class Api {
         try (Client client = ClientBuilder.newClient()) {
             Response response = client.target(URI_API_BACKEND + "utilisateurs")
                     .request(MediaType.APPLICATION_JSON)
-                    .header("Authorization", Facade.getToken() )
+                    .header(autorisation, Facade.getToken() )
                     .get();
             if (response.getStatus() != 200) {
                 if (response.getStatus() == 401){
@@ -189,13 +191,13 @@ public class Api {
      * @param jsonString la chaîne de caractères JSON à convertir
      * @return une liste d'objets obtenue à partir de la conversion du JSON
      */
-    public static List<String> convertJsonToList(String jsonString) {
+    public static List<String> convertJsonToList(String jsonString, String type) {
         ObjectMapper objectMapper = new ObjectMapper();
         List<String> resultList = new ArrayList<>();
         try {
             JsonNode jsonNode = objectMapper.readTree(jsonString);
-            String utilisateursString = jsonNode.get("utilisateurs").asText();
-            resultList = objectMapper.readValue(utilisateursString, ArrayList.class);
+            String toConv = jsonNode.get(type).asText();
+            resultList = objectMapper.readValue(toConv, ArrayList.class);
         } catch (JsonProcessingException e) {
             log.warn("Erreur lors de la désérialisation du JSON");
         }
@@ -206,23 +208,163 @@ public class Api {
     /**
      * Fonction qui permet l'envoie d'une requête HTTP DELETE au backend pour supprimer l'utilisateur
      */
-    public static void deleteUserOf(int userId){
+    public static String deleteUserOf(int userId) {
         try (Client client = ClientBuilder.newClient()) {
             Response response = client.target(URI_API_BACKEND + "userD/" + userId)
                     .request(MediaType.APPLICATION_JSON)
+                    .header(autorisation, Facade.getToken())
                     .delete();
-
             if (response.getStatus() != 200) {
-                throw new IllegalStateException(HTTP_ERROR_MSG+ response.getStatus());
+                if (response.getStatus() == 401) {
+                    sessionExpired();
+                    return "401";
+                }
+                log.error(HTTP_ERROR_MSG + response.getStatus());
             }
-            log.info("Utilisateur n° "+userId+" supprimé avec succès !");
-
+            log.info("Utilisateur n° "+userId+" supprimé avec succès");
         } catch (Exception e) {
             log.error(e.toString());
             log.warn("Erreur lors de l'envoi des données");
         }
+        return "Error";
     }
 
+
+    /**
+     * Fonction qui permet l'envoie d'une requête HTTP DELETE au backend pour supprimer un formulaire
+     */
+    public static String deleteFormOf(int formId){
+        try (Client client = ClientBuilder.newClient()) {
+            Response response = client.target(URI_API_BACKEND + "formD/" + formId)
+                    .request(MediaType.APPLICATION_JSON)
+                    .header(autorisation, Facade.getToken() )
+                    .delete();
+            if (response.getStatus() != 200) {
+                if (response.getStatus() == 401) {
+                    sessionExpired();
+                    return "401";
+                }
+                log.error(HTTP_ERROR_MSG + response.getStatus());
+            }
+            log.info("Formulaire n° "+formId+" supprimé avec succès");
+        } catch (Exception e) {
+            log.error(e.toString());
+            log.warn("Erreur lors de l'envoi des données");
+        }
+        return "Error";
+    }
+
+
+    /**
+     * Récupère le contenu des formulaires à partir de l'API backend et le renvoie sous forme de chaîne de caractères.
+     *
+     * @return le contenu des formulaires en tant que chaîne de caractères
+     */
+    public static String getAllFormulaire() {
+        String contenu = "";
+        try (Client client = ClientBuilder.newClient()) {
+            Response response = client.target(URI_API_BACKEND + "formulaires")
+                    .request(MediaType.APPLICATION_JSON)
+                    .header(autorisation, Facade.getToken())
+                    .get();
+            if (response.getStatus() != 200) {
+                if (response.getStatus() == 401){
+                    sessionExpired();
+                    return "401";
+                }
+                log.error(HTTP_ERROR_MSG+ response.getStatus());
+            }
+            contenu = response.readEntity(String.class);
+        } catch (Exception e) {
+            log.warn("Erreur lors de la récupération des formulaires", e);
+        }
+        return contenu;
+    }
+
+
+    /**
+     * Récupère le contenu des formulaires à partir de l'API backend et le renvoie sous forme de chaîne de caractères.
+     *
+     * @return le contenu des formulaires en tant que chaîne de caractères
+     */
+    public static String infosUserOf(String mail) {
+        String contenu = "";
+        try (Client client = ClientBuilder.newClient()) {
+            Response response = client.target(URI_API_BACKEND + "userInfos/" + mail)
+                    .request(MediaType.APPLICATION_JSON)
+                    .header(autorisation, Facade.getToken() )
+                    .get();
+            if (response.getStatus() != 200) {
+                if (response.getStatus() == 401){
+                    sessionExpired();
+                    return "401";
+                }
+                log.error(HTTP_ERROR_MSG+ response.getStatus());
+                return contenu;
+            }
+            contenu = response.readEntity(String.class);
+        } catch (Exception e) {
+            log.warn("Erreur lors de la récupération des données", e);
+        }
+        return contenu;
+    }
+
+    /**
+     * Fonction qui permet l'envoie d'une requête HTTP PUT au backend pour mettre à jour un utilisateur
+     */
+    public static String updateUser(int id, String formulaireJson) {
+        try (Client client = ClientBuilder.newClient()) {
+            Response response = client.target(URI_API_BACKEND + "userU/" + id)
+                    .request(MediaType.APPLICATION_JSON)
+                    .header(autorisation, Facade.getToken() )
+                    .put(Entity.json(formulaireJson));
+            if (response.getStatus() != 200) {
+                if (response.getStatus() == 401) {
+                    sessionExpired();
+                    return "401";
+                }
+                log.error(HTTP_ERROR_MSG + response.getStatus());
+            }
+        } catch (Exception e) {
+            log.warn("Erreur lors de la mise à jour des données", e);
+        }
+        return "Error";
+    }
+
+
+    /**
+     * Methode qui gere les requetes REST post pour les users
+     * Prend le mail du user ainsi que ses infos pour le persister et les renvoie vers le back
+     *
+     * @return String de message de retour
+     */
+    public static String postUser(String formulaireJson) {
+        String userJSon = "";
+        try {
+            try (Client client = ClientBuilder.newClient()) {
+                Entity<String> entity = Entity.entity(formulaireJson, MediaType.APPLICATION_JSON);
+                Response response = client.target(URI_API_BACKEND + "userP")
+                        .request(MediaType.APPLICATION_JSON)
+                        .header(autorisation, Facade.getToken() )
+                        .post(entity);
+                if (response.getStatus() != 200) {
+                    if (response.getStatus() == 401){
+                        sessionExpired();
+                        return "401";
+                    }
+                    log.error(HTTP_ERROR_MSG+ response.getStatus());
+                }
+                userJSon = response.readEntity(String.class);
+                log.info("Demande de création de compte approuvée !");
+            } catch (Exception e) {
+                log.error(e.toString());
+                log.warn("Erreur lors de l'envoi des données");
+            }
+        } catch (Exception e) {
+            log.warn(JSON_ERROR_MSG);
+        }
+        return userJSon;
+    }
 
     /**
      * methode tmp pour faciliter tache, initalise une liste de formulaire pour tester ..
@@ -249,6 +391,7 @@ public class Api {
         return listeDeFormulaire;
 
     }
+
     /**
      *
      * methode tmp initialise les annotations d une epigraphie
@@ -354,4 +497,6 @@ public class Api {
         listeAnnotation.add(epigraphie4);
         return listeAnnotation;
     }
+
+
 }

@@ -53,7 +53,7 @@ public class Lanceur {
      *
      * @param args
      */
-    public static void main(String[] args) throws JsonProcessingException {
+    public static void main(String[] args)  {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("EpiPU");
         EntityManager em = emf.createEntityManager();
         final ResourceConfig rc = new ResourceConfig().packages("fr.univtln.m1infodid.projet_s2.backend.server");
