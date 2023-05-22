@@ -34,7 +34,6 @@ public class GestionAnnotateurController {
     private static String emailSelectionne;
     private static String id;
 
-
     public static void setEmailSelectionne(String emailSelectionne) {
         GestionAnnotateurController.emailSelectionne = emailSelectionne;
     }

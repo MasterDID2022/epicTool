@@ -1,10 +1,16 @@
 package fr.univtln.m1infodid.projet_s2.backend;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import fr.univtln.m1infodid.projet_s2.backend.DAO.AnnotationDAO;
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.ListeVide;
 import fr.univtln.m1infodid.projet_s2.backend.model.Annotation;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import fr.univtln.m1infodid.projet_s2.backend.model.Utilisateur;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -78,7 +84,7 @@ class SITest {
 		Document result = SI.createXMLDoc(inputStream);
 		assertNotNull(result);
 
-		assertEquals("root", result.getDocumentElement().getNodeName());
+		assertEquals(result.getDocumentElement().getNodeName(),"root");
 	}
 
 	@Test
@@ -205,13 +211,14 @@ class SITest {
 		String expectedJson = "[\"{\\\"id\\\": \\\"1\\\", \\\"email\\\": \\\"gg@gg.fr\\\"}\",\"{\\\"id\\\": \\\"2\\\", \\\"email\\\": \\\"gg1@gg.fr\\\"}\"]";
 		assertEquals(expectedJson, json);
 	}
-@Test
+
+	@Test
 	void annotationTest() {
-	Annotation annotation = Annotation.of(22);
-	ObjectMapper objectMapper = new ObjectMapper();
-	AtomicReference<String> text = new AtomicReference<>();
-	assertDoesNotThrow(() -> text.set(objectMapper.writeValueAsString(annotation)));
-	System.err.println(text.get());
-	assertDoesNotThrow(() -> objectMapper.readValue(text.get(), Annotation.class) );
-}
+		Annotation annotation = Annotation.of(22);
+		ObjectMapper objectMapper = new ObjectMapper();
+		AtomicReference<String> text = new AtomicReference<>();
+		assertDoesNotThrow(() -> text.set(objectMapper.writeValueAsString(annotation)));
+		System.err.println(text.get());
+		assertDoesNotThrow(() -> objectMapper.readValue(text.get(), Annotation.class) );
+	}
 }
