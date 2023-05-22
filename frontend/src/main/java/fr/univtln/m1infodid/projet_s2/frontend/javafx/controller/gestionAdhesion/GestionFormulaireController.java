@@ -1,19 +1,23 @@
 package fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import fr.univtln.m1infodid.projet_s2.backend.SI;
 import fr.univtln.m1infodid.projet_s2.frontend.Facade;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.SceneType;
+import fr.univtln.m1infodid.projet_s2.frontend.server.Api;
+import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.util.Callback;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -118,9 +122,32 @@ public class GestionFormulaireController {
         }
 
         private void validerFormulaire() {
-            // a remplir plus tard
-        }
+            List<String> itemData = getItem();
+            if (itemData != null && !itemData.isEmpty()) {
+                String email = itemData.get(0);
+                emailSelectionné = email;
 
+                // Envoie de l'e-mail
+                try {
+                    Formulaire formulaire = new Formulaire();
+                    formulaire.setEmail(email);
+
+                    SI.sendMail(true, formulaire);
+
+                    // Conversion de l'objet Formulaire en JSON
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    ObjectNode formulaireNode = objectMapper.createObjectNode();
+                    formulaireNode.put("emailFormulaire", formulaire.getEmail());
+                    String formulaireJson = objectMapper.writeValueAsString(formulaireNode);
+
+                    Api.postFormulaire(formulaireJson);
+
+                } catch (Exception e) {
+
+                }
+            }
+            Facade.showScene(SceneType.AFFICHAGE_DEMANDE);
+        }
         /**
          * supprime la ligne de la listView
          */

@@ -91,10 +91,11 @@ public class Api {
 			String nomFormulaire = rootNode.path("nomFormulaire").asText();
 			String prenomFormulaire = rootNode.path("prenomFormulaire").asText();
 			String emailFormulaire = rootNode.path("emailFormulaire").asText();
+			String mdpFormulaire = rootNode.path("mdpFormulaire").asText();
 			String affiliationFormulaire = rootNode.path("affiliationFormulaire").asText();
 			String commentaireFormulaire = rootNode.path("commentaireFormulaire").asText();
 			formulaire = Optional.of(
-					Formulaire.of(Integer.parseInt(idFormulaire),nomFormulaire,prenomFormulaire,emailFormulaire,affiliationFormulaire,commentaireFormulaire));
+					Formulaire.of(Integer.parseInt(idFormulaire),nomFormulaire,prenomFormulaire,emailFormulaire,mdpFormulaire,affiliationFormulaire,commentaireFormulaire));
 			return formulaire;
 		} catch (JsonProcessingException e) {
 			log.error("Parsing error, le json ne semble pas valide");

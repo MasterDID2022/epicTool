@@ -26,6 +26,7 @@ public class  Formulaire {
     private String email;
     private String affiliation;
     private String commentaire;
+    private String mdp;
 
     @Override
     public boolean equals(Object o) {
@@ -41,6 +42,6 @@ public class  Formulaire {
     }
 
     public String toString() {
-        return "Demande inscription: n°" + getId() + " pour le visiteur " + getNom() + getPrenom() + " d'adresse mail " + getEmail() + " et d'affiliation  " + getAffiliation() + ". \n" + getCommentaire();
+        return "Demande inscription: n°" + getId() + " pour le visiteur " + getNom() + getPrenom() + " d'adresse mail " + getEmail() + " de mot de passe" + getMdp() + " et d'affiliation  " + getAffiliation() + ". \n" + getCommentaire();
     }
 }
