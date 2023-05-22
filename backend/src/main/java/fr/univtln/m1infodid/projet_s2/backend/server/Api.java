@@ -238,6 +238,28 @@ public class Api {
 			return Response.serverError().build();
 		}
 	}
+    @DELETE
+    @Path("formulaireD/{id}")
+    public Response deleteFor(@PathParam("id") int id) {
+        try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("FoPU");
+             EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            try {
+                Formulaire formulaire = entityManager.find(Formulaire.class, id);
+                if (formulaire != null) {
+                    SI.sendMail(true,formulaire);
+                    FormulaireDAO.createFormulaire(formulaire);
+                    FormulaireDAO.deleteFormulaire(id);
+                    return Response.ok().build();
+                } else {
+                    return Response.status(Response.Status.NOT_FOUND).build();
+                }
+            } catch (Exception e) {
+                log.error(e.toString());
+                return Response.serverError().build();
+            }
+        }
+    }
+
 
     @Path("user/login")
     @POST

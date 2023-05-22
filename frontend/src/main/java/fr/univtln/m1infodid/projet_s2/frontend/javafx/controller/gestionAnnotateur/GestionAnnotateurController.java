@@ -156,7 +156,6 @@ public class GestionAnnotateurController {
         }
 
 
-
         /**
          * Affiche la cellule en fonction des données fournies
          *

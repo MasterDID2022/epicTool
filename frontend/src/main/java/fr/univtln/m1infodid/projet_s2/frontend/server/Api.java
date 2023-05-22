@@ -224,6 +224,23 @@ public class Api {
     }
 
 
+    public static void deleteFormOf(int formId){
+        try (Client client = ClientBuilder.newClient()) {
+            Response response = client.target(URI_API_BACKEND + "formulaireD/" + formId)
+                    .request(MediaType.APPLICATION_JSON)
+                    .delete();
+
+            if (response.getStatus() != 200) {
+                throw new IllegalStateException(HTTP_ERROR_MSG+ response.getStatus());
+            }
+            log.info("Formulaire n° "+formId+" supprimé avec succès !");
+
+        } catch (Exception e) {
+            log.error(e.toString());
+            log.warn("Erreur lors de l'envoi des données");
+        }
+    }
+
     /**
      * methode tmp pour faciliter tache, initalise une liste de formulaire pour tester ..
      */
