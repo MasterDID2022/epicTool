@@ -87,7 +87,7 @@ public class Facade {
     }
 
 
-    public static void sendFormulaire(String nom, String prenom, String email, String affiliation, String commentaire) {
+    public static void sendFormulaire(String nom, String prenom, String email,String mdp, String affiliation, String commentaire) {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode jsonForm = mapper.createObjectNode();
 
@@ -95,6 +95,7 @@ public class Facade {
         jsonForm.put("nomFormulaire",nom);
         jsonForm.put("prenomFormulaire",prenom);
         jsonForm.put("emailFormulaire",email);
+        jsonForm.put("mdpFormulaire",mdp);
         jsonForm.put("affiliationFormulaire",affiliation);
         jsonForm.put("commentaireFormulaire",commentaire);
 
@@ -233,7 +234,6 @@ public class Facade {
         List<String> utilisateursList = convertJsonToList(utilisateursString);
         return utilisateursList;
     }
-
 
     /**
      * Méthode pour afficher le hub du gestionnaire

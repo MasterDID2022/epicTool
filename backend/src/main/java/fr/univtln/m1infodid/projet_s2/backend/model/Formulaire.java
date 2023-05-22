@@ -24,9 +24,9 @@ public class  Formulaire {
 
     @Column(unique=true)
     private String email;
+    private String mdp;
     private String affiliation;
     private String commentaire;
-    private String mdp;
 
     @Override
     public boolean equals(Object o) {

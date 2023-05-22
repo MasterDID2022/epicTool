@@ -6,6 +6,7 @@ import fr.univtln.m1infodid.projet_s2.frontend.javafx.SceneType;
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -26,6 +27,8 @@ public class FormulaireController implements Initializable{
     private TextField prenomid ;
     @FXML
     private TextField emailid ;
+    @FXML
+    private PasswordField mdpid ;
     @FXML
     private TextField afiliationid ;
     @FXML
@@ -54,10 +57,11 @@ public class FormulaireController implements Initializable{
         String nom = nomid.getText();
         String prenom = prenomid.getText();
         String email = emailid.getText();
+        String mdp = mdpid.getText();
         String afiliation = afiliationid.getText();
         String commentaire = commentaireid.getText();
 
-        if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty() || afiliation.isEmpty() || commentaire.isEmpty()){
+        if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty() ||mdp.isEmpty() || afiliation.isEmpty() || commentaire.isEmpty()){
             alertController.showFillField();
             return;
         }
@@ -68,7 +72,7 @@ public class FormulaireController implements Initializable{
             return;
         }
 
-        Facade.sendFormulaire(nom, prenom, email, afiliation, commentaire);
+        Facade.sendFormulaire(nom, prenom, email,mdp, afiliation, commentaire);
         clearAllFieldAndSwitch();
 
     }
@@ -77,6 +81,7 @@ public class FormulaireController implements Initializable{
         nomid.setText("");
         prenomid.setText("");
         emailid.setText("");
+        mdpid.setText("");
         afiliationid.setText("");
         commentaireid.setText("");
 

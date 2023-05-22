@@ -103,6 +103,23 @@ public class Api {
 		return formulaire;
 	}
 
+	private Optional<Utilisateur> createUser(String utilisateurJson) {
+		Optional<Utilisateur> utilisateur = Optional.empty();
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode rootNode = null;
+		try {
+
+			String emailUser = rootNode.path("emailUser").asText();
+			String mdpUser = rootNode.path("mdpUser").asText();
+
+			utilisateur = Optional.of(
+					Utilisateur.of(emailUser,mdpUser));
+			return utilisateur;
+		} catch (JsonProcessingException e) {
+			log.error("Parsing error, le json ne semble pas valide");
+		}
+		return utilisateur;
+	}
 	/**
 	 * Methode pour ajouter un formulaire
 	 *

@@ -133,7 +133,6 @@ public class GestionFormulaireController {
                     formulaire.setEmail(email);
 
                     SI.sendMail(true, formulaire);
-
                     // Conversion de l'objet Formulaire en JSON
                     ObjectMapper objectMapper = new ObjectMapper();
                     ObjectNode formulaireNode = objectMapper.createObjectNode();
@@ -142,7 +141,9 @@ public class GestionFormulaireController {
 
                     Api.postFormulaire(formulaireJson);
 
+                    System.out.println("c bon");
                 } catch (Exception e) {
+                    System.out.println("c nonn");
 
                 }
             }
