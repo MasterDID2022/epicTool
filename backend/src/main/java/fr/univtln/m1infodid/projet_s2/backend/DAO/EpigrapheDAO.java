@@ -1,13 +1,8 @@
 package fr.univtln.m1infodid.projet_s2.backend.DAO;
 
-import fr.univtln.m1infodid.projet_s2.backend.Facade;
 import fr.univtln.m1infodid.projet_s2.backend.SI;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.SQLException;
@@ -18,7 +13,7 @@ import java.util.List;
 
 public class EpigrapheDAO implements AutoCloseable {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
 
 
@@ -40,12 +35,7 @@ public class EpigrapheDAO implements AutoCloseable {
      * @return list of the epigraphs
      */
     public List<Epigraphe> findAll () {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Epigraphe> cq = cb.createQuery(Epigraphe.class);
-        Root<Epigraphe> rootEntry = cq.from(Epigraphe.class);
-        CriteriaQuery<Epigraphe> all = cq.select(rootEntry);
-        TypedQuery<Epigraphe> allQuery = entityManager.createQuery(all);
-        return allQuery.getResultList();
+        return entityManager.createQuery("SELECT E from Epigraphe as E ", Epigraphe.class).getResultList();
     }
 
     /**
@@ -93,10 +83,10 @@ public class EpigrapheDAO implements AutoCloseable {
         remove(epigraphe.getId());
     }
 
-    public Epigraphe getEpigrapheNoCommit(int id) throws Exception {
+    public Epigraphe getEpigrapheNoCommit ( int id ) {
         Epigraphe epigraphe = findById(id);
 
-        if(epigraphe !=null) {
+        if (epigraphe != null) {
             LocalDate date = epigraphe.getFetchDate();
 
             if (date.isBefore(LocalDate.now().plusDays(2)))
@@ -108,12 +98,13 @@ public class EpigrapheDAO implements AutoCloseable {
         return epigraphe;
     }
 
-    public Epigraphe getEpigraphe(int id) throws Exception {
+    public Epigraphe getEpigraphe ( int id ) {
         entityManager.getTransaction().begin();
         Epigraphe epigraphe = getEpigrapheNoCommit(id);
         entityManager.getTransaction().commit();
         return epigraphe;
     }
+
     @Override
     public void close () throws Exception {
         entityManager.close();

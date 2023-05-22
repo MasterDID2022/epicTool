@@ -9,7 +9,7 @@ import java.util.List;
 
 public class AnnotationDAO implements AutoCloseable{
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
     private AnnotationDAO ( EntityManager entityManager ) {
         this.entityManager = entityManager;
     }
@@ -30,17 +30,15 @@ public class AnnotationDAO implements AutoCloseable{
         return query.getResultList();
     }
 
-    public List<Annotation> findOfEpigraphe(int idEpi)
-    {
-        TypedQuery<Annotation> query = entityManager.createQuery("SELECT M FROM Annotation as M where epigraphe.id = " + idEpi,Annotation .class);
+    public List<Annotation> findAnnotationsOfEpigraphe ( int idEpi ) {
+        TypedQuery<Annotation> query = entityManager.createQuery("SELECT M FROM Annotation as M where epigraphe.id = " + idEpi, Annotation.class);
         return query.getResultList();
     }
 
-    public Annotation findByIdEpiMail(int idEpi,String email)
-    {
-        TypedQuery<Annotation> query = entityManager.createQuery("SELECT M FROM Annotation as M join Utilisateur U on M.utilisateur.id = U.id where M.epigraphe.id = :id and U.email = :email" ,Annotation.class);
-        query.setParameter("email",email);
-        query.setParameter("id",idEpi);
+    public Annotation findByIdEpiAndMail ( int idEpi, String email ) {
+        TypedQuery<Annotation> query = entityManager.createQuery("SELECT M FROM Annotation as M join Utilisateur U on M.utilisateur.id = U.id where M.epigraphe.id = :id and U.email = :email", Annotation.class);
+        query.setParameter("email", email);
+        query.setParameter("id", idEpi);
         return query.getSingleResult();
     }
 
@@ -48,7 +46,6 @@ public class AnnotationDAO implements AutoCloseable{
         Epigraphe epigraphe = annotation.getEpigraphe();
         try {
             EpigrapheDAO epigrapheDAO = EpigrapheDAO.create(entityManager); //NOSONAR (L'entity manager sera fermé par la classe)
-            //l'entity manager sera fermé par la suite.
             annotation.setEpigraphe(epigrapheDAO.getEpigraphe(epigraphe.getId()));
         }
         catch (Exception e)  {

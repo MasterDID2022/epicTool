@@ -1,7 +1,11 @@
 package fr.univtln.m1infodid.projet_s2.backend.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import jakarta.validation.constraints.Email;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "FORMULAIRE")
@@ -17,7 +21,8 @@ public class  Formulaire {
     private String nom;
     private String prenom;
 
-    @Column(unique=true)
+    @Column(unique = true)
+    @Email(regexp = "A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[A-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
     private String email;
     private String mdp;
     private String affiliation;

@@ -1,18 +1,15 @@
 package fr.univtln.m1infodid.projet_s2.backend.model;
 
 import fr.univtln.m1infodid.projet_s2.backend.DAO.UtilisateurDAO;
-
-import java.nio.charset.StandardCharsets;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -35,7 +32,7 @@ public class Utilisateur {
         DEMANDEUR,
     }
 
-    @Email
+    @Email(regexp = "A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[A-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
     @Column(unique = true)
     private String email;
     private Role role;
@@ -149,7 +146,7 @@ public class Utilisateur {
     @Override
     public String toString() {
         return "Utilisateur{" +
-                "IdUser=" + String.valueOf(this.getId()) +
+                "IdUser=" + this.getId() +
                 ", role='" + role + '\'' +
                 ", email='" + email + '\'' +
                 ", mdp='" + mdp + '\'' +

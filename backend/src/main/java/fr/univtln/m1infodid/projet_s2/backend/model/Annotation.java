@@ -1,6 +1,8 @@
 package fr.univtln.m1infodid.projet_s2.backend.model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.univtln.m1infodid.projet_s2.backend.Facade;
 import fr.univtln.m1infodid.projet_s2.backend.SI;
 import jakarta.persistence.*;
@@ -8,7 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -62,7 +66,8 @@ public class Annotation {
     }
 
     /**
-     * Construteur privée pour la facotry
+     * Construteur privée pour la factory
+     *
      * @param idEpigraphe
      */
 

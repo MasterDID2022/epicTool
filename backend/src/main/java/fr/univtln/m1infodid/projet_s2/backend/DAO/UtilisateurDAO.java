@@ -10,9 +10,7 @@ import java.util.Optional;
 
 
 @Slf4j
-/**
- * Class DAO pour utilisateur
- */
+
 public class UtilisateurDAO implements AutoCloseable{
     private final EntityManager entityManager;
 
@@ -36,7 +34,7 @@ public class UtilisateurDAO implements AutoCloseable{
     }
 
     /**
-     * Retourne une liste de tout les utilisateur en BD
+     * Retourne une liste de tous les utilisateurs en BD
      *
      * @return list des utilisateurs
      */
@@ -48,7 +46,7 @@ public class UtilisateurDAO implements AutoCloseable{
 
 
     /**
-     * Prend un id d'utilisateur et retourne sont instanciation en BD, preferait findByEmail
+     * Prend un id d'utilisateur et retourne  l'entité en BD
      *
      * @return L'utilisateur d'id id
      */
