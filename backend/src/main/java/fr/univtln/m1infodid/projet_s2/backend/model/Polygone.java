@@ -20,7 +20,7 @@ public class Polygone {
     private double height;
     private double width;
 
-    private Polygone ( double x, double y, double height, double width ) {
+    private Polygone ( double x, double y, double width, double height ) {
 
         this.centreX = x;
         this.centreY = y;
@@ -28,8 +28,8 @@ public class Polygone {
         this.width = width;
     }
 
-    public static Polygone create ( double x, double y, double height, double width ) {
-        return new Polygone(x, y, height, width);
+    public static Polygone create ( double x, double y, double width, double height ) {
+        return new Polygone(x, y, width, height);
     }
 
     @JsonCreator
@@ -43,6 +43,6 @@ public class Polygone {
 
     @JsonValue
     private List<Double> toList () {
-        return Arrays.asList(centreX, centreY, height, width);
+        return Arrays.asList(centreX, centreY, width, height);
     }
 }

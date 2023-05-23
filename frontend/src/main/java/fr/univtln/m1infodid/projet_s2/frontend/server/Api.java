@@ -157,6 +157,24 @@ public class Api {
         }
         return Optional.empty();
     }
+public static String getAnnotationsOfEpigraph(int id ) {
+        try(Client client = ClientBuilder.newClient();
+            Response response = client.target(URI_API_BACKEND +"epigraphe/annotation/"+id)
+                    .request(MediaType.APPLICATION_JSON)
+                    .get();)
+         {
+             if (response.getStatus() != 200){
+                 log.info(response.getStatus() + " reçu");
+                 return "";
+             }
+
+             else {
+                 String result = response.readEntity(String.class);
+                 log.info("Réponse annotation : "+result);
+                 return result;
+             }
+         }
+}
 
     /**
      * Récupère ls liste des utilisateurs à partir de l'API du backend et la renvoie sous forme d'une unique chaîne de caractères.
@@ -205,8 +223,7 @@ public class Api {
     }
 
 
-    /**
-     * Fonction qui permet l'envoie d'une requête HTTP DELETE au backend pour supprimer l'utilisateur
+    /**     * Fonction qui permet l'envoie d'une requête HTTP DELETE au backend pour supprimer l'utilisateur
      */
     public static String deleteUserOf(int userId) {
         try (Client client = ClientBuilder.newClient()) {

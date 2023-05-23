@@ -3,10 +3,7 @@ package fr.univtln.m1infodid.projet_s2.frontend.frontend;
 import fr.univtln.m1infodid.projet_s2.frontend.server.Api;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -73,7 +70,7 @@ import static org.junit.jupiter.api.Assertions.*;
     @Test
      void testpostEmptyPassword(){
         String loginCredential = Base64.getEncoder().encodeToString( "Tom@gmail.com:".getBytes());
-        Optional reponse = Api.postLogin(loginCredential);
+        Optional<String> reponse = Api.postLogin(loginCredential);
         assertTrue(reponse.isEmpty());
     }
 

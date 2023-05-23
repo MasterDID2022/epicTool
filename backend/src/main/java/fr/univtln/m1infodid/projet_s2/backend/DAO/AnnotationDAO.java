@@ -30,6 +30,12 @@ public class AnnotationDAO implements AutoCloseable{
         return query.getResultList();
     }
 
+    public List<Annotation> findOfEpigraphe(int idEpi)
+    {
+        TypedQuery<Annotation> query = entityManager.createQuery("SELECT M FROM Annotation as M where epigraphe.id = " + idEpi,Annotation .class);
+        return query.getResultList();
+    }
+
 
     public Annotation persist(Annotation annotation) {
         Epigraphe epigraphe = annotation.getEpigraphe();

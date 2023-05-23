@@ -39,7 +39,7 @@ class ApiTest {
         Api api = new Api();
         Response r = api.receiveFormulaire(inputJson);
         assertEquals(r.toString(), Response.ok().build().toString());
-        FormulaireDAO.deleteFormulaire(1);
+        FormulaireDAO.deleteFormulaire(FormulaireDAO.findByEmailFormulaire("test@gmail.com").getId());
     }
 
     @Test

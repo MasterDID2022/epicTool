@@ -1,10 +1,16 @@
 package fr.univtln.m1infodid.projet_s2.frontend.javafx.manager;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import fr.univtln.m1infodid.projet_s2.frontend.Facade;
+import fr.univtln.m1infodid.projet_s2.frontend.Facade.ROLE;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.ListeAnnotationData;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.TranscriptionController;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -33,6 +39,11 @@ public class AnnotationsManager {
 
     private Random rand = new Random();
 
+    private TranscriptionController transcriptionController;
+    private boolean canEdit = false;
+
+    private String importedEmail;
+
     public static AnnotationsManager getInstance() { 
         if (instance == null) instance = new AnnotationsManager();
         return instance;
@@ -44,11 +55,22 @@ public class AnnotationsManager {
      * @param paneCanvas le Pane parent pour les futures annotations
      * @param imgView le contenant de l'image à annoter
      */
-    public void initialize(Pane paneCanvas, ImageView imgView) { 
+    public void initialize(Pane paneCanvas, ImageView imgView, TranscriptionController transcriptionController) { 
         this.paneCanvas = paneCanvas;
         this.imgView = imgView;
+        this.transcriptionController = transcriptionController;
+        this.importedEmail = "";
 
         reset();
+    }
+
+    public void setupEditBasedOnRole() {
+        boolean roleCheck = Facade.getRole() != ROLE.VISITEUR;
+        if (!importedEmail.isBlank() && !importedEmail.isEmpty())
+            setCanEdit(roleCheck && Facade.getEmail().equals(importedEmail));
+        else
+            setCanEdit( roleCheck );
+        if (!canEdit) return;
         setupMouseEvent();
     }
 
@@ -62,8 +84,43 @@ public class AnnotationsManager {
         currentIndexSelected = "-1";
         currentSymbolSelected = "NONE";
         currentRectSelected = null;
+        importedEmail = "";
         paneCanvas.getChildren().clear();
+        removeMouseEvent();
     }
+
+    /**
+     * Actualise l'affichage des annotations d'une épigraphie par import de annotationData
+     */
+    public void importAnnotation(ListeAnnotationData annotationData) {
+        reset();
+
+        for (Integer rectId : annotationData.getAnnotations().keySet()) {
+            List<Double> poly = annotationData.getAnnotations().get(rectId);
+
+            currentIndexSelected = String.valueOf( rectId.intValue() );
+            currentSymbolSelected = transcriptionController.getSymbolByIndex( rectId.intValue() );
+
+            if (!colorMap.containsKey(currentSymbolSelected)){
+                String rColor = getRandomColorHex();
+                colorMap.put(currentSymbolSelected, rColor);
+            }
+
+            Rectangle r = createRectangle();
+            r.setX(poly.get(0));
+            r.setY(poly.get(1));
+            r.setWidth(poly.get(2)); //potentiel problème si backend envois height puis width, à inverser dans ce cas
+            r.setHeight(poly.get(3)); //potentiel problème si backend envois height puis width, à inverser dans ce cas
+        }
+
+        importedEmail = annotationData.getEmail();
+        transcriptionController.updateTranscriptionBtnsColor();
+        currentIndexSelected = "-1";
+        currentSymbolSelected = "NONE";
+        currentRectSelected = null;
+    }
+
+    public String getImportedEmail() { return importedEmail; }
 
     /**
      * Permet de générer des couleurs aléatoires pour l'annotation
@@ -95,6 +152,12 @@ public class AnnotationsManager {
         imgView.setOnMouseReleased( e -> onDragDone(e.getX(), e.getY()) );
     }
 
+    private void removeMouseEvent() {
+        imgView.setOnDragDetected( null );
+        imgView.setOnMouseDragged( null );
+        imgView.setOnMouseReleased( null );
+    }
+
     private void onDragEnter(double x, double y) { createSymbolSelection(x, y); }
     private void onDragOver(double x, double y) { updateRectSize(x, y); }
     private void onDragDone(double x, double y) { updateRectSize(x, y); }
@@ -105,19 +168,13 @@ public class AnnotationsManager {
      * @param y Coordonnée Y de la souris
      */
     private void createSymbolSelection(double x, double y) {
+        if (currentIndexSelected.equals("-1") || currentSymbolSelected.equals("NONE")) return;
+
         Rectangle r;
         if (currentRectSelected != null && !rectMap.isEmpty() && rectMap.get(currentIndexSelected) == currentRectSelected)
             r = rectMap.get(currentIndexSelected);
         else {
-            r = new Rectangle();
-            r.setId("annotationRect");
-            r.getStyleClass().add( SELECTED_RECT_CLASS_FLAG );
-            
-            String rectColor = colorMap.get(currentSymbolSelected);
-            r.setStyle("-fx-stroke:" + rectColor + "; -fx-fill:" + rectColor + ";");
-
-            rectMap.put(currentIndexSelected, r);
-            paneCanvas.getChildren().add(r);
+            r = createRectangle();
         }
 
         r.setX(x);
@@ -128,6 +185,28 @@ public class AnnotationsManager {
         initY = y;
 
         currentRectSelected = r;
+    }
+
+    /**
+     * Crée un rectangle (sans définir sa position ni sa taille)
+     * Ajoute les infos nécéssaires sur le rectangle (son id + styleClass)
+     * Défini la couleur aléatoire du rectangle
+     * Puis l'affiche dans le paneCanvas
+     * 
+     * @return Le rectangle crée (ce qui permet de définir la position et taille par la suite)
+     */
+    private Rectangle createRectangle() {
+        Rectangle r = new Rectangle();
+        r.setId("annotationRect");
+        r.getStyleClass().add( SELECTED_RECT_CLASS_FLAG );
+        
+        String rectColor = colorMap.get(currentSymbolSelected);
+        r.setStyle("-fx-stroke:" + rectColor + "; -fx-fill:" + rectColor + ";");
+
+        rectMap.put(currentIndexSelected, r);
+        paneCanvas.getChildren().add(r);
+
+        return r;
     }
 
     /**
@@ -149,6 +228,7 @@ public class AnnotationsManager {
      * @param btnTxt le symbole associé au Bouton de transcription
      */
     public void symbolBtnOnClick(int btnIndex, String btnTxt) {
+        if (!canEdit) return;
         if (!currentIndexSelected.equals("-1") && rectMap.containsKey(currentIndexSelected)) {
             rectMap.get(currentIndexSelected).getStyleClass().remove( SELECTED_RECT_CLASS_FLAG );
         }
@@ -168,4 +248,6 @@ public class AnnotationsManager {
         else 
             currentRectSelected = null;
     }
+
+    public void setCanEdit(boolean value) { this.canEdit = value; }
 }

@@ -1,6 +1,7 @@
 package fr.univtln.m1infodid.projet_s2.frontend.javafx.controller;
 
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.SceneType;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.ListeAnnotationController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,6 +24,7 @@ import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.Tran
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.manager.AnnotationsManager;
 import fr.univtln.m1infodid.projet_s2.frontend.server.Verification;
 import fr.univtln.m1infodid.projet_s2.frontend.Facade;
+import fr.univtln.m1infodid.projet_s2.frontend.Facade.ROLE;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.TradController;
 
 @Slf4j
@@ -42,6 +44,7 @@ public class PageVisualisationController implements Initializable {
     private TextField inputBar;
     @FXML
     private Pane paneCanvas;
+    @FXML private Button saveBtn;
 
     @FXML
     private Parent traduction;
@@ -58,6 +61,11 @@ public class PageVisualisationController implements Initializable {
     @FXML
     private AlertController alertController;
 
+    @FXML private Parent listeAnnotation;
+    @FXML private ListeAnnotationController listeAnnotationController;
+
+    @FXML private Button newAnnotationBtn;
+
     private String idEpigraphie;
 
     private AnnotationsManager annotationsManager;
@@ -68,12 +76,13 @@ public class PageVisualisationController implements Initializable {
         plaqueImg.fitWidthProperty().bind(plaqueAnchor.widthProperty());
         plaqueImg.fitHeightProperty().bind(plaqueAnchor.heightProperty());
         annotationsManager = AnnotationsManager.getInstance();
-        annotationsManager.initialize(paneCanvas, plaqueImg);
+        annotationsManager.initialize(paneCanvas, plaqueImg, transcriptionController);
         inputBar.setText("");
         inputBar.setOnAction(e -> numFicheBtnOnClick());
         Platform.runLater(() -> anchorPane.requestFocus());
         anchorPane.widthProperty().addListener((obs, oldValue, newValue) -> alertController.setScreenWidth(newValue.doubleValue()));
         setupProfileButton();
+
     }
 
     private void setupProfileButton() {
@@ -98,10 +107,34 @@ public class PageVisualisationController implements Initializable {
         traductionController.displayTranslation(tradTxt);
         transcriptionController.setup(id, plaqueTxt);
         setupProfileButton();
+        setupSaveBtn();
+        listeAnnotationController.initialize( Facade.renvoiAnnotation(Integer.parseInt(id)) ); //problème : à bouger dans la méthode setupVisualEpigraphe (pour prévoir l'actualiser d'une autre épigraphie) et Facade.renvoiAnnotation doit prendre idEpigraphie en paramètre
+
         //obtiens l'image et l'affiche
         if (imgUrl.length() == 0) return; //prévoir une image par défaut ou erreur si jamais l'image est introuvable ?
         Image img = new Image(imgUrl);
         plaqueImg.setImage(img);
+    }
+
+    public void setupSaveBtn() {
+        boolean roleCheck = Facade.getRole() != ROLE.VISITEUR;
+
+        String annMail = annotationsManager.getImportedEmail();
+        if (annMail.isEmpty() || annMail.isBlank()) {
+            saveBtn.setVisible( roleCheck );
+            newAnnotationBtn.setVisible( roleCheck );
+            return;
+        }
+
+        if (!roleCheck) {
+            saveBtn.setVisible( roleCheck );
+            newAnnotationBtn.setVisible( roleCheck );
+            return;
+        }
+
+        boolean mailCheck = Facade.getEmail().equals(annMail);
+        saveBtn.setVisible( mailCheck );
+        newAnnotationBtn.setVisible( !mailCheck);
     }
 
     /**
@@ -128,6 +161,10 @@ public class PageVisualisationController implements Initializable {
 
     @FXML
     private void saveAnnotationsBtnOnClick() {
+        if (Facade.getRole() == ROLE.VISITEUR) return;
+        boolean annMailCheck = !annotationsManager.getImportedEmail().isBlank() || !annotationsManager.getImportedEmail().isEmpty();
+        boolean notEqualMail = !Facade.getEmail().equals(annotationsManager.getImportedEmail());
+        if (annMailCheck && notEqualMail) return;
         int codeHttp = Facade.postAnnotations(idEpigraphie, annotationsManager.getAnnotationsRectMap());
         switch (codeHttp){
             case 401:
@@ -141,6 +178,13 @@ public class PageVisualisationController implements Initializable {
                 alertController.showAlert("Echec de l'envoi:"+codeHttp);
                 break;
         }
+    }
+
+    @FXML
+    private void newAnnotationBtnOnClick() {
+        annotationsManager.reset();
+        setupSaveBtn();
+        transcriptionController.updateTranscriptionBtnsColor();
     }
 
     public AlertController getAlertController() {

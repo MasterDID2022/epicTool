@@ -3,6 +3,7 @@ package fr.univtln.m1infodid.projet_s2.backend.DAO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.univtln.m1infodid.projet_s2.backend.model.Annotation;
 import fr.univtln.m1infodid.projet_s2.backend.model.Polygone;
+import fr.univtln.m1infodid.projet_s2.backend.model.Utilisateur;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,13 +51,20 @@ class AnnotationDAOTest extends AnnotationDAOTestManager {
     @Test
     void persistAnnotationTest () {
         Annotation annotation = Annotation.of(33);
-        List<Polygone> l = annotation.getListCoordonesPoly();
-        l.add(Polygone.create(0, 0, 1, 2));
+        Map<Integer, Polygone> l = annotation.getListCoordonesPoly();
+        l.put(0, Polygone.create(0, 0, 1, 2));
+        l.put(1, Polygone.create(0, 0, 1, 2));
+
         annotation.setListCoordonesPoly(l);
         try (EntityManagerFactory emf = Persistence.createEntityManagerFactory("EpiPU"); EntityManager em = emf.createEntityManager(); AnnotationDAO annotationDAO = AnnotationDAO.create(em)) {
+            UtilisateurDAO userDao = UtilisateurDAO.create(emf.createEntityManager());
+            //annotation.setUtilisateur(userDao.findAll().get(0));
             Assertions.assertDoesNotThrow(() -> annotationDAO.persist(annotation));
-            Assertions.assertDoesNotThrow(() -> annotationDAO.remove(annotation));
+            ObjectMapper objectMapper = new ObjectMapper();
 
+            System.err.println(objectMapper.writeValueAsString(annotation));
+
+            Assertions.assertDoesNotThrow(() -> annotationDAO.remove(annotation));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -64,6 +73,6 @@ class AnnotationDAOTest extends AnnotationDAOTestManager {
     @Test
     void GetAnnotationFromJSONTest () {
         ObjectMapper mapper = new ObjectMapper();
-        Assertions.assertDoesNotThrow(() -> mapper.readValue("{\"idEpigraphe\":33,\"listePoly\":[[0.0,0.0,1.0,2.0]]}]}", Annotation.class));
+        Assertions.assertDoesNotThrow(() -> mapper.readValue("{\"epigraphe\":33,\"email\":\"test@test.fr\",\"listCoordonesPoly\":{\"0\":[0.0,0.0,1.0,2.0],\"1\":[0.0,0.0,1.0,2.0]}}", Annotation.class));
     }
 }

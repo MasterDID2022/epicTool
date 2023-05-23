@@ -8,34 +8,45 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "idEpigraphe", "iduser" }) })
 public class Annotation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonIgnore
     private int idAnnotation;
 
     @ManyToOne
     @JoinColumn(name = "idEpigraphe",nullable = false)
-    @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
-    @JsonIdentityReference(alwaysAsId=true)
+    @JsonIgnore
     private Epigraphe epigraphe;
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name="iduser")
+    @JsonIgnore
+    private Utilisateur utilisateur;
+    @JsonProperty("email")
+    public String getEmail () {
+        return utilisateur != null ? utilisateur.getEmail() : "test@test.fr";
+    }
+@JsonProperty("idEpigraphe")
+    public int getIdEpigraphe () {
+        return epigraphe.getId();
+    }
+
     @ElementCollection
-    private List<Polygone> listCoordonesPoly = new ArrayList<>();
-
-
+    @Column(nullable = false)
+    private Map<Integer,Polygone> listCoordonesPoly = new HashMap<>();
     @JsonCreator
-    public Annotation(@JsonProperty("idEpigraphe") Integer id,
-                      @JsonProperty("listePoly") List<Polygone> listpoly) {
+    public Annotation(@JsonProperty("idEpigraphe") Integer epiId,
+                      @JsonProperty("email") String userEmail,
+                      @JsonProperty("listePoly") Map<Integer,Polygone> listpoly) {
         this.listCoordonesPoly = listpoly;
-        Facade.updateEpigraphe(this,id);
+        Facade.updateEpigraphe(this,epiId,userEmail);
   }
 
     /**
@@ -76,12 +87,14 @@ public class Annotation {
     @Override
     public boolean equals ( Object o ) {
         if (this == o) return true;
-        if (!(o instanceof Annotation annotation)) return false;
-        return Objects.equals(getIdAnnotation(), annotation.getIdAnnotation());
+        if (o == null || getClass() != o.getClass()) return false;
+        Annotation that = (Annotation) o;
+        return this.idAnnotation == that.idAnnotation ||
+                Objects.equals(epigraphe, that.epigraphe) && Objects.equals(utilisateur, that.utilisateur);
     }
 
     @Override
     public int hashCode () {
-        return getClass().hashCode();
+        return Objects.hash(epigraphe, utilisateur);
     }
 }

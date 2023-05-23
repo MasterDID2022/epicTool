@@ -1,22 +1,28 @@
 package fr.univtln.m1infodid.projet_s2.backend;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.univtln.m1infodid.projet_s2.backend.exceptions.ListeVide;
+import fr.univtln.m1infodid.projet_s2.backend.model.Annotation;
 import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
 import fr.univtln.m1infodid.projet_s2.backend.model.Utilisateur;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-import javax.mail.*;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import org.w3c.dom.Document;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static fr.univtln.m1infodid.projet_s2.backend.SI.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,8 +32,7 @@ class SITest {
 	String xmlUrl = "http://ccj-epicherchel.huma-num.fr/interface/fiche_xml2.php?id=" + id;
 	List<List<String>> contentdImageEtText = SI.extractContentFromXML(id, xmlUrl);
 
-	SITest() throws Exception {
-	}
+
 
 	@Test
 	void testGetImgUrlWithValidParameters() {
@@ -59,25 +64,25 @@ class SITest {
 	}
 
 	@Test
-	public void testGetXMLFromUrl() throws Exception {
+	void testGetXMLFromUrl () throws Exception {
 		String xmlUrl = "http://ccj-epicherchel.huma-num.fr/interface/phototheque/340/113594.jpg";
 		InputStream result = SI.getXMLFromUrl(xmlUrl);
 		assertNotNull(result);
 	}
 
 	@Test
-	public void testCreateXMLDoc() throws ParserConfigurationException, SAXException, IOException {
+	void testCreateXMLDoc () throws ParserConfigurationException, SAXException, IOException {
 		String xml = "<root><element>test</element></root>";
 		InputStream inputStream = new ByteArrayInputStream(xml.getBytes());
 
 		Document result = SI.createXMLDoc(inputStream);
 		assertNotNull(result);
 
-		assertEquals(result.getDocumentElement().getNodeName(),"root");
+		assertEquals("root", result.getDocumentElement().getNodeName());
 	}
 
 	@Test
-	public void testExtraction() throws ParserConfigurationException, IOException, SAXException {
+	void testExtraction () throws ParserConfigurationException, IOException, SAXException {
 		List<List<String>> contentList = new ArrayList<>();
 		List<String> transcriptionList = new ArrayList<>();
 		String xmlString = "<root><persName>Adaline</persName></root>";
@@ -94,12 +99,14 @@ class SITest {
 	}
 
 	@Test
-	public void testExtractFromBalise() throws ParserConfigurationException, SAXException, IOException {
-		String xmlString = "<root>\n" +
-				"  <test1 type=\"translation\">Contenu 1</test1>\n" +
-				"  <test2 when=\"date\">Contenu 2</test2>\n" +
-				"  <persName>Adaline</persName>\n" +
-				"</root>\n";
+	void testExtractFromBalise () throws ParserConfigurationException, SAXException, IOException {
+		String xmlString = """
+				<root>
+				  <test1 type="translation">Contenu 1</test1>
+				  <test2 when="date">Contenu 2</test2>
+				  <persName>Adaline</persName>
+				</root>
+				""";
 		InputStream inputStream = new ByteArrayInputStream(xmlString.getBytes());
 		Document doc = SI.createXMLDoc(inputStream);
 
@@ -171,8 +178,9 @@ class SITest {
 		assertEquals(properties, properties_r);
 		// sendMail(true, Formulaire.of(0,"","","projetsdid@hotmail.com","",""));
 	}
+
 	@Test
-	public void testRecupereUtilisateurs() {
+	void testRecupereUtilisateurs () {
 		String result = SI.recupereUtilisateurs();
 		assertNotNull(result);
 		assertFalse(result.isEmpty());
@@ -197,5 +205,13 @@ class SITest {
 		String expectedJson = "[\"{\\\"id\\\": \\\"1\\\", \\\"email\\\": \\\"gg@gg.fr\\\"}\",\"{\\\"id\\\": \\\"2\\\", \\\"email\\\": \\\"gg1@gg.fr\\\"}\"]";
 		assertEquals(expectedJson, json);
 	}
-
+@Test
+	void annotationTest() {
+	Annotation annotation = Annotation.of(22);
+	ObjectMapper objectMapper = new ObjectMapper();
+	AtomicReference<String> text = new AtomicReference<>();
+	assertDoesNotThrow(() -> text.set(objectMapper.writeValueAsString(annotation)));
+	System.err.println(text.get());
+	assertDoesNotThrow(() -> objectMapper.readValue(text.get(), Annotation.class) );
+}
 }

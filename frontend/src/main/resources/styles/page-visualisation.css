@@ -98,3 +98,18 @@
     -fx-stroke-width: 8px;
     -fx-stroke: red;
 }
+
+#newAnnotationBtn {
+    -fx-background-color: -fx-dark-blue;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-border-color: -fx-white;
+    -fx-text-fill: -fx-white;
+
+    -fx-font-family: "Product Sans Bold";
+    -fx-font-size: 15px;
+}
+
+#newAnnotationBtn:hover {
+    -fx-background-color: -fx-blue;
+}

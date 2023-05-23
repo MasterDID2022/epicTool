@@ -1,5 +1,8 @@
 package fr.univtln.m1infodid.projet_s2.frontend;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -11,6 +14,7 @@ import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.PageVisualisati
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.SceneController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.SceneController.SceneData;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion.RecapDemandeController;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.ListeAnnotationData;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion.GestionFormulaireController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.InfosAnnotateurController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.GestionAnnotateurController;
@@ -18,6 +22,7 @@ import static fr.univtln.m1infodid.projet_s2.frontend.server.Api.convertJsonToLi
 
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotations.AffAnnotationController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotations.GestionAnnotationsController;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.manager.AnnotationsManager;
 import fr.univtln.m1infodid.projet_s2.frontend.server.Api;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -62,6 +67,9 @@ public class Facade {
     private static SceneData<InfosAnnotateurController> infosAnnotateur;
     private static SceneData<GestionAnnotationsController> annotations;
     private static SceneData<AffAnnotationController> annotation;
+
+    private static AnnotationsManager annotationsManager;
+
     public static void initStage(Stage primaryStage) {
         if (Facade.primaryStage != null) return;
         Facade.primaryStage = primaryStage;
@@ -106,20 +114,23 @@ public class Facade {
             log.error("ERR: Token vide");
             return 401;
         }
+        Map<Integer,List<Double>> annotationMap = new HashMap<>(rectAnnotationsMap.size());
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode jsonForm = mapper.createObjectNode();
         jsonForm.put("token", token);
+        jsonForm.put("email",getEmail());
         jsonForm.put("idEpigraphe", idEpigraphie);
-        ArrayNode annotations = jsonForm.putArray("listePoly");
         for (var entry : rectAnnotationsMap.entrySet()) {
             Rectangle r = entry.getValue();
-            ArrayNode rectangle = mapper.createArrayNode();
-            rectangle.add(r.getX());
-            rectangle.add(r.getY());
-            rectangle.add(r.getWidth());
-            rectangle.add(r.getHeight());
-            annotations.add(rectangle);
+            Integer number = Integer.parseInt(entry.getKey());
+            List<Double> coords = new ArrayList<>(4);
+            coords.add(r.getX());
+            coords.add(r.getY());
+            coords.add(r.getWidth());
+            coords.add(r.getHeight());
+            annotationMap.put(number,coords);
         }
+        jsonForm.putPOJO("listePoly",annotationMap);
         return Api.postAnnotations(jsonForm.toString());
     }
 
@@ -456,6 +467,45 @@ public class Facade {
         token = "";
         role = ROLE.VISITEUR;
         showScene(SceneType.MENU);
+    }
+
+    public static List<String> renvoiAnnotation(int id ) {
+        String jsonString = Api.getAnnotationsOfEpigraph(id);
+
+        log.info("Annotation reçue en façade : " + jsonString);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode rootNode = objectMapper.readTree(jsonString);
+            List<String> jsonList = new ArrayList<>();
+            if (rootNode.isArray()) {
+                Iterator<JsonNode> elements = rootNode.elements();
+                while(elements.hasNext()) {
+                    JsonNode elementNode = elements.next();
+                    jsonList.add(elementNode.toString());
+                }
+            }
+            return jsonList;
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Actualise l'affichage des annotations sur la page de visualisation d'épigraphie
+     * Autorise l'édition de l'annotation si l'utilisateur connecté 
+     * consulte une de ses annotations.
+     * 
+     * @param annotationData les données d'annotation à afficher
+     */
+    public static void updateVisualAnnotationEpigraphie(ListeAnnotationData annotationData) {
+        if (annotationsManager == null) annotationsManager = AnnotationsManager.getInstance();
+
+        //autorise l'édition d'annotation si l'utilisateur consulte son annotation
+        annotationsManager.setCanEdit( annotationData.getEmail().equals(getEmail()) );
+
+        //update affichage annotation (qui va construire tout les rectangles etc)
+        annotationsManager.importAnnotation(annotationData);
+        visuEpiData.controller().setupSaveBtn();
     }
 
 }

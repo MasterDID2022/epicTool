@@ -7,6 +7,7 @@ import java.util.List;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.manager.AnnotationsManager;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -76,6 +77,8 @@ public class TranscriptionController{
             annotationsManager.reset();
         }
 
+        annotationsManager.setupEditBasedOnRole();
+
         symbolList = new ArrayList<>();
 
         if (transcriptions.size() > MAX_TRANSCRIPTION_LINE_COUNT){
@@ -103,10 +106,10 @@ public class TranscriptionController{
         }
 
         //par défaut, sélection du premier symbole
-        if (symbolList.size() > 1) {
+        /*if (symbolList.size() > 1) {
             annotationsManager.symbolBtnOnClick(0, symbolList.get(0));
             symbolBtnOnClick( ((Button)((HBox)transcriptionVBox.getChildren().get(0)).getChildren().get(0)) );
-        }
+        }*/
     }
 
     /**
@@ -175,7 +178,28 @@ public class TranscriptionController{
             lastSelectedButton.setStyle( lastSelectedButton.getStyle().replace("-fx-text-fill: " + btnColor + ";", "-fx-text-fill: -fx-white;") );
         }
         lastSelectedButton = btn;
+        setBtnColorFromAnnotation(btn, true);
+    }
+
+    public String getSymbolByIndex(int index) { return symbolList.get(index); }
+
+    public void updateTranscriptionBtnsColor() {
+        for (Node line : transcriptionVBox.getChildren()) {
+            HBox lineBox = (HBox) line;
+            for (Node child : lineBox.getChildren()) {
+                Button btn = (Button) child;
+                setBtnColorFromAnnotation(btn, false);
+            }
+        }
+
+        annotationsManager.setupEditBasedOnRole();
+    }
+
+    private void setBtnColorFromAnnotation(Button btn, boolean selected) {
         String btnColor = annotationsManager.getHexColorOfSymbol(btn.getText());
-        lastSelectedButton.setStyle("-fx-border-color:" + btnColor + "; -fx-text-fill: " + btnColor + ";");
+        if (!selected)
+            btn.setStyle("-fx-border-color:" + btnColor + "; -fx-text-fill: -fx-white;");
+        else
+            btn.setStyle("-fx-border-color:" + btnColor + "; -fx-text-fill: " + btnColor + ";");
     }
 }

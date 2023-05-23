@@ -1,5 +1,4 @@
 package fr.univtln.m1infodid.projet_s2.backend.server;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.univtln.m1infodid.projet_s2.backend.DAO.UtilisateurDAO;
 import fr.univtln.m1infodid.projet_s2.backend.model.Utilisateur;
 import jakarta.persistence.EntityManager;
@@ -12,7 +11,6 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 
 import java.net.URI;
-
 /**
  * Class lanceur du serveur REST en contact avec la BD
  */
@@ -30,10 +28,15 @@ public class Lanceur {
             EntityManager em = emf.createEntityManager();
             try (UtilisateurDAO dao = UtilisateurDAO.create(em)) {
                 Utilisateur testUser = Utilisateur.of("test@test.fr", "1234");
-                dao.persist(testUser);
+                Utilisateur testUser2 = Utilisateur.of("test2@test.fr", "1234");
+
+                //dao.persist(testUser);
+                dao.persist(testUser2);
+
                 log.error("User at init ="+testUser.toString());
                 if (dao.findByEmail(testUser.getEmail()).isEmpty()) {
                     dao.persist(testUser);
+
                 }
                 Utilisateur testAdmin = Utilisateur.of("admin@admin.fr", "1234");
                 testAdmin.setRole(Utilisateur.Role.GESTIONNAIRE);
@@ -53,7 +56,7 @@ public class Lanceur {
      *
      * @param args
      */
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("EpiPU");
         EntityManager em = emf.createEntityManager();
         final ResourceConfig rc = new ResourceConfig().packages("fr.univtln.m1infodid.projet_s2.backend.server");
@@ -61,5 +64,7 @@ public class Lanceur {
         addTestUser();
         log.info("l'API rest est active <C-c> pour la fermer");
         em.close();
-        emf.close();}
+        emf.close();
+    }
 }
+

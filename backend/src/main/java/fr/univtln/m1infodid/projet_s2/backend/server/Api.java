@@ -1,24 +1,25 @@
 package fr.univtln.m1infodid.projet_s2.backend.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.jsonwebtoken.Claims;
-import fr.univtln.m1infodid.projet_s2.backend.SI;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.*;
-
-import java.security.Key;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.univtln.m1infodid.projet_s2.backend.DAO.FormulaireDAO;
 import fr.univtln.m1infodid.projet_s2.backend.DAO.UtilisateurDAO;
-import fr.univtln.m1infodid.projet_s2.backend.model.*;
+import fr.univtln.m1infodid.projet_s2.backend.Facade;
+import fr.univtln.m1infodid.projet_s2.backend.SI;
+import fr.univtln.m1infodid.projet_s2.backend.model.Annotation;
+import fr.univtln.m1infodid.projet_s2.backend.model.Epigraphe;
+import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
+import fr.univtln.m1infodid.projet_s2.backend.model.Utilisateur;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import io.jsonwebtoken.Jwts;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
@@ -26,6 +27,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 
+import java.security.Key;
 import java.util.*;
 
 
@@ -35,6 +37,7 @@ import java.util.*;
 @Slf4j
 @Path("epicTools")
 public class Api {
+    private static final long EXPIRATION_TIME = 60000;
     private Key key = SI.generateKey();
 
 
@@ -102,6 +105,7 @@ public class Api {
             throw new NotAuthorizedException("Token absent ou invalide");
         }
         try {
+            log.error("back"+annotationJson);
             Optional<Annotation> annotation = createAnnotation(cleanAnnotation.get());
             if (annotation.isPresent()){
                 return Response.ok().build();
@@ -112,11 +116,26 @@ public class Api {
 		return Response.notModified().build();
 	}
 
-    /**
-     * Methode de reponse pour une demande du front sur un epigraphe d'ID
-     *
-     * @param id d'un epigraphe
-     */
+    @GET
+    @Path("epigraphe/annotation/{id : \\d+}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response sendAnnotationsOfEpigraph ( @PathParam("id") String id ) {
+        List<Annotation> annotations = Facade.getAnnotationofEpigraphe(Integer.parseInt(id));
+        log.error("Annot" + annotations.toString());
+
+        if (annotations.isEmpty()) {
+            return Response.noContent().build();
+        } else {
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                return Response.ok(mapper.writeValueAsString(annotations)).build();
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+    }
+
     @GET
     @Path("epigraphe/{id}")
     public Response sendEpigraphe(@PathParam("id") String id) {
@@ -190,7 +209,7 @@ public class Api {
         String token = Jwts.builder()
                 .setClaims(claims)
                 .signWith(key,SignatureAlgorithm.HS256)
-                .setExpiration(new Date(System.currentTimeMillis() + 20000))
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .compact();
         log.info(token);
         return token;
