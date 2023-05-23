@@ -19,6 +19,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Entity
@@ -41,7 +42,8 @@ public class Utilisateur {
 
     private String mdp;
     private String sale;
-
+    @OneToMany(mappedBy = "utilisateur")
+    private Set<Annotation> annotations;
     private Utilisateur(String email, String mdp) {
         generateSalt();
         this.email = email;

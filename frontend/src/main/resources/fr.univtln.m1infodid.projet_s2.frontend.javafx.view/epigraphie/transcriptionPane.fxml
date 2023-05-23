@@ -6,17 +6,17 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="transcriptionPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.TranscriptionController">
+<AnchorPane fx:id="transcriptionPane" pickOnBounds="false" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.TranscriptionController">
    <children>
-      <VBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="TOP_CENTER" pickOnBounds="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="40.0">
+            <HBox alignment="CENTER" pickOnBounds="false" prefHeight="40.0">
                <children>
-                  <Label text="Épigraphie n°" />
-                  <Label fx:id="idLabel" layoutX="149.0" layoutY="22.0" text="NUM" />
+                  <Label pickOnBounds="false" text="Épigraphie n°" />
+                  <Label fx:id="idLabel" layoutX="149.0" layoutY="22.0" pickOnBounds="false" text="NUM" />
                </children>
             </HBox>
-            <VBox fx:id="transcriptionVBox" alignment="TOP_CENTER" spacing="5.0">
+            <VBox fx:id="transcriptionVBox" alignment="TOP_CENTER" pickOnBounds="false" spacing="5.0">
                <VBox.margin>
                   <Insets />
                </VBox.margin>

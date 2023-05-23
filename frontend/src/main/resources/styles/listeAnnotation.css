@@ -1,0 +1,44 @@
+
+#backgroundAnnotation{
+    -fx-background-color: -fx-blue;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+ScrollPane {
+    -fx-background-color: -fx-dark-blue;
+}
+
+#listeAnnotateurView{
+    -fx-background-color: -fx-blue;
+}
+
+
+.list-view .list-cell {
+    -fx-background-color: -fx-dark-blue;
+    -fx-text-fill: -fx-white;
+}
+
+.list-view .list-cell:filled {
+    -fx-background-color: -fx-dark-blue;
+    -fx-text-fill: -fx-white;
+}
+.list-cell Label {
+    -fx-text-fill: -fx-white;
+}
+
+#Button-Consulter{
+    -fx-cursor: hand;
+    -fx-background-color: -fx-dark-blue;
+    -fx-text-fill: -fx-white;
+    -fx-border-width: 0px;
+}
+#Button-Consulter:hover{
+    -fx-cursor: hand;
+    -fx-background-color: -fx-blue;
+    -fx-text-fill: -fx-white;
+    -fx-border-width: 1px;
+    -fx-border-color: -fx-white;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}

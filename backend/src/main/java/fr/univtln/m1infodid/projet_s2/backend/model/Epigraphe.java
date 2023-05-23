@@ -24,7 +24,7 @@ public class Epigraphe {
     private String name;
     @ElementCollection
     private List<String> text;
-    @OneToMany(mappedBy = "epigraphe", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "epigraphe", fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<Annotation> annotations = new HashSet<>();
     private Epigraphe ( int id, String imgUrl, Date date, LocalDate fetchDate, String translation, String name, List<String> text, Collection<Annotation> annotations ) {
         this.id = id;

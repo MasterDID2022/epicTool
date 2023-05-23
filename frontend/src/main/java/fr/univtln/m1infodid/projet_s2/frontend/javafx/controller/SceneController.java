@@ -85,7 +85,7 @@ public final class SceneController {
      * @throws IOException renvoi une erreur si le fichier FXML du menu n'a pas pu être chargé
      */
     public static <T> SceneData<T> switchToPageVisualisation ( Stage stage ) throws IOException {
-        return sceneSwitchAndLoad(stage, "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/page-visualisation.fxml", "/styles/page-visualisation.css", "/styles/transcription.css", "/styles/traduction.css", PATH_TO_ALERT_CSS); }
+        return sceneSwitchAndLoad(stage, "/fr.univtln.m1infodid.projet_s2.frontend.javafx.view/page-visualisation.fxml", "/styles/page-visualisation.css", "/styles/transcription.css", "/styles/traduction.css", PATH_TO_ALERT_CSS, "/styles/listeAnnotation.css"); }
 
     /**
      * Cette méthode permet de changer de scène vers la page du formulaire
