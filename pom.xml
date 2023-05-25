@@ -34,6 +34,7 @@
         <hikaricp.version>5.0.1</hikaricp.version>
         <slf4j.version>2.0.5</slf4j.version>
         <junit.version>5.9.2</junit.version>
+        <jts.version>1.19.0</jts.version>
         <postgresql.version>42.5.4</postgresql.version>
         <javax-mail.version>1.6.2</javax-mail.version>
         <surefire.version>3.0.0</surefire.version>
@@ -112,6 +113,16 @@
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
                 <version>${junit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.orm</groupId>
+                <artifactId>hibernate-spatial</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts-core</artifactId>
+            <version>${jts.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.zaxxer</groupId>
