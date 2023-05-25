@@ -83,7 +83,7 @@ public class ListeAnnotationController {
                 hbox.setSpacing(15);
                 HBox.setHgrow(btnBox, Priority.ALWAYS);
 
-                userConsulterButton.setOnAction(event -> consulterAnnotation());
+                userConsulterButton.setOnAction(event -> consulterLesAnnotation());
                 userConsulterButton.setId("Button-Consulter");
             }
 
@@ -91,7 +91,7 @@ public class ListeAnnotationController {
             /**
              * Renvoie vers les infos correspondant au mail selectionné
              */
-        private void consulterAnnotation() {
+        private void consulterLesAnnotation() {
             ListeAnnotationData itemData = getItem(); //annotation selectionne
             //actualiser l'affichage de l'annotation actuel (AnnotationManager)
             Facade.updateVisualAnnotationEpigraphie(itemData);

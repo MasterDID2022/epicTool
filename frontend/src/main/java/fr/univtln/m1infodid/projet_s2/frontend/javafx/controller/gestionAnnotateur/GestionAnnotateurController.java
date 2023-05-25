@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.univtln.m1infodid.projet_s2.frontend.Facade;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.SceneType;
-import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.AlertController;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,10 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.util.Callback;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -30,7 +26,7 @@ import java.util.List;
 @Slf4j
 public class GestionAnnotateurController {
     @FXML
-    private ListView<List<String>> AnnotateurListView;
+    private ListView<List<String>> listListView;
     private static String emailSelectionne;
     private static String id;
 
@@ -76,20 +72,15 @@ public class GestionAnnotateurController {
 
     public void initialize(List<String> listePerAnnotateurs) {
         List<List<String>> listAnnotateurs = setListAnnotateurs(listePerAnnotateurs);
-        AnnotateurListView.getItems().addAll(listAnnotateurs);
+        listListView.getItems().addAll(listAnnotateurs);
 
-        AnnotateurListView.setCellFactory(new Callback<ListView<List<String>>, ListCell<List<String>>>() {
-            @Override
-            public ListCell<List<String>> call(ListView<List<String>> listView) {
-                return new AnnotateurCellList();
-            }
-        });
-        AnnotateurListView.getStyleClass().add("annotateur-list-view");
+        listListView.setCellFactory(listView -> new AnnotateurCellList());
+        listListView.getStyleClass().add("annotateur-list-view");
     }
 
 
     public void reset() {
-        AnnotateurListView.getItems().clear();
+        listListView.getItems().clear();
         GestionAnnotateurController.setEmailSelectionne("");
     }
 

@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.TranscriptionController;
@@ -86,15 +87,12 @@ public class PageVisualisationController implements Initializable {
     }
 
     private void setupProfileButton() {
-        switch (Facade.getRole()) {
-            case VISITEUR:
-                buttonProfileIcon.setId("buttonBack");
-                buttonProfileIcon.setText("<");
-                break;
-            default:
-                buttonProfileIcon.setId("profileButton");
-                buttonProfileIcon.setText(Facade.getEmail().substring(0, 1).toUpperCase());
-                break;
+        if (Objects.requireNonNull(Facade.getRole()) == ROLE.VISITEUR) {
+            buttonProfileIcon.setId("buttonBack");
+            buttonProfileIcon.setText("<");
+        } else {
+            buttonProfileIcon.setId("profileButton");
+            buttonProfileIcon.setText(Facade.getEmail().substring(0, 1).toUpperCase());
         }
     }
 
@@ -191,17 +189,17 @@ public class PageVisualisationController implements Initializable {
         return alertController;
     }
 
-    public void onClickProfileButton(ActionEvent actionEvent) {
+    public void onClickProfileButton() {
         Facade.disconnectUser();
     }
 
-    public void profileButtonExited(MouseEvent mouseEvent) {
+    public void profileButtonExited() {
         if (Facade.getRole().equals(Facade.ROLE.ANNOTATEUR)) {
             buttonProfileIcon.setText(Facade.getEmail().substring(0, 1).toUpperCase());
         }
     }
 
-    public void profileButtonEntered(MouseEvent mouseEvent) {
+    public void profileButtonEntered() {
         if (Facade.getRole().equals(Facade.ROLE.ANNOTATEUR)) {
             buttonProfileIcon.setText("X");
         }

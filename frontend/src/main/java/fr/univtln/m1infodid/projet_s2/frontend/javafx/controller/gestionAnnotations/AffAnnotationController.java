@@ -32,12 +32,6 @@ public class AffAnnotationController {
     public void reset() {
         setTitleText();
         annotationsListView.getItems().clear();
-        /*
-        if (listeAnnotations != null && !listeAnnotations.isEmpty()) {
-            for ( List<String> entry : listeAnnotations )
-                actuel.add( entry.get(0).split(":", 2)[1] );
-            annotationsListView.getItems().addAll(actuel);
-        }*/
         setupCellFactory();
         annotationsListView.getStyleClass().add("annotations-list-view");
     }
@@ -75,8 +69,6 @@ public class AffAnnotationController {
     }
 
     public class FormulaireListCell extends ListCell<String> {
-        private HBox hbox;
-        private Label texteLabel;
         private Button supprimerButton;
 
         public FormulaireListCell() {
@@ -87,8 +79,8 @@ public class AffAnnotationController {
         }
 
         private void createCellComponents() {
-            hbox = new HBox();
-            texteLabel = new Label();
+            HBox hbox = new HBox();
+            Label texteLabel = new Label();
             supprimerButton = new Button("Supprimer");
 
             HBox btnBox = new HBox(10, supprimerButton);
@@ -117,16 +109,13 @@ public class AffAnnotationController {
                         break;
                     }
                 }
-                //annotationsListView.getItems().remo.remove(annotationMail);
                 actuel.remove(annotationMail);
-
                 for (List<String> entry : listeAnnotations) {
                     if (entry.get(0).equals(actualIdEpigraphie + ":" + annotationMail)) {
                         listeAnnotations.remove(entry);
                         return;
                     }
                 }
-                //listeAnnotations.remove(actuel);// .get(getSelectedEpigraphieIndex()).remove(itemData);
             }
         }
 
@@ -144,19 +133,13 @@ public class AffAnnotationController {
                 elementsContainer.setAlignment(Pos.CENTER_LEFT);
                 Label label = new Label(item);
                 elementsContainer.getChildren().add(label);
-                /*
-                for (String element : item) {
-
-                    elementsContainer.getChildren().add(label);
-                }*/
-
-                Button supprimerButton = new Button("Supprimer");
-                supprimerButton.getStyleClass().add("supprimer-button");
-                supprimerButton.setOnAction(event -> supprimerAnnotation());
+                Button supprimerBtn = new Button("Supprimer");
+                supprimerBtn.getStyleClass().add("supprimer-button");
+                supprimerBtn.setOnAction(event -> supprimerAnnotation());
 
                 HBox.setHgrow(elementsContainer, Priority.ALWAYS);
 
-                mainContainer.getChildren().addAll(elementsContainer, supprimerButton);
+                mainContainer.getChildren().addAll(elementsContainer, supprimerBtn);
                 setGraphic(mainContainer);
             }
         }
