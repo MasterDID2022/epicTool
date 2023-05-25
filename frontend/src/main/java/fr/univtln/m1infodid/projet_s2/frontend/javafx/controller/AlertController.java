@@ -147,11 +147,4 @@ public class AlertController implements Initializable {
     public void showNoInternet () {
         showAlert("Pas de connexion internet, réessayez ultérieurement.");
     }
-
-    /**
-     * Montre une alerte pour un compte utilisateur non trouvé ou connexion échoué
-     */
-    public void showUserDontExist ( String mail ) {
-        showAlert("Aucun compte enregistré pour l'adresse mail " + mail);
-    }
 }

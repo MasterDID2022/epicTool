@@ -11,7 +11,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.util.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,9 +44,9 @@ public class GestionAnnotationsController {
         annotationListView.getStyleClass().add("annotation-list-view");
     }
 
-    public void reset() {
+    public void reset() {//NOSONAR
         annotationListView.getItems().clear();
-        epigraphieSelectionnee = null;
+        epigraphieSelectionnee = null; //NOSONAR
     }
 
     @FXML
@@ -55,7 +54,7 @@ public class GestionAnnotationsController {
         Facade.showScene(SceneType.HUB_GESTIONNAIRE);
     }
 
-    public class AnnotationListCell extends ListCell<List<String>> {
+    public static class AnnotationListCell extends ListCell<List<String>> {
         private Button consulterButton;
 
         public AnnotationListCell() {
@@ -88,8 +87,7 @@ public class GestionAnnotationsController {
         private void consulterAnnotation() {
             List<String> itemData = getItem();
             if (itemData != null && !itemData.isEmpty()) {
-                String numero = itemData.get(1);
-                epigraphieSelectionnee = numero;
+                epigraphieSelectionnee = itemData.get(1); //NOSONAR
             }
             Facade.showScene(SceneType.ANNOTATION);
         }

@@ -1,7 +1,6 @@
 package fr.univtln.m1infodid.projet_s2.frontend.javafx.controller;
 
-import
-        fr.univtln.m1infodid.projet_s2.frontend.Facade;
+import fr.univtln.m1infodid.projet_s2.frontend.Facade;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.SceneType;
 import fr.univtln.m1infodid.projet_s2.frontend.server.Verification;
 import javafx.application.Platform;
@@ -11,7 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
@@ -54,9 +53,9 @@ public class MenuController implements Initializable {
     }
 
     /**
-     * Méthode appelé lorsque le bouton de numéro de fiche est cliqué.
+     * Méthode appelée lorsque le bouton de numéro de fiche est cliqué.
      * Affiche une erreur si l'entrée de l'utilisateur n'est pas valide
-     * Sinon le numéro de fiche est récupérer et l'appli change vers l'écran d'épigraphie
+     * Sinon le numéro de fiche est récupéré et l'appli change vers l'écran d'épigraphie
      */
     @FXML
     private void numFicheBtnOnClick() {
