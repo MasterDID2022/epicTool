@@ -41,12 +41,7 @@ public class GestionAnnotationsController {
 
         annotationListView.getItems().addAll(listeAnnotations);
 
-        annotationListView.setCellFactory(new Callback<ListView<List<String>>, ListCell<List<String>>>() {
-            @Override
-            public ListCell<List<String>> call(ListView<List<String>> listView) {
-                return new AnnotationListCell();
-            }
-        });
+        annotationListView.setCellFactory(listView -> new AnnotationListCell());
         annotationListView.getStyleClass().add("annotation-list-view");
     }
 
@@ -61,8 +56,6 @@ public class GestionAnnotationsController {
     }
 
     public class AnnotationListCell extends ListCell<List<String>> {
-        private HBox hbox;
-        private Label texteLabel;
         private Button consulterButton;
 
         public AnnotationListCell() {
@@ -73,8 +66,8 @@ public class GestionAnnotationsController {
         }
 
         private void createCellComponents() {
-            hbox = new HBox();
-            texteLabel = new Label();
+            HBox hbox = new HBox();
+            Label texteLabel = new Label();
             consulterButton = new Button("Consulter");
             consulterButton.getStyleClass().add("consulter-button");
 
@@ -119,14 +112,14 @@ public class GestionAnnotationsController {
                     elementsContainer.getChildren().add(label);
                 }
 
-                Button consulterButton = new Button("consulter");
-                consulterButton.getStyleClass().add("consulter-button");
+                Button consulterBtn = new Button("consulter");
+                consulterBtn.getStyleClass().add("consulter-button");
 
-                consulterButton.setOnAction(event -> consulterAnnotation());
+                consulterBtn.setOnAction(event -> consulterAnnotation());
 
                 HBox.setHgrow(elementsContainer, Priority.ALWAYS);
 
-                mainContainer.getChildren().addAll(elementsContainer, consulterButton);
+                mainContainer.getChildren().addAll(elementsContainer, consulterBtn);
                 setGraphic(mainContainer);
             }
         }

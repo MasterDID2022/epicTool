@@ -104,12 +104,6 @@ public class TranscriptionController{
             }else
                 createHboxLine(words);            
         }
-
-        //par défaut, sélection du premier symbole
-        /*if (symbolList.size() > 1) {
-            annotationsManager.symbolBtnOnClick(0, symbolList.get(0));
-            symbolBtnOnClick( ((Button)((HBox)transcriptionVBox.getChildren().get(0)).getChildren().get(0)) );
-        }*/
     }
 
     /**

@@ -82,12 +82,7 @@ public class GestionFormulaireController {
         List<List<String>> listFormulaires = setListFormulaires(listPerFormulaire);
         formulaireListView.getItems().addAll(listFormulaires);
 
-        formulaireListView.setCellFactory(new Callback<ListView<List<String>>, ListCell<List<String>>>() {
-            @Override
-            public ListCell<List<String>> call(ListView<List<String>> listView) {
-                return new FormulaireListCell();
-            }
-        });
+        formulaireListView.setCellFactory(listView -> new FormulaireListCell());
         formulaireListView.getStyleClass().add("formulaire-list-view");
     }
 
@@ -136,7 +131,7 @@ public class GestionFormulaireController {
                 try {
                     validerFormulaire();
                 } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
+                    log.error("Err: parsing formulaire");
                 }
             });
             supprimerButton.setOnAction(event -> supprimerFormulaire());
