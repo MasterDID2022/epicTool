@@ -1,9 +1,14 @@
 package fr.univtln.m1infodid.projet_s2.frontend.javafx.controller;
 
+import fr.univtln.m1infodid.projet_s2.frontend.Facade;
+import fr.univtln.m1infodid.projet_s2.frontend.Facade.ROLE;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.SceneType;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.ListeAnnotationController;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.TradController;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.TranscriptionController;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.manager.AnnotationsManager;
+import fr.univtln.m1infodid.projet_s2.frontend.server.Verification;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -11,7 +16,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import lombok.extern.slf4j.Slf4j;
@@ -21,17 +25,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.TranscriptionController;
-import fr.univtln.m1infodid.projet_s2.frontend.javafx.manager.AnnotationsManager;
-import fr.univtln.m1infodid.projet_s2.frontend.server.Verification;
-import fr.univtln.m1infodid.projet_s2.frontend.Facade;
-import fr.univtln.m1infodid.projet_s2.frontend.Facade.ROLE;
-import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.TradController;
-
 @Slf4j
-/**
- * Classe logique de la vue visualisation d'épigraphe
- */
 public class PageVisualisationController implements Initializable {
     @FXML
     private Button buttonProfileIcon;
@@ -125,8 +119,8 @@ public class PageVisualisationController implements Initializable {
         }
 
         if (!roleCheck) {
-            saveBtn.setVisible( roleCheck );
-            newAnnotationBtn.setVisible( roleCheck );
+            saveBtn.setVisible(false);
+            newAnnotationBtn.setVisible(false);
             return;
         }
 
@@ -136,9 +130,9 @@ public class PageVisualisationController implements Initializable {
     }
 
     /**
-     * Méthode appelé lorsque le bouton de numéro de fiche est cliqué.
+     * Méthode appelée au clic sur  le bouton de numéro de fiche.
      * Affiche une erreur si l'entrée de l'utilisateur n'est pas valide
-     * Sinon le numéro de fiche est récupérer et l'appli actualise les infos d'épigraphie
+     * Sinon le numéro de fiche est récupéré et l'appli actualise les infos d'épigraphie
      */
     @FXML
     private void numFicheBtnOnClick() {
@@ -164,17 +158,13 @@ public class PageVisualisationController implements Initializable {
         boolean notEqualMail = !Facade.getEmail().equals(annotationsManager.getImportedEmail());
         if (annMailCheck && notEqualMail) return;
         int codeHttp = Facade.postAnnotations(idEpigraphie, annotationsManager.getAnnotationsRectMap());
-        switch (codeHttp){
-            case 401:
+        switch (codeHttp) {
+            case 401 -> {
                 Facade.showScene(SceneType.HOME);
                 Facade.showSessionExpired();
-                break;
-            case 200:
-                alertController.showAnnotationSuccess();
-                break;
-            default:
-                alertController.showAlert("Echec de l'envoi:"+codeHttp);
-                break;
+            }
+            case 200 -> alertController.showAnnotationSuccess();
+            default -> alertController.showAlert("Échec de l'envoi:" + codeHttp);
         }
     }
 
