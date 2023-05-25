@@ -395,8 +395,8 @@ public class Facade {
             }
         } catch (JsonProcessingException e) {
             log.error("Err: parsing annotation");
+            return;
         }
-
         gestion.initialize(liste);
     }
 
@@ -518,6 +518,7 @@ public class Facade {
             return jsonList;
         } catch (JsonProcessingException e) {
             log.error("Err: parsing annotation");
+            return new ArrayList<>();
         }
     }
 
