@@ -116,22 +116,18 @@ public class Api {
      */
     public static String postFormulaire(String formulaireJson) {
         String formJson = "";
-        try {
-            try (Client client = ClientBuilder.newClient()) {
-                Entity<String> entity = Entity.entity(formulaireJson, MediaType.APPLICATION_JSON);
-                Response response = client.target(URI_API_BACKEND + "formulaire" )
-                        .request(MediaType.APPLICATION_JSON)
-                        .post(entity);
-                if (response.getStatus() != 200) {
-                    log.error(HTTP_ERROR_MSG+ response.getStatus());
-                }
-                formJson = response.readEntity(String.class);
-            } catch (Exception e) {
-                log.error(e.toString());
-                log.warn("Erreur lors de l'envoi du formulaire");
+        try (Client client = ClientBuilder.newClient()) {
+            Entity<String> entity = Entity.entity(formulaireJson, MediaType.APPLICATION_JSON);
+            Response response = client.target(URI_API_BACKEND + "formulaire" )
+                    .request(MediaType.APPLICATION_JSON)
+                    .post(entity);
+            if (response.getStatus() != 200) {
+                log.error(HTTP_ERROR_MSG+ response.getStatus());
             }
+            formJson = response.readEntity(String.class);
         } catch (Exception e) {
-            log.warn(JSON_ERROR_MSG);
+            log.error(e.toString());
+            log.warn("Erreur lors de l'envoi du formulaire");
         }
         return formJson;
     }

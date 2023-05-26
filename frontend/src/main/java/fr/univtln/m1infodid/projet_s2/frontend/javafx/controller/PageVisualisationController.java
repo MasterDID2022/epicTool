@@ -84,10 +84,15 @@ public class PageVisualisationController implements Initializable {
         if (Objects.requireNonNull(Facade.getRole()) == ROLE.VISITEUR) {
             buttonProfileIcon.setId("buttonBack");
             buttonProfileIcon.setText("<");
-        } else {
-            buttonProfileIcon.setId("profileButton");
-            buttonProfileIcon.setText(Facade.getEmail().substring(0, 1).toUpperCase());
+            buttonProfileIcon.setMinWidth(43);
+            buttonProfileIcon.setMinHeight(43);
+            return;
         }
+        
+        buttonProfileIcon.setId("profileButton");
+        buttonProfileIcon.setText(Facade.getEmail().substring(0, 1).toUpperCase());
+        buttonProfileIcon.setMinWidth(80);
+        buttonProfileIcon.setMinHeight(80);
     }
 
     public void setupVisualEpigraphe(String id, String imgUrl, String tradTxt, List<String> plaqueTxt) {

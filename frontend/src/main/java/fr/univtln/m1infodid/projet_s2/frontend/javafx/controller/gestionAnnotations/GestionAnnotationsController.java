@@ -73,7 +73,7 @@ public class GestionAnnotationsController {
 
             HBox btnBox = new HBox(10, consulterButton);
             btnBox.setAlignment(Pos.CENTER_RIGHT);
-            HBox.setMargin(btnBox, new Insets(0, 40, 0, 0));
+            HBox.setMargin(btnBox, new Insets(0, 30, 0, 0));
 
             hbox.getChildren().addAll(texteLabel, btnBox);
             hbox.setSpacing(10);

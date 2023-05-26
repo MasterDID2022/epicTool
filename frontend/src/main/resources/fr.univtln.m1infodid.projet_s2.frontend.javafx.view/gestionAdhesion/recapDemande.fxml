@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="AnchorPaneDemande" prefHeight="497.0" prefWidth="386.0" stylesheets="/styles/recapDemande.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion.RecapDemandeController">
+<AnchorPane fx:id="AnchorPaneDemande" prefHeight="650.0" prefWidth="1000.0" stylesheets="/styles/recapDemande.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion.RecapDemandeController">
     <children>
         <Button fx:id="buttonBack" alignment="CENTER" layoutX="28.0" layoutY="18.0" minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onAction="#backToPage" text="&lt;" AnchorPane.leftAnchor="28.0" AnchorPane.topAnchor="18.0" />
         <Label fx:id="title" alignment="CENTER" styleClass="title-label" text="" AnchorPane.leftAnchor="80" AnchorPane.topAnchor="20" />
@@ -19,7 +19,7 @@
                 <Label fx:id="prenomLabel" text=""/>
             </HBox>
             <HBox fx:id="emailHBox" spacing="10">
-                <Label fx:id="email" text="E-mail:" />
+                <Label fx:id="emailLabel" text="E-mail:" />
                 <Label fx:id="mailLabel" text=""/>
             </HBox>
             <HBox fx:id="affiliationHBox" spacing="10">

@@ -11,8 +11,8 @@ import java.net.URL;
 /* Sert à changer de scène, cette classe doit être utilisé uniquement pour ce but */
 public final class SceneController {
 
-    private static final int SCREEN_WIDTH = 780; // 1024; pour plus tard?
-    private static final int SCREEN_HEIGHT = 504; // 700; pour plus tard?
+    private static final int SCREEN_WIDTH = 1000;
+    private static final int SCREEN_HEIGHT = 650;
     private static final String PATH_TO_ALERT_CSS = "/styles/alert.css";
 
     public record SceneData<T>(Scene scene, T controller) {}
