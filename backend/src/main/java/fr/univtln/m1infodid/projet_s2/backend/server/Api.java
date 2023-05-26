@@ -37,7 +37,7 @@ import java.util.*;
 @Slf4j
 @Path("epicTools")
 public class Api {
-    private static final long EXPIRATION_TIME = 60000;
+    private static final long EXPIRATION_TIME = 300000;
     private static final String PERSISTENCE_UNIT = "EpiPU";
     private Key key = Facade.generateKey();
 

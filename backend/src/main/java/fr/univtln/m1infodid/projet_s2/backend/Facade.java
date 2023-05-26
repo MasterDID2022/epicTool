@@ -169,7 +169,7 @@ public class Facade {
      * @param mail    du demandeur
      */
     public static void sendMail ( Boolean success, String mail ) {
-        final String fromEmail = "projetsdids23@hotmail.com"; // adresse mail du gestionnaire
+        final String fromEmail = "projetsdidstln@hotmail.com"; // adresse mail du gestionnaire
         final String password = System.getenv("MY_PASSWORD");
         Properties props = configSMTP();
         Session session = createSession(props, fromEmail, password);
