@@ -67,6 +67,7 @@ public class MenuController implements Initializable {
         int validId = Integer.parseInt(inputBar.getText());
         log.info("VALID ID : " + validId);
         inputBar.setText("");
+
         Facade.visualiseEpigraphie(validId);
     }
 

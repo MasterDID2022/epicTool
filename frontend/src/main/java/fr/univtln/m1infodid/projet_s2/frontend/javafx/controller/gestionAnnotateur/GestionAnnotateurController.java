@@ -112,7 +112,7 @@ public class GestionAnnotateurController {
 
             HBox btnBox = new HBox(10, consulterButton, supprimerButton);
             btnBox.setAlignment(Pos.CENTER_RIGHT);
-            HBox.setMargin(btnBox, new Insets(0, 40, 0, 0));
+            HBox.setMargin(btnBox, new Insets(0, 30, 0, 0));
 
             hbox.getChildren().addAll(idLabel, mailLabel, btnBox);
             hbox.setSpacing(25);

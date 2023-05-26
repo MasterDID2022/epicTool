@@ -530,5 +530,4 @@ public class Facade {
         annotationsManager.importAnnotation(annotationData);
         visuEpiData.controller().setupSaveBtn();
     }
-
 }

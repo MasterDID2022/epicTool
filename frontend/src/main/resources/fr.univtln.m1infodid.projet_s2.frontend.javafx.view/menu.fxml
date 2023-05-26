@@ -18,7 +18,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #24293d;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.MenuController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" style="-fx-background-color: #24293d;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.MenuController">
 	<children>
 		<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<top>
@@ -41,7 +41,7 @@
 							<children>
 								<Label alignment="CENTER" text="EpicTool" textFill="WHITE">
 									<font>
-										<Font name="Roboto" size="35.0" />
+										<Font size="40.0" />
 									</font>
                            <effect>
                               <Glow />
@@ -79,7 +79,7 @@
 					<children>
 						<BorderPane prefHeight="200.0" prefWidth="200.0">
 							<right>
-								<VBox fx:id="right" alignment="CENTER" prefHeight="352.0" prefWidth="361.0" BorderPane.alignment="CENTER">
+								<VBox fx:id="right" alignment="CENTER" prefHeight="352.0" prefWidth="420.0" BorderPane.alignment="CENTER">
 									<children>
 										<VBox spacing="5.0">
 											<children>
@@ -95,9 +95,9 @@
 												</Label>
 											</children>
 										</VBox>
-										<HBox alignment="TOP_RIGHT" spacing="15.0">
+										<HBox spacing="15.0">
 											<children>
-												<ImageView fitHeight="186.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+												<ImageView fitHeight="260.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
 													<image>
 														<Image url="@../images/plaque_epigraphe.png" />
 													</image>
@@ -136,13 +136,13 @@
 											<children>
 												<Label fx:id="connecter" alignment="CENTER" contentDisplay="LEFT" text="Se connecter ?" textFill="WHITE">
 													<font>
-														<Font size="18.0" />
+														<Font size="25.0" />
 													</font>
                                        <VBox.margin>
                                           <Insets left="25.0" />
                                        </VBox.margin>
 												</Label>
-												<Label fx:id="connecterText" prefWidth="200.0" text="Vous possédez déjà un compte membre et souhaitez vous connecter." textFill="#f4f4fc" wrapText="true">
+												<Label fx:id="connecterText" prefWidth="300.0" text="Vous possédez déjà un compte membre et souhaitez vous connecter." textFill="#f4f4fc" wrapText="true">
 													<font>
 														<Font size="11.0" />
 													</font>
@@ -162,26 +162,26 @@
 																<Insets bottom="10.0" left="15.0" top="10.0" />
 															</padding>
 														</PasswordField>
-      														<Button fx:id="buttonConection" mnemonicParsing="false" onAction="#connexionButtonPressed" prefWidth="250.0" text="Connexion">
+      														<Button fx:id="buttonConection" mnemonicParsing="false" onAction="#connexionButtonPressed" prefWidth="300.0" text="Connexion">
                                              <padding>
                                                 <Insets bottom="10.0" top="10.0" />
                                              </padding>
                                           </Button>
                                        </children>
                                        <VBox.margin>
-                                          <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                          <Insets bottom="15.0" left="25.0" right="25.0" top="15.0" />
                                        </VBox.margin>
                                     </VBox>
 											</children>
 										</VBox>
-										<HBox alignment="CENTER" maxHeight="2.0" maxWidth="250.0" minHeight="2.0" prefHeight="2.0" prefWidth="100.0" style="-fx-background-color: #2F3855;">
+										<HBox alignment="CENTER" maxHeight="2.0" maxWidth="300.0" minHeight="2.0" prefHeight="2.0" prefWidth="100.0" style="-fx-background-color: #2F3855;">
 											<VBox.margin>
 												<Insets bottom="2.0" top="2.0" />
 											</VBox.margin>
 										</HBox>
-										<VBox alignment="CENTER" maxWidth="250.0" spacing="10.0">
+										<VBox alignment="CENTER" maxWidth="300.0" spacing="15.0">
 											<children>
-														<VBox maxWidth="250.0" spacing="5.0">
+														<VBox maxWidth="300.0" spacing="5.0">
 															<children>
 																		<Label fx:id="visiteurTitle" alignment="TOP_LEFT" text="Ou entrez directement un  numéro de Fiche ÉpiCherchell" textFill="WHITE" wrapText="true">
 																			<font>
@@ -195,14 +195,14 @@
 																</Label>
 															</children>
 														</VBox>
-												<HBox alignment="CENTER_LEFT" maxWidth="250.0" spacing="10.0">
+												<HBox alignment="CENTER_LEFT" maxWidth="300.0" spacing="10.0">
 													<children>
 														<TextField fx:id="inputBar" promptText="n° de fiche ÉpiCherchell">
 															<padding>
-																<Insets bottom="10.0" left="15.0" right="55.0" top="10.0" />
+																<Insets bottom="10.0" left="15.0" right="105.0" top="10.0" />
 															</padding>
 														</TextField>
-														<Button fx:id="acceptBtn" mnemonicParsing="false" onAction="#numFicheBtnOnClick" prefHeight="35.0" prefWidth="35.0" rotate="90.0" text="▲">
+														<Button fx:id="acceptBtn" mnemonicParsing="false" onAction="#numFicheBtnOnClick" prefHeight="37.0" prefWidth="37.0" rotate="90.0" text="▲">
 															<font>
 																<Font size="10.0" />
 															</font>
@@ -218,6 +218,9 @@
                                  </VBox.margin>
 										</VBox>
 									</children>
+									<BorderPane.margin>
+										<Insets left="30.0" />
+									</BorderPane.margin>
 								</VBox>
 							</left>
 						</BorderPane>

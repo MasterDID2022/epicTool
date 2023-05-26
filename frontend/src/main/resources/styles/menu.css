@@ -109,3 +109,7 @@
     -fx-background-color: -fx-green;
     -fx-text-fill: -fx-white;
 }
+
+.standByBtn {
+    -fx-background-color: gray;
+}

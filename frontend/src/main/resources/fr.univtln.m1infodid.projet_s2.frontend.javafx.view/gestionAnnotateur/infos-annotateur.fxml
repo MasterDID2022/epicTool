@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="AnchorPaneAnnotateur" prefHeight="497.0" prefWidth="386.0" stylesheets="/styles/infos-annotateur.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.InfosAnnotateurController">
+<AnchorPane fx:id="AnchorPaneAnnotateur" prefHeight="650.0" prefWidth="1000.0" stylesheets="/styles/infos-annotateur.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.InfosAnnotateurController">
     <children>
         <Button fx:id="buttonBack" alignment="CENTER" layoutX="28.0" layoutY="18.0" minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onAction="#backToPage" text="&lt;" AnchorPane.leftAnchor="28.0" AnchorPane.topAnchor="18.0" />
-        <Label fx:id="title" alignment="CENTER" styleClass="title-label" text="Page informations annotateur" AnchorPane.leftAnchor="80" AnchorPane.topAnchor="20" />
-        <VBox layoutX="60.0" layoutY="91.0" prefHeight="600.0" prefWidth="800.0" spacing="30" AnchorPane.bottomAnchor="79.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="91.0">
+        <Label fx:id="title" alignment="CENTER" styleClass="title-label" text="Page informations annotateur" AnchorPane.leftAnchor="80" AnchorPane.topAnchor="20">
+            <font>
+                <Font size="15.0"/>
+            </font>
+        </Label>
+        <VBox layoutX="60.0" layoutY="91.0" prefHeight="600.0" prefWidth="800.0" spacing="30" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="100.0">
             <Separator orientation="HORIZONTAL" prefHeight="2.0" prefWidth="180.0" />
 
             <HBox fx:id="nomHBox" spacing="10">
@@ -28,7 +34,11 @@
             </HBox>
 
         </VBox>
-        <Button fx:id="modifButton" alignment="CENTER" layoutX="350.0" layoutY="398.0" minHeight="40.0" minWidth="40.0" onAction="#updateInfos" text="Modifier" />
+        <Button fx:id="modifButton" alignment="CENTER" layoutX="350.0" layoutY="398.0" minHeight="40.0" minWidth="40.0" onAction="#updateInfos" text="Modifier">
+            <padding>
+                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+            </padding>
+        </Button>
 
     </children>
 </AnchorPane>
