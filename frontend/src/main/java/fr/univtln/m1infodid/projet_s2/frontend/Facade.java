@@ -377,7 +377,7 @@ public class Facade {
         try {
             JsonNode rootNode = objectMapper.readTree(annotationsList);
             JsonNode annotations = rootNode.get("annotations");
-            if (annotations.isArray()) {
+            if (annotations != null && annotations.isArray()) {
                 Iterator<JsonNode> elements = annotations.elements();
                 while(elements.hasNext()) {
                     JsonNode elementNode = elements.next();
