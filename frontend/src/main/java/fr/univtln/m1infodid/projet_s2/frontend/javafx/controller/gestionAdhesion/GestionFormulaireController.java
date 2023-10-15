@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.univtln.m1infodid.projet_s2.frontend.Facade;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.SceneType;
-import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.GestionAnnotateurController;
-import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.InfosAnnotateurController;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,7 +14,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.util.Callback;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -82,12 +79,7 @@ public class GestionFormulaireController {
         List<List<String>> listFormulaires = setListFormulaires(listPerFormulaire);
         formulaireListView.getItems().addAll(listFormulaires);
 
-        formulaireListView.setCellFactory(new Callback<ListView<List<String>>, ListCell<List<String>>>() {
-            @Override
-            public ListCell<List<String>> call(ListView<List<String>> listView) {
-                return new FormulaireListCell();
-            }
-        });
+        formulaireListView.setCellFactory(listView -> new FormulaireListCell());
         formulaireListView.getStyleClass().add("formulaire-list-view");
     }
 
@@ -125,7 +117,7 @@ public class GestionFormulaireController {
 
             HBox btnBox = new HBox(10, consulterButton, validerButton, supprimerButton);
             btnBox.setAlignment(Pos.CENTER_RIGHT);
-            HBox.setMargin(btnBox, new Insets(0, 40, 0, 0));
+            HBox.setMargin(btnBox, new Insets(0, 30, 0, 0));
 
             hbox.getChildren().addAll(mailForm, btnBox);
             hbox.setSpacing(10);
@@ -136,7 +128,7 @@ public class GestionFormulaireController {
                 try {
                     validerFormulaire();
                 } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
+                    log.error("Err: parsing formulaire");
                 }
             });
             supprimerButton.setOnAction(event -> supprimerFormulaire());

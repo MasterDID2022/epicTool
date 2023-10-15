@@ -21,7 +21,7 @@
     -fx-text-fill: -fx-white;
 }
 
-#nom, #prenom, #email, #commentaire, #affiliation {
+#nom, #prenom, #emailLabel, #commentaire, #affiliation {
     -fx-font-size: 14px;
     -fx-text-fill: -fx-coleurr ;
 }

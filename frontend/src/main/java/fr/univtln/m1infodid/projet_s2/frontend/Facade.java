@@ -1,39 +1,30 @@
 package fr.univtln.m1infodid.projet_s2.frontend;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.SceneType;
-import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.FormulaireController;
-import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.HubGestionnaireController;
-import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.MenuController;
-import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.PageVisualisationController;
-import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.SceneController;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.*;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.SceneController.SceneData;
-import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion.RecapDemandeController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.epigraphie.ListeAnnotationData;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion.GestionFormulaireController;
-import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.InfosAnnotateurController;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAdhesion.RecapDemandeController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.GestionAnnotateurController;
-import static fr.univtln.m1infodid.projet_s2.frontend.server.Api.convertJsonToList;
+import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotateur.InfosAnnotateurController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotations.AffAnnotationController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.gestionAnnotations.GestionAnnotationsController;
 import fr.univtln.m1infodid.projet_s2.frontend.javafx.manager.AnnotationsManager;
-import static fr.univtln.m1infodid.projet_s2.frontend.server.Api.convertJsonToListAnnotations;
 import fr.univtln.m1infodid.projet_s2.frontend.server.Api;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
 import java.util.*;
+
+import static fr.univtln.m1infodid.projet_s2.frontend.server.Api.convertJsonToList;
+import static fr.univtln.m1infodid.projet_s2.frontend.server.Api.convertJsonToListAnnotations;
 
 
 
@@ -386,7 +377,7 @@ public class Facade {
         try {
             JsonNode rootNode = objectMapper.readTree(annotationsList);
             JsonNode annotations = rootNode.get("annotations");
-            if (annotations.isArray()) {
+            if (annotations != null && annotations.isArray()) {
                 Iterator<JsonNode> elements = annotations.elements();
                 while(elements.hasNext()) {
                     JsonNode elementNode = elements.next();
@@ -394,9 +385,9 @@ public class Facade {
                 }
             }
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            log.error("Err: parsing annotation");
+            return;
         }
-
         gestion.initialize(liste);
     }
 
@@ -517,7 +508,8 @@ public class Facade {
             }
             return jsonList;
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            log.error("Err: parsing annotation");
+            return new ArrayList<>();
         }
     }
 
@@ -538,5 +530,4 @@ public class Facade {
         annotationsManager.importAnnotation(annotationData);
         visuEpiData.controller().setupSaveBtn();
     }
-
 }

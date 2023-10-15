@@ -11,7 +11,6 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.util.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,18 +40,13 @@ public class GestionAnnotationsController {
 
         annotationListView.getItems().addAll(listeAnnotations);
 
-        annotationListView.setCellFactory(new Callback<ListView<List<String>>, ListCell<List<String>>>() {
-            @Override
-            public ListCell<List<String>> call(ListView<List<String>> listView) {
-                return new AnnotationListCell();
-            }
-        });
+        annotationListView.setCellFactory(listView -> new AnnotationListCell());
         annotationListView.getStyleClass().add("annotation-list-view");
     }
 
-    public void reset() {
+    public void reset() {//NOSONAR
         annotationListView.getItems().clear();
-        epigraphieSelectionnee = null;
+        epigraphieSelectionnee = null; //NOSONAR
     }
 
     @FXML
@@ -60,9 +54,7 @@ public class GestionAnnotationsController {
         Facade.showScene(SceneType.HUB_GESTIONNAIRE);
     }
 
-    public class AnnotationListCell extends ListCell<List<String>> {
-        private HBox hbox;
-        private Label texteLabel;
+    public static class AnnotationListCell extends ListCell<List<String>> {
         private Button consulterButton;
 
         public AnnotationListCell() {
@@ -73,15 +65,15 @@ public class GestionAnnotationsController {
         }
 
         private void createCellComponents() {
-            hbox = new HBox();
-            texteLabel = new Label();
+            HBox hbox = new HBox();
+            Label texteLabel = new Label();
             consulterButton = new Button("Consulter");
             consulterButton.getStyleClass().add("consulter-button");
 
 
             HBox btnBox = new HBox(10, consulterButton);
             btnBox.setAlignment(Pos.CENTER_RIGHT);
-            HBox.setMargin(btnBox, new Insets(0, 40, 0, 0));
+            HBox.setMargin(btnBox, new Insets(0, 30, 0, 0));
 
             hbox.getChildren().addAll(texteLabel, btnBox);
             hbox.setSpacing(10);
@@ -95,8 +87,7 @@ public class GestionAnnotationsController {
         private void consulterAnnotation() {
             List<String> itemData = getItem();
             if (itemData != null && !itemData.isEmpty()) {
-                String numero = itemData.get(1);
-                epigraphieSelectionnee = numero;
+                epigraphieSelectionnee = itemData.get(1); //NOSONAR
             }
             Facade.showScene(SceneType.ANNOTATION);
         }
@@ -119,14 +110,14 @@ public class GestionAnnotationsController {
                     elementsContainer.getChildren().add(label);
                 }
 
-                Button consulterButton = new Button("consulter");
-                consulterButton.getStyleClass().add("consulter-button");
+                Button consulterBtn = new Button("consulter");
+                consulterBtn.getStyleClass().add("consulter-button");
 
-                consulterButton.setOnAction(event -> consulterAnnotation());
+                consulterBtn.setOnAction(event -> consulterAnnotation());
 
                 HBox.setHgrow(elementsContainer, Priority.ALWAYS);
 
-                mainContainer.getChildren().addAll(elementsContainer, consulterButton);
+                mainContainer.getChildren().addAll(elementsContainer, consulterBtn);
                 setGraphic(mainContainer);
             }
         }

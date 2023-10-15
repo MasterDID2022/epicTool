@@ -37,32 +37,24 @@ import java.util.*;
 @Slf4j
 @Path("epicTools")
 public class Api {
-    private static final long EXPIRATION_TIME = 60000;
-    private Key key = SI.generateKey();
+    private static final long EXPIRATION_TIME = 300000;
+    private static final String PERSISTENCE_UNIT = "EpiPU";
+    private Key key = Facade.generateKey();
 
-
-    /**
-     * Prend un json et extrait le token de celui-ci, le verifie et retourne le
-     * json sans le token si valide, sinon Optional empty
-     * @param jsonMsg le json a tester
-     * @return le json sans token ou rien
-     */
-    public Optional<String> cleanAndVerifyTokenOf(String jsonMsg){
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode node;
-        try {
-            node = objectMapper.readTree(jsonMsg);
-            String token = node.get("token").asText();
-            if (Boolean.FALSE.equals(verifyToken(token, Utilisateur.Role.ANNOTATEUR))){
-                log.error("Token refuser");
-                return Optional.empty();
-            }
-            ((ObjectNode) node).remove("token");
-            return Optional.of(objectMapper.writeValueAsString(node));
-        } catch (JsonProcessingException e) {
-            log.error("Err: format json incorrect");
-            return Optional.empty();
+    static String mapAnnotations () {
+        String jsonStr = "";
+        try (EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
+             EntityManager em = emf.createEntityManager();
+             AnnotationDAO annotationDAO = AnnotationDAO.create(em)
+        ) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            ObjectNode responseJson = objectMapper.createObjectNode();
+            responseJson.putPOJO("annotations", annotationDAO.findAll());
+            jsonStr = objectMapper.writeValueAsString(responseJson);
+        } catch (Exception e) {
+            log.error("Erreur lors du formatage du JSON des annotations");
         }
+        return jsonStr;
     }
 
     private Boolean verifyToken(String token, Utilisateur.Role role){
@@ -116,11 +108,35 @@ public class Api {
 		return Response.notModified().build();
 	}
 
+    /**
+     * Prend un json et extrait le token de celui-ci, le verifie et retourne le
+     *
+     * @param jsonMsg le json à tester
+     * @return le json reçu sans le token, si l'authentification est confirmée.
+     */
+    public Optional<String> cleanAndVerifyTokenOf ( String jsonMsg ) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode node;
+        try {
+            node = objectMapper.readTree(jsonMsg);
+            String token = node.get("token").asText();
+            if (Boolean.FALSE.equals(verifyToken(token, Utilisateur.Role.ANNOTATEUR))){
+                log.error("Token refuser");
+                return Optional.empty();
+            }
+            ((ObjectNode) node).remove("token");
+            return Optional.of(objectMapper.writeValueAsString(node));
+        } catch (JsonProcessingException e) {
+            log.error("Err: format json incorrect");
+            return Optional.empty();
+        }
+    }
+
     @GET
     @Path("epigraphe/annotation/{id : \\d+}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response sendAnnotationsOfEpigraph ( @PathParam("id") String id ) {
-        List<Annotation> annotations = Facade.getAnnotationofEpigraphe(Integer.parseInt(id));
+        List<Annotation> annotations = Facade.getAnnotationOfEpigraphe(Integer.parseInt(id));
         log.error("Annot" + annotations.toString());
 
         if (annotations.isEmpty()) {
@@ -130,18 +146,19 @@ public class Api {
             try {
                 return Response.ok(mapper.writeValueAsString(annotations)).build();
             } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
+                throw new IllegalStateException(e);
             }
 
         }
     }
 
     @GET
-    @Path("epigraphe/{id}")
+    @Path("epigraphe/{id:\\d+}")
     public Response sendEpigraphe(@PathParam("id") String id) {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode responseJson = objectMapper.createObjectNode();
         Epigraphe epigraphe = SI.createEpigraphie(Integer.parseInt(id));
+        assert epigraphe != null;
         responseJson.put("id", epigraphe.getId());
         responseJson.put("date", String.valueOf(epigraphe.getDate()));
         responseJson.put("traduction", epigraphe.getTranslation());
@@ -157,26 +174,6 @@ public class Api {
             log.error("Err: impossible de parser le json de l'Epigraphe id:"+id);
         }
         return Response.ok(jsonStr, MediaType.APPLICATION_JSON).build();
-    }
-    private Optional<Formulaire> createFormulaire(String formulaireJson) {
-        Optional<Formulaire> formulaire = Optional.empty();
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = null;
-        try {
-            rootNode = objectMapper.readTree(formulaireJson);
-            String nomFormulaire = rootNode.path("nomFormulaire").asText();
-            String prenomFormulaire = rootNode.path("prenomFormulaire").asText();
-            String emailFormulaire = rootNode.path("emailFormulaire").asText();
-            String mdpFormulaire = rootNode.path("mdpFormulaire").asText();
-            String affiliationFormulaire = rootNode.path("affiliationFormulaire").asText();
-            String commentaireFormulaire = rootNode.path("commentaireFormulaire").asText();
-            formulaire = Optional.of(
-                    Formulaire.of(nomFormulaire,prenomFormulaire,emailFormulaire,mdpFormulaire,affiliationFormulaire,commentaireFormulaire));
-            return formulaire;
-        } catch (JsonProcessingException e) {
-            log.error("Parsing error, le json ne semble pas valide");
-        }
-        return formulaire;
     }
 
     /**
@@ -213,37 +210,25 @@ public class Api {
         return token;
     }
 
-    /**
-     * Methode pour ajouter un utilisateur
-     *
-     * @param userJson le formulaire au format Json
-     */
-    @Path("userP")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response receiveUser(@HeaderParam("Authorization") String token, String userJson) {
-        if (! this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE)) {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
+    private Optional<Formulaire> createFormulaire(String formulaireJson) {
+        Optional<Formulaire> formulaire = Optional.empty();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode;
         try {
-            Optional<Utilisateur> utilisateur = createUser(userJson);
-            if (utilisateur.isPresent()) {
-                try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("EpiPU")) {
-                    try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
-                        try (UtilisateurDAO utilisateurDAO = UtilisateurDAO.create(entityManager)) {
-                            utilisateurDAO.persist(utilisateur.get());
-                            SI.sendMail(true, utilisateur.get().getEmail()); // Envoie du mail de validation
-                            return Response.ok().build();
-                        }
-                    }
-                } catch (Exception e) {
-                    log.error(e.toString());
-                }
-            }
-        } catch (Exception e) {
-            return Response.notModified().entity("Err: authorisation invalide").build();
+            rootNode = objectMapper.readTree(formulaireJson);
+            String nomFormulaire = rootNode.path("nomFormulaire").asText();
+            String prenomFormulaire = rootNode.path("prenomFormulaire").asText();
+            String emailFormulaire = rootNode.path("emailFormulaire").asText();
+            String mdpFormulaire = rootNode.path("mdpFormulaire").asText();
+            String affiliationFormulaire = rootNode.path("affiliationFormulaire").asText();
+            String commentaireFormulaire = rootNode.path("commentaireFormulaire").asText();
+            formulaire = Optional.of(
+                    Formulaire.of(nomFormulaire,prenomFormulaire,emailFormulaire,mdpFormulaire,affiliationFormulaire,commentaireFormulaire));
+            return formulaire;
+        } catch (JsonProcessingException e) {
+            log.error("Parsing error, le json ne semble pas valide");
         }
-        return Response.notModified().build();
+        return formulaire;
     }
 
 
@@ -263,42 +248,64 @@ public class Api {
         return utilisateur;
     }
 
-	/**
-	 * Récupère la liste des utilisateurs et renvoie une réponse HTTP contenant les utilisateurs au format JSON.
-
-	 * return: Une réponse HTTP contenant la liste des utilisateurs au format JSON.
-	 */
-	@GET
-	@Path("utilisateurs")
-	public Response sendUtilisateur(@HeaderParam("Authorization") String token) {
-        if (! this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE)) {
+    /**
+     * Methode pour ajouter un utilisateur
+     *
+     * @param userJson le formulaire au format Json
+     */
+    @Path("userP")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response receiveUser(@HeaderParam("Authorization") String token, String userJson ) {
+        if (Boolean.FALSE.equals(this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE))) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
-		String utilisateursJson = SI.recupereUtilisateurs();
-		ObjectMapper objectMapper = new ObjectMapper();
-		ObjectNode responseJson = objectMapper.createObjectNode();
-		responseJson.put("utilisateurs", utilisateursJson);
-		String jsonStr = null;
-		try {
-			jsonStr = objectMapper.writeValueAsString(responseJson);
-		} catch (JsonProcessingException e) {
+        Optional<Utilisateur> utilisateur = createUser(userJson);
+        try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT); EntityManager entityManager = entityManagerFactory.createEntityManager(); UtilisateurDAO utilisateurDAO = UtilisateurDAO.create(entityManager)) {
+            utilisateurDAO.persist(utilisateur.orElseThrow(IllegalStateException::new));
+            Facade.sendMail(true, utilisateur.orElseThrow(IllegalArgumentException::new).getEmail()); // Envoie du mail de validation
+            return Response.ok().build();
+        } catch (Exception e) {
+            log.error(e.toString());
+        }
+        return Response.notModified().build();
+    }
+
+    /**
+     * Récupère la liste des utilisateurs et renvoie une réponse HTTP contenant les utilisateurs au format JSON.
+     * <p>
+     * return: Une réponse HTTP contenant la liste des utilisateurs au format JSON.
+     */
+    @GET
+    @Path("utilisateurs")
+    public Response sendUtilisateur ( @HeaderParam("Authorization") String token ) {
+        if (Boolean.FALSE.equals(this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE))) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        String utilisateursJson = Facade.recupereUtilisateurs();
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode responseJson = objectMapper.createObjectNode();
+        responseJson.put("utilisateurs", utilisateursJson);
+        String jsonStr = null;
+        try {
+            jsonStr = objectMapper.writeValueAsString(responseJson);
+        } catch (JsonProcessingException e) {
             log.error("Error: format json incorrect");
 		}
 		return Response.ok(jsonStr, MediaType.APPLICATION_JSON).build();
-	}
+    }
 
     /**
      * Récupère la liste des formulaires et renvoie une réponse HTTP contenant les formulaires au format json
-
-     * return: Une réponse HTTP contenant la liste des formulaires au format JSON.
+     * @return Une réponse HTTP contenant la liste des formulaires au format JSON.
      */
     @GET
     @Path("formulaires")
-    public Response sendFormulaire(@HeaderParam("Authorization") String token) {
-        if (! this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE)) {
+    public Response sendFormulaire(@HeaderParam("Authorization") String token ) {
+        if (Boolean.FALSE.equals(this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE))) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
-        String formJson = SI.recupererFormulaires();
+        String formJson = Facade.recupererFormulaires();
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode responseJson = objectMapper.createObjectNode();
         responseJson.put("formulaires", formJson);
@@ -311,40 +318,36 @@ public class Api {
         return Response.ok(jsonStr, MediaType.APPLICATION_JSON).build();
     }
 
-
     /**
-     * Methode pour envoyer un mail de non validation du compte et supression du formulaire
+     * Methode pour envoyer un mail de non-validation du compte et supression du formulaire
      *
      * @param id du demandeur
      */
     @DELETE
-    @Path("formD/{id}")
-    public Response deleteFormulaire(@HeaderParam("Authorization") String token, @PathParam("id") int id) {
-        if (! this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE)) {
+    @Path("formD/{id:\\d+}")
+    public Response deleteFormulaire(@HeaderParam("Authorization") String token, @PathParam("id") int id ) {
+        if (Boolean.FALSE.equals(this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE))) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         Formulaire formulaire = FormulaireDAO.findByIdFormulaire(id);
         if(formulaire != null){
             FormulaireDAO.deleteFormulaire(id);
             String email = formulaire.getEmail();
-            SI.sendMail(false, email);
+            Facade.sendMail(false, email);
             return Response.ok().build();
         }
         return Response.notModified().build();
     }
 
-
-
     @GET
     @Path("userInfos/{email}")
-    public Response sendInfosUser(@HeaderParam("Authorization") String token, @PathParam("email") String email) throws Exception {
-        if (! this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE)) {
+    public Response sendInfosUser ( @HeaderParam("Authorization") String token, @PathParam("email") String email ) {
+        if (Boolean.FALSE.equals(this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE))) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayNode responseArray = objectMapper.createArrayNode();
         List<String> champs = new ArrayList<>();
-
         Formulaire formulaire = FormulaireDAO.findByEmailFormulaire(email);
         champs.add(String.valueOf(formulaire.getId()));
         champs.add(formulaire.getNom());
@@ -353,12 +356,16 @@ public class Api {
         champs.add(formulaire.getAffiliation());
         champs.add(formulaire.getMdp());
         champs.add(formulaire.getCommentaire());
-
         for (String champ : champs) {
             responseArray.add(champ);
         }
 
-        String jsonStr = objectMapper.writeValueAsString(responseArray);
+        String jsonStr;
+        try {
+            jsonStr = objectMapper.writeValueAsString(responseArray);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException(e);
+        }
         return Response.ok(jsonStr, MediaType.APPLICATION_JSON).build();
     }
 
@@ -370,50 +377,35 @@ public class Api {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("annotations")
-    public Response sendAnnotations(@HeaderParam("Authorization") String token) {
+    public Response sendAnnotations ( @HeaderParam("Authorization") String token ) {
         if (Boolean.FALSE.equals(this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE))) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
-        String jsonStr = "";
-        try(EntityManagerFactory emf = Persistence.createEntityManagerFactory("EpiPU");
-            EntityManager em = emf.createEntityManager();
-            AnnotationDAO annotationDAO = AnnotationDAO.create(em)
-        ){
-            ObjectMapper objectMapper = new ObjectMapper();
-            ObjectNode responseJson = objectMapper.createObjectNode();
-            responseJson.putPOJO("annotations", annotationDAO.findAll());
-            jsonStr = objectMapper.writeValueAsString(responseJson);
-        } catch (Exception e) {
-            log.error("Erreur lors du formatage du JSON des annotations");
-        }
+
+        String jsonStr = mapAnnotations();
         return Response.ok(jsonStr).build();
     }
 
-	/**
-	 * Methode pour supprimer un utilisateur à partir de son id
-	 *
-	 * @param id du user
-	 */
-	@DELETE
-	@Path("userD/{id}")
-	public Response deleteUser(@HeaderParam("Authorization") String token, @PathParam("id") int id) {
-        if (! this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE)) {
+    /**
+     * Methode pour supprimer un utilisateur à partir de son id
+     *
+     * @param id de l'user
+     */
+    @DELETE
+	@Path("userD/{id:\\d+}")
+	public Response deleteUser(@HeaderParam("Authorization") String token, @PathParam("id") int id ) {
+        if (Boolean.FALSE.equals(this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE))) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
-        try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("EpiPU");
-			 EntityManager entityManager = entityManagerFactory.createEntityManager()) {
-			try( UtilisateurDAO utilisateurDAO = UtilisateurDAO.create(entityManager)){
-                Utilisateur user = utilisateurDAO.findById(id);
-                /*
-                Formulaire formulaire = FormulaireDAO.findByEmailFormulaire(user.getEmail());
-                FormulaireDAO.deleteFormulaire(formulaire.getId());
-                */
+        try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
+             EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            try (UtilisateurDAO utilisateurDAO = UtilisateurDAO.create(entityManager)) {
                 utilisateurDAO.remove(id);
                 return Response.ok().build();
             }
-		} catch (Exception e) {
-			log.error(e.toString());
-			return Response.serverError().build();
+        } catch (Exception e) {
+            log.error(e.toString());
+            return Response.serverError().build();
 		}
 	}
 
@@ -425,11 +417,11 @@ public class Api {
      */
     @POST
     @Path("annotationD")
-    public Response deleteAnnotation(@HeaderParam("Authorization") String token, String infosJson) {
-        if (! this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE)) {
+    public Response deleteAnnotation(@HeaderParam("Authorization") String token, String infosJson ) {
+        if (Boolean.FALSE.equals(this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE))) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
-        try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("EpiPU");
+        try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
              EntityManager entityManager = entityManagerFactory.createEntityManager()) {
 
             ObjectMapper objectMapper = new ObjectMapper();
@@ -438,7 +430,7 @@ public class Api {
             String email = rootNode.path("email").asText();
 
             try (AnnotationDAO annotationDAO = AnnotationDAO.create(entityManager)) {
-                annotationDAO.remove( annotationDAO.findByIdEpiMail(Integer.parseInt(idEpigraphe), email) );
+                annotationDAO.remove(annotationDAO.findByIdEpiAndMail(Integer.parseInt(idEpigraphe), email));
                 return Response.ok().build();
             }
         } catch (Exception e) {
@@ -458,51 +450,42 @@ public class Api {
             String base64Credentials = authorizationHeader.substring("Basic ".length());
             String decodedCredentials = new String(Base64.getDecoder().decode(base64Credentials));
             String[] usernamePassword = decodedCredentials.split(":", 2);
-            if (true) {
-                String username = usernamePassword[0];
-                String password = usernamePassword[1];
-                log.info("Username : " + username + ", password : " + password);
-                log.info("Authentification: " + Utilisateur.checkPassword(password, username).toString());
-                if (Utilisateur.checkPassword(password, username)) {
-                    Optional<String> roleOptional = Utilisateur.getRoleOf(username);
-                    if (roleOptional.isPresent()) {
-                        String role = roleOptional.get();
-                        String token = generateTokenOfRole(role);
-                        return Response.ok().entity(role + ":" + token).build();
-                    } else {
-                        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Impossible d'obtenir le rôle de l'utilisateur").build();
-                    }
-                }
-                return Response.status(Response.Status.UNAUTHORIZED).entity(username + ":" + password + " est un combo incorrect").build();
+            String email = usernamePassword[0];
+            String password = usernamePassword[1];
+            Optional<String> optionalTokenAndRole = verifyUserOf(email, password);
+            if (optionalTokenAndRole.isPresent()) {
+                return Response.ok().entity(optionalTokenAndRole.get()).build();
             }
-        } // No Authorization header or invalid format
+            return Response.status(Response.Status.UNAUTHORIZED).entity(email + ":" + password + " est un combo incorrect").build();
+        }
         return Response.status(Response.Status.UNAUTHORIZED).entity("Missing or invalid Authorization header").build();
     }
 
 
-    public void getNewKey(){
-        this.key = SI.generateKey();
+    public void getNewKey () {
+        this.key = Facade.generateKey();
     }
 
     /**
-     * Prend un combo password mot de passe et verifie si il est valide,
+     * Prend un combo password mot de passe et verifie s'il est valide,
      * renvoi une reponse pour l'API
-     * @param email de l'utilisateur
-     * @param password de l'utlisateur
-     * @return reponse json
+     *
+     * @param email    de l'utilisateur
+     * @param password de l'utilisateur
+     * @return réponse json
      */
-    private Response verifyUserOf(String email, String password){
+    private Optional<String> verifyUserOf ( String email, String password ) {
         log.error("Username : " + email + ", password : " + password);
-        log.error("Authentification: " + Utilisateur.checkPassword(password, email).toString());
+        log.error("Authentification: " + Utilisateur.checkPassword(password, email));
         Boolean isPasswordValide = Utilisateur.checkPassword(password, email);
         if (Boolean.TRUE.equals(isPasswordValide)) {
             Optional<String> role = Utilisateur.getRoleOf(email);
-            if (role.isPresent()){
+            if (role.isPresent()) {
                 String token = generateTokenOfRole(role.get());
-                return Response.ok().entity(role+":"+token).build();
+                return Optional.of(role.get() + ":" + token);
             }
         }
-        return Response.status(Response.Status.UNAUTHORIZED).entity(email + ":" + password + " est un combo incorrect").build();
+        return Optional.empty();
     }
 
     /**
@@ -511,21 +494,21 @@ public class Api {
      * @param infosJson infos du user sous le format JSON
      */
     @PUT
-    @Path("userU/{id}")
-    public Response updateUser(@HeaderParam("Authorization") String token, @PathParam("id") int id, String infosJson) throws Exception {
-        if (! this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE)) {
+    @Path("userU/{id:\\d+}")
+    public Response updateUser ( @HeaderParam("Authorization") String token, @PathParam("id") int id, String infosJson ) {
+        if (Boolean.FALSE.equals(this.verifyToken(token, Utilisateur.Role.GESTIONNAIRE))) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
-        try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("EpiPU");
+        try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
              EntityManager entityManager = entityManagerFactory.createEntityManager()) {
 
-            try(UtilisateurDAO utilisateurDAO = UtilisateurDAO.create(entityManager)){
+            try (UtilisateurDAO utilisateurDAO = UtilisateurDAO.create(entityManager)) {
 
-            Optional<Formulaire> beforeUpdate = Optional.of(FormulaireDAO.findByIdFormulaire(id));
-            Optional<Utilisateur> utilisateurOptional = utilisateurDAO.findByEmail(beforeUpdate.get().getEmail());
+                Optional<Formulaire> beforeUpdate = Optional.of(FormulaireDAO.findByIdFormulaire(id));
+                Optional<Utilisateur> utilisateurOptional = utilisateurDAO.findByEmail(beforeUpdate.get().getEmail());
 
-            if (utilisateurOptional.isPresent()) {
-                Utilisateur utilisateur = utilisateurOptional.get();
+                if (utilisateurOptional.isPresent()) {
+                    Utilisateur utilisateur = utilisateurOptional.get();
 
                 Optional<Formulaire> toUpdateOptional = infosUser(infosJson);
 

@@ -21,7 +21,7 @@
 }
 
 
-#AnnotateurListView {
+.annotateur-list-view, #annotateurListView {
     -fx-background-color: -fx-blue;
 }
 
@@ -50,6 +50,9 @@
 .consulter-button:hover,
 .supprimer-button:hover{
     -fx-cursor: hand;
+}
+ScrollPane {
+    -fx-background-color: -fx-dark-blue;
 }
 
 

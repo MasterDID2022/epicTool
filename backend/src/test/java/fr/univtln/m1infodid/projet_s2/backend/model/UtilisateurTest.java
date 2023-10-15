@@ -98,7 +98,7 @@ class UtilisateurTest {
     @Test
     void ShouldBeHAshable(){
         Utilisateur mockUtilisateur = Utilisateur.of("mock@mock.com","1234");
-        assertTrue(0 != mockUtilisateur.hashCode());
+        assertNotEquals(0, mockUtilisateur.hashCode());
     }
 
 }

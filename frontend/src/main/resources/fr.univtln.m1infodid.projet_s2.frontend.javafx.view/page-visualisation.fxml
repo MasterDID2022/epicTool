@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.PageVisualisationController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.univtln.m1infodid.projet_s2.frontend.javafx.controller.PageVisualisationController">
     <children>
         <BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <right>
-                <VBox alignment="TOP_RIGHT" spacing="10.0" BorderPane.alignment="TOP_RIGHT">
+                <VBox alignment="TOP_RIGHT" minWidth="350.0" spacing="10.0" BorderPane.alignment="TOP_RIGHT">
                     <fx:include fx:id="traduction" source="epigraphie/traduction.fxml" />
                <AnchorPane fx:id="plaqueAnchor" VBox.vgrow="ALWAYS">
                   <children>
@@ -29,24 +29,24 @@
                   </children>
                </AnchorPane>
                     <BorderPane.margin>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        <Insets bottom="20.0" left="5.0" right="20.0" top="20.0" />
                     </BorderPane.margin>
                 </VBox>
             </right>
             <center>
                 <AnchorPane BorderPane.alignment="CENTER">
                     <children>
-                        <HBox alignment="TOP_LEFT" spacing="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                        <HBox alignment="TOP_LEFT" spacing="5.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
                             <children>
                         <VBox alignment="TOP_CENTER" prefHeight="0.0" prefWidth="103.0">
                            <children>
-                              <Button fx:id="buttonProfileIcon" mnemonicParsing="false" onAction="#onClickProfileButton" onMouseEntered="#profileButtonEntered" onMouseExited="#profileButtonExited" text="A">
+                              <Button fx:id="buttonProfileIcon" minHeight="80.0" minWidth="80.0" mnemonicParsing="false" onAction="#onClickProfileButton" onMouseEntered="#profileButtonEntered" onMouseExited="#profileButtonExited" text="A">
                                  <font>
                                     <Font size="40.0" />
                                  </font></Button>
                            </children>
                         </VBox>
-                                <HBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+                                <HBox alignment="TOP_CENTER" spacing="10.0" BorderPane.alignment="CENTER">
                                     <children>
                                         <TextField fx:id="inputBar" prefHeight="40.0" prefWidth="180.0" promptText="n° de fiche ÉpiCherchell">
                                             <padding>

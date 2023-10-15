@@ -82,7 +82,7 @@ public class TranscriptionController{
         symbolList = new ArrayList<>();
 
         if (transcriptions.size() > MAX_TRANSCRIPTION_LINE_COUNT){
-            transcriptionVBox.setStyle("-fx-font-size: 8px;");
+            transcriptionVBox.setStyle("-fx-font-size: 10px;");
             transcriptionVBox.setSpacing(3);
         }
         else{
@@ -104,12 +104,6 @@ public class TranscriptionController{
             }else
                 createHboxLine(words);            
         }
-
-        //par défaut, sélection du premier symbole
-        /*if (symbolList.size() > 1) {
-            annotationsManager.symbolBtnOnClick(0, symbolList.get(0));
-            symbolBtnOnClick( ((Button)((HBox)transcriptionVBox.getChildren().get(0)).getChildren().get(0)) );
-        }*/
     }
 
     /**

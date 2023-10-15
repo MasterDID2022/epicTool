@@ -1,8 +1,6 @@
 package fr.univtln.m1infodid.projet_s2.backend.DAO;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.List;
+import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +8,9 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import fr.univtln.m1infodid.projet_s2.backend.model.Formulaire;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 
 class FormulaireDAOTest {
@@ -45,7 +45,7 @@ class FormulaireDAOTest {
             Formulaire formulaireRecupere = FormulaireDAO.findByIdFormulaire(formulaire.getId());
             System.err.println(formulaireRecupere);
             System.err.println(formulaire);
-            assertTrue(formulaire.equals(formulaireRecupere));
+            assertEquals(formulaire, formulaireRecupere);
 
             FormulaireDAO.deleteFormulaire(formulaire.getId());
         }
